@@ -1,0 +1,25 @@
+glass_prison:
+  dirname: /cygdrive/x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: 01 - The Glass Prison.mp3
+  format: mp3
+  size: 19989119
+  bitrate: 192
+misunderstood:
+  dirname: /cygdrive/x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: 03 - Misunderstood.mp3
+  format: mp3
+  size: 13507820
+  bitrate: 192
+about_to_crash:
+  dirname: /cygdrive/x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: 07 - II. About To Crash.mp3
+  format: mp3
+  size: 8427118
+  bitrate: 192
+
+the_requiem:
+  dirname: /cygdrive/x/music/Music Collection/Japanese/聖飢魔II/Albums/1994 - Ponk!!
+  basename: 07 - The Requiem.mp3
+  format: mp3
+  size: 11494512
+  bitrate: 247

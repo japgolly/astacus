@@ -2,6 +2,6 @@ log/*.log
 tmp/**/*
 .DS_Store
 public/cache/**/*
-doc/api
-doc/app
 nbproject
+db/*.sqlite3
+

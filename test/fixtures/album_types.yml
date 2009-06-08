@@ -1,0 +1,8 @@
+std:
+  name: Normal Album
+
+live:
+  name: Live Album
+
+compilation:
+  name: Compilation

@@ -1,0 +1,16 @@
+6doit_cd1:
+  album: 6doit
+  album_type: std
+  order_id: 0
+  name: CD 1
+
+6doit_cd2:
+  album: 6doit
+  album_type: std
+  order_id: 1
+  name: CD 2
+
+ponk:
+  album: ponk
+  album_type: std
+  order_id: 0
