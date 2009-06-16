@@ -1,4 +1,5 @@
 require 'mp3info'
+require 'digest/sha2'
 
 module Astacus
   # Scans a dir tree looking for audio files.
@@ -19,10 +20,16 @@ module Astacus
       r.basename= File.basename(file)
       r.format= r.basename.sub(/^.+\./,'') if r.basename.include?('.')
       r.size= File.size(file)
+      content= File.read(file)
       if r.format =~ /mp3/
         mp3= Mp3Info.new(file)
         r.bitrate= mp3.bitrate
+        start,len= mp3.audio_content
+        content= content[start..start+len-1]
+      else
+        raise "Unsupported format: #{r.format}"
       end
+      r.sha2= Digest::SHA2.digest(content, 512)
       r.save!
     end
 
