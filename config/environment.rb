@@ -38,7 +38,8 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 
   # Until Rails v2.3.4 when index lengths are supported.
-  config.active_record.schema_format = :sql
+  # config.active_record.schema_format = :sql
 end
 
+require 'digest/md5'
 require 'digest/sha2'

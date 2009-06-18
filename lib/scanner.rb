@@ -12,22 +12,47 @@ module Astacus
 
     # Processes an audio file and creates/updates a record in the DB.
     def scan_file!(file)
-      r= AudioFile.new
-      r.dirname= File.dirname(file)
-      r.basename= File.basename(file)
-      r.format= r.basename.sub(/^.+\./,'') if r.basename.include?('.')
-      r.size= File.size(file)
-      content= File.read(file)
-      if r.format =~ /mp3/
-        mp3= Mp3Info.new(file)
-        r.bitrate= mp3.bitrate
-        start,len= mp3.audio_content
-        content= content[start..start+len-1]
-      else
-        raise "Unsupported format: #{r.format}"
+      AudioFile.transaction do
+      
+        f= AudioFile.new
+        f.dirname= File.dirname(file)
+        f.basename= File.basename(file)
+        f.size= File.size(file)
+
+        tags= []
+        a= AudioContent.new
+        f.audio_content= a
+        content= File.read(file)
+        file_ext= f.basename.sub(/^.+\./,'') if f.basename.include?('.')
+        if file_ext =~ /mp3/i
+          a.format= 'mp3'
+          Mp3Info.open(file){|mp3|
+            a.bitrate= mp3.bitrate
+            a.length= mp3.length
+            a.samplerate= mp3.samplerate
+            a.vbr= mp3.vbr
+            start,len= mp3.audio_content
+            tags<< AudioTag.new({
+                :audio_file => f,
+                :format => 'id3',
+                :version => mp3.tag2.version,
+                :offset => 0,
+                :data => content[0..start-1],
+            }) if start > 0 and mp3.tag2
+            # TODO footer id3 tags not supported
+            content= content[start..start+len-1]
+          }
+        else
+          raise "Unsupported format: #{file_ext.inspect}\nFile: #{file}"
+        end
+        a.size= content.size
+        a.md5= Digest::MD5.digest(content)
+        a.sha2= Digest::SHA2.digest(content, 512)
+
+        f.save!
+        a.save!
+        tags.each{|t| t.save!}
       end
-      r.sha2= Digest::SHA2.digest(content, 512)
-      r.save!
     end
 
   end

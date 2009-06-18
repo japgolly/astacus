@@ -10,7 +10,7 @@ class InitialSchema < ActiveRecord::Migration
     end
 
     create_table :albums do |t|
-      t.integer :artist_id, :null => false
+      t.references :artist, :null => false
       t.string :name, :null => false
       t.integer :year
       t.integer :original_year
@@ -18,34 +18,23 @@ class InitialSchema < ActiveRecord::Migration
     end
 
     create_table :cds do |t|
-      t.integer :album_id, :null => false
-      t.integer :album_type_id
+      t.references :album, :null => false
+      t.references :album_type
       t.string :name
       t.integer :order_id, :null => false
       t.timestamps
     end
 
     create_table :tracks do |t|
-      t.integer :cd_id, :null => false
-      t.integer :audio_file_id, :null => false
+      t.references :cd, :null => false
       t.integer :tn
       t.string :name, :null => false
       t.integer :length
       t.timestamps
     end
-
-    create_table :audio_files do |t|
-      t.string :dirname, :null => false
-      t.string :basename, :null => false
-      t.string :format, :null => false
-      t.integer :size
-      t.integer :bitrate
-      t.timestamps
-    end
   end
 
   def self.down
-    drop_table :audio_files
     drop_table :tracks
     drop_table :cds
     drop_table :albums
