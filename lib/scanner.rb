@@ -58,13 +58,19 @@ module Astacus
               content= content[0..-ape.tag_size-1]
             end
           }
+
+          # Scan forward to mp3 header
+          content.sub!(/^\x00+(?=\xff)/, '')
         else
           raise "Unsupported format: #{file_ext.inspect}\nFile: #{file}"
         end
+
+        # Store audio content
         a.size= content.size
         a.md5= Digest::MD5.digest(content)
         a.sha2= Digest::SHA2.digest(content, 512)
 
+        # Save
         f.save!
         a.save!
         tags.each{|t| t.save!}

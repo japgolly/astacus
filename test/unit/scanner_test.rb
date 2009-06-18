@@ -47,7 +47,7 @@ class ScannerTest < ActiveSupport::TestCase
 
       # AudioContent
       a= f.audio_content
-      assert_equal 68177 - t1.data.size - t2.data.size, a.size
+      assert_equal 58723, a.size
       assert_equal 'mp3', a.format
       assert_equal 160, a.bitrate
       assert_equal 2.95445, a.length
