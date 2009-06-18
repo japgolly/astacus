@@ -15,11 +15,8 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "sqlite3-ruby", :lib => "sqlite3"
-  # config.gem "aws-s3", :lib => "aws/s3"
-  # config.gem 'ruby-mp3info'
+  config.gem 'ruby-mp3info', :lib => 'mp3info'
+  config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -43,3 +40,5 @@ Rails::Initializer.run do |config|
   # Until Rails v2.3.4 when index lengths are supported.
   config.active_record.schema_format = :sql
 end
+
+require 'digest/sha2'

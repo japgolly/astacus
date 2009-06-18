@@ -1,6 +1,3 @@
-require 'mp3info'
-require 'digest/sha2'
-
 module Astacus
   # Scans a dir tree looking for audio files.
   class Scanner
