@@ -32,6 +32,8 @@ module Astacus
             a.samplerate= mp3.samplerate
             a.vbr= mp3.vbr
             start,len= mp3.audio_content
+
+            # Read ID3 tag
             tags<< AudioTag.new({
                 :audio_file => f,
                 :format => 'id3',
@@ -41,6 +43,20 @@ module Astacus
             }) if start > 0 and mp3.tag2
             # TODO footer id3 tags not supported
             content= content[start..start+len-1]
+
+            # Read APE tag
+            ape= ApeTag.new(file)
+            if ape.exists?
+              raise "ape.tag_size != ape.raw.size\n#{ape.inspect}" unless ape.tag_size == ape.raw.size
+              tags<< AudioTag.new({
+                  :audio_file => f,
+                  :format => 'ape',
+                  :version => '2',
+                  :offset => f.size - ape.tag_size,
+                  :data => ape.raw,
+              })
+              content= content[0..-ape.tag_size-1]
+            end
           }
         else
           raise "Unsupported format: #{file_ext.inspect}\nFile: #{file}"
