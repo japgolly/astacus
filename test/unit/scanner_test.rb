@@ -8,8 +8,9 @@ class ScannerTest < ActiveSupport::TestCase
     end
 
     should "find audio files" do
-      assert_equal [
-        "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+      assert_same_elements [
+        "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3",
+        "#{mock_data_dir}/frozen city (no tags).mp3",
       ], @scanner.files_in(mock_data_dir)
     end
 
@@ -64,5 +65,26 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal 359, t2.data.size
       end
     end
-  end
+
+    should "reuse existing audio_content when it matches" do
+      # Scan tagged version first
+      assert_difference 'AudioContent.count', +1 do
+        @scanner.scan_file! "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+      end
+
+      # Scan untagged version next
+      assert_difference ['AudioContent.count','AudioTag.count'], 0 do
+        assert_difference 'AudioFile.count', +1 do
+          @scanner.scan_file! "#{mock_data_dir}/frozen city (no tags).mp3"
+        end
+      end
+      f= AudioFile.last
+      assert_equal mock_data_dir, f.dirname
+      assert_equal "frozen city (no tags).mp3", f.basename
+      assert_equal 58723 , f.size
+      assert_not_nil f.audio_content
+      assert_equal 2, f.audio_content.audio_files.count
+    end
+
+  end # the scanner context
 end

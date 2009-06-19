@@ -21,7 +21,6 @@ module Astacus
 
         tags= []
         a= AudioContent.new
-        f.audio_content= a
         content= File.read(file)
         file_ext= f.basename.sub(/^.+\./,'') if f.basename.include?('.')
         if file_ext =~ /mp3/i
@@ -65,14 +64,16 @@ module Astacus
           raise "Unsupported format: #{file_ext.inspect}\nFile: #{file}"
         end
 
-        # Store audio content
+        # Finalise audio content
         a.size= content.size
         a.md5= Digest::MD5.digest(content)
         a.sha2= Digest::SHA2.digest(content, 512)
+        a= AudioContent.find_identical(a) || a
+        f.audio_content= a
 
         # Save
+        a.save! if a.new_record?
         f.save!
-        a.save!
         tags.each{|t| t.save!}
       end
     end
