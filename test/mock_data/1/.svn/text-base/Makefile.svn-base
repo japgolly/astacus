@@ -1,0 +1,23 @@
+FLAG=-g -O0 -ggdb -Wall -Werror
+
+MPG123_CFLAGS := $(shell pkg-config --cflags libmpg123)
+MPG123_LDFLAGS := $(shell pkg-config --libs   libmpg123)
+SND_CFLAGS     := $(shell pkg-config --cflags sndfile)
+SND_LDFLAGS    := $(shell pkg-config --libs   sndfile)
+
+CFLAGS := $(FLAG) $(MPG123_CFLAGS) $(SND_CFLAGS)
+LDFLAGS := $(FLAG) $(SND_LDFLAGS) $(MPG123_LDFLAGS)
+
+all: mp3sc
+
+mp3sc: main.o mp3sc.o 
+
+main.o: main.c
+
+mp3sc.o: mp3sc.c mp3sc.h
+
+.PHONY: all clean
+
+clean:
+	rm -rf *.o
+	rm -rf mp3sc

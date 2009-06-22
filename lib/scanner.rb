@@ -26,10 +26,6 @@ module Astacus
         if file_ext =~ /mp3/i
           a.format= 'mp3'
           Mp3Info.open(file){|mp3|
-            a.bitrate= mp3.bitrate
-            a.length= mp3.length
-            a.samplerate= mp3.samplerate
-            a.vbr= mp3.vbr
             start,len= mp3.audio_content
 
             # Read ID3 tag
@@ -60,6 +56,16 @@ module Astacus
 
           # Scan forward to mp3 header
           content.sub!(/^\x00+(?=\xff)/, '')
+
+          tmp='/tmp/del_me.mp3'
+          File.open(tmp,'wb'){|fout| fout<< content}
+          Mp3Info.open(tmp){|mp3|
+            a.bitrate= mp3.bitrate
+            a.length= mp3.length
+            a.samplerate= mp3.samplerate
+            a.vbr= mp3.vbr
+          }
+          File.delete tmp
         else
           raise "Unsupported format: #{file_ext.inspect}\nFile: #{file}"
         end
