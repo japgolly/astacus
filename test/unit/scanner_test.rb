@@ -41,7 +41,7 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal 58723, a.size
         assert_equal 'mp3', a.format
         assert_equal 160, a.bitrate
-        assert_equal 2.95445, a.length
+        assert_equal 2.93615, a.length
         assert_equal 44100, a.samplerate
         assert_equal false, a.vbr?
         assert_not_nil a.created_at
