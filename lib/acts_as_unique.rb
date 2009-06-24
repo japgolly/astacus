@@ -38,6 +38,13 @@ module Acts
     end
 
     module InstanceMethods
+      def find_identical
+        self.class.find_identical self
+      end
+
+      def reuse
+        find_identical || self
+      end
     end
   end
 end
