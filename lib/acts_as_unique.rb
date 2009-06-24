@@ -7,7 +7,16 @@ module Acts
     end
 
     module ClassMethods
-      def acts_as_unique
+      def acts_as_unique(options={:except => [:id, :updated_at, :created_at]})
+        options.symbolize_keys!
+        options.assert_valid_keys(:only, :except)
+        raise "Specify either :only or :except, not both." if options[:only] and options[:except]
+
+        cattr_accessor :acts_as_unique_cols
+        cattr_accessor :acts_as_unique_col_filter
+        self.acts_as_unique_cols= (options[:only] || options[:except]).map(&:to_sym).uniq
+        self.acts_as_unique_col_filter= options[:only] ? :select : :reject
+
         class_eval <<-END
           include Acts::Unique::InstanceMethods
         END
@@ -17,16 +26,14 @@ module Acts
       def find_identical(obj)
         return nil if obj.nil?
         raise "#{obj.class} is not a #{self}." unless obj.is_a?(self)
-        attributes= obj.attributes.dup
-        %w[id updated_at created_at].each{|k| attributes.delete k}
-        unless count == 0
-          puts
-          require 'pp'
-          pp attributes
-          pp((find :first).attributes.to_hash)
-          puts
-        end
-        find :first, :conditions => attributes
+
+        attributes= obj.attributes.send(self.acts_as_unique_col_filter) {|k,v|
+          self.acts_as_unique_cols.include? k.to_sym
+        }
+        conditions= {}
+        attributes.each{|k,v| conditions[k]= v}
+
+        find :first, :conditions => conditions
       end
     end
 

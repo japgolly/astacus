@@ -1,5 +1,5 @@
 class AudioContent < ActiveRecord::Base
-  acts_as_unique
+  acts_as_unique :only => [:size, :md5, :sha2, :format]
 
   has_many :audio_files
 
