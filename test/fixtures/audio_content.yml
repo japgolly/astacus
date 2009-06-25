@@ -1,0 +1,35 @@
+glass_prison:
+  size: 19980000
+  md5: <%= 'a' * 16 %>
+  sha2: <%= 'A' * 64 %>
+  format: mp3
+  bitrate: 192
+  vbr: false
+  samplerate: 44100
+
+misunderstood:
+  size: 13500000
+  md5: <%= 'b' * 16 %>
+  sha2: <%= 'b' * 64 %>
+  format: mp3
+  bitrate: 192
+  vbr: false
+  samplerate: 44100
+
+about_to_crash:
+  size: 8420000
+  md5: <%= 'c' * 16 %>
+  sha2: <%= 'C' * 64 %>
+  format: mp3
+  bitrate: 192
+  vbr: false
+  samplerate: 44100
+
+the_requiem:
+  size: 11490000
+  md5: <%= 'd' * 16 %>
+  sha2: <%= 'D' * 64 %>
+  format: mp3
+  bitrate: 247
+  vbr: true
+  samplerate: 44100

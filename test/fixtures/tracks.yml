@@ -1,25 +1,25 @@
 glass_prison:
   cd: 6doit_cd1
-  #audio_file: glass_prison
+  audio_file: glass_prison
   tn: 1
   name: The Glass Prison
   length: 834 # 13:54
 misunderstood:
   cd: 6doit_cd1
-  #audio_file: misunderstood
+  audio_file: misunderstood
   tn: 3
   name: Misunderstood
   length: 564 # 9:24
 about_to_crash:
   cd: 6doit_cd2
-  #audio_file: about_to_crash
+  audio_file: about_to_crash
   tn: 2
   name: 'Six Degrees Of Inner Turblence, Pt II: About To Crash'
   length: 352 # 5:52
 
 the_requiem:
   cd: ponk
-  #audio_file: the_requiem
+  audio_file: the_requiem
   tn: 7
   name: The Requiem
   length: 372 # 6:12

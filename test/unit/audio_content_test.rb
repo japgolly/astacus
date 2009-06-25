@@ -8,6 +8,9 @@ class AudioContentTest < ActiveSupport::TestCase
   }
   should_ensure_length_is :md5, 16
   should_ensure_length_is :sha2, 64
+  should_validate_positive_numericality_of :bitrate
+  should_validate_positive_numericality_of :length
+  should_validate_positive_numericality_of :samplerate
 
   context "AudioContent" do
     setup do

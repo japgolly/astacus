@@ -5,4 +5,5 @@ class AudioTagTest < ActiveSupport::TestCase
   %w[audio_file format offset data].each{|attr|
     should_validate_presence_of attr
   }
+  should_validate_positive_numericality_of :offset
 end

@@ -1,0 +1,23 @@
+glass_prison:
+  audio_content: glass_prison
+  dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: 01 - The Glass Prison.mp3
+  size: 19989119
+
+misunderstood:
+  audio_content: misunderstood
+  dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: 03 - Misunderstood.mp3
+  size: 13507820
+
+about_to_crash:
+  audio_content: about_to_crash
+  dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: 07 - II. About To Crash.mp3
+  size: 8427118
+
+the_requiem:
+  audio_content: the_requiem
+  dirname: /x/music/Music Collection/Japanese/閨夜｣｢鬲祢I/Albums/1994 - Ponk!!
+  basename: 07 - The Requiem.mp3
+  size: 11494512

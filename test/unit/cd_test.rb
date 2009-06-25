@@ -1,6 +1,13 @@
 require 'test_helper'
 
 class CdTest < ActiveSupport::TestCase
+  should_have_many :tracks
+  should_belong_to :album
+  should_belong_to :album_type
+  %w[album order_id].each{|attr|
+    should_validate_presence_of attr
+  }
+  should_validate_numericality_of :order_id
 
   test "has tracks" do
     assert_equal [tracks(:glass_prison), tracks(:misunderstood)], cds(:'6doit_cd1').tracks
