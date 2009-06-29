@@ -35,11 +35,22 @@ module Acts
 
         find :first, :conditions => conditions
       end
+
+      def find_identical_or_create!(attributes)
+        obj= self.new(attributes)
+        obj.find_identical_or_save!
+      end
     end
 
     module InstanceMethods
       def find_identical
         self.class.find_identical self
+      end
+
+      def find_identical_or_save!
+        obj= reuse
+        obj.save! if obj.new_record?
+        obj
       end
 
       def reuse
