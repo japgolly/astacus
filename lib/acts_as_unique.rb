@@ -48,12 +48,13 @@ module Acts
       end
 
       def find_identical_or_save!
-        obj= reuse
+        obj= unique
         obj.save! if obj.new_record?
         obj
       end
+      alias_method :unique!, :find_identical_or_save!
 
-      def reuse
+      def unique
         find_identical || self
       end
     end

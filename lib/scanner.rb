@@ -75,7 +75,7 @@ module Astacus
         a.size= content.size
         a.md5= Digest::MD5.digest(content)
         a.sha2= Digest::SHA2.digest(content, 512)
-        a= a.reuse
+        a= a.unique
         f.audio_content= a
 
         # Save
