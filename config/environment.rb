@@ -15,6 +15,10 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
+  config.gem 'ZenTest', :lib => 'autotest'
+  config.gem 'win32console' if PLATFORM =~ /win32/
+  config.gem 'redgreen', :lib => 'redgreen/autotest'
+  config.gem 'autotest-rails', :lib => 'autotest/rails'
   config.gem 'apetag'
   config.gem 'ruby-mp3info', :lib => 'mp3info'
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
