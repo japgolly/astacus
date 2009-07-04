@@ -27,4 +27,37 @@ class AlbumTest < ActiveSupport::TestCase
   test "belongs to artist" do
     assert_equal artists(:dream_theater), albums(:'6doit').artist
   end
+
+  context "Albums" do
+    should "be created if doesnt exist yet" do
+      artist= Artist.first
+      album_name= 'woteva'
+      a= nil
+      assert_difference 'Album.count', +1 do
+        a= Album.find_identical_or_create!(:artist => artist, :name => album_name)
+      end
+      assert !a.new_record?
+      assert_equal album_name, a.name
+    end
+
+    should "be reused if already exists" do
+      dt= artists(:dream_theater)
+      a= nil
+      assert_difference 'Album.count', 0 do
+        a= Album.find_identical_or_create!(:artist => dt, :name => 'Six Degrees Of Inner Turbulence', :year => 2002)
+      end
+      assert !a.new_record?
+      assert_equal dt, a.artist
+      assert_equal 'Six Degrees Of Inner Turbulence', a.name
+    end
+
+    should "not be reused when the artist differs" do
+      ponk= albums(:ponk)
+      assert_difference 'Album.count', +1 do
+        attr= ponk.attributes.merge :artist_id => artists(:dream_theater).id
+        a= Album.find_identical_or_create!(attr)
+      end
+    end
+
+  end
 end

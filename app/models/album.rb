@@ -5,4 +5,6 @@ class Album < ActiveRecord::Base
   validates_presence_of :artist, :name
   validates_inclusion_of :year, :allow_nil => true, :in => 0..(Date.today.year+1)
   validates_inclusion_of :original_year, :allow_nil => true, :in => 0..(Date.today.year+1)
+
+  acts_as_unique
 end
