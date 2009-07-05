@@ -1,0 +1,7 @@
+understand id3 tags
+remove length from track
+Handle cds
+
+what about when ape/id3 tags differ - should create 2 tracks with same AF
+what about when scanner hits a file already in the system
+
