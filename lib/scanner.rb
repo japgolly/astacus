@@ -82,6 +82,28 @@ module Astacus
         a.save! if a.new_record?
         f.save!
         tags.each{|t| t.save!}
+
+        # Create track
+        tags.each{|t|
+          if t.format == 'ape' and t.useable? #TODO
+            artist= Artist.find_identical_or_create! :name => t.artist
+            album= Album.find_identical_or_create!({
+              :artist => artist,
+              :name => t.album,
+              :year => t.year,
+            })
+            cd= Cd.find_identical_or_create!({
+              :album => album,
+              :order_id => 0,
+            })
+            Track.create({
+              :cd => cd,
+              :name => t.track,
+              :tn => t.tn,
+              :audio_file => f,
+            })
+          end
+        }
       end
     end
 

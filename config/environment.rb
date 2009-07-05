@@ -50,3 +50,4 @@ end
 
 require 'digest/md5'
 require 'digest/sha2'
+require 'lib/core_ext'

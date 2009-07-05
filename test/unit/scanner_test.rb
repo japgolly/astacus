@@ -21,6 +21,10 @@ class ScannerTest < ActiveSupport::TestCase
         @ac_count= AudioContent.count
         @af_count= AudioFile.count
         @at_count= AudioTag.count
+        @track_count= Track.count
+        @cd_count= Cd.count
+        @album_count= Album.count
+        @artist_count= Artist.count
         @scanner.scan_file! @file
         @f= AudioFile.last unless @af_count == AudioFile.count
       end
@@ -63,6 +67,22 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal '2', t2.version
         assert_equal 68177-359, t2.offset
         assert_equal 359, t2.data.size
+      end
+
+      should "create a new track" do
+        assert_equal @track_count+1, Track.count
+        assert_equal @album_count+1, Album.count
+        assert_equal @cd_count+1, Cd.count
+        assert_equal @artist_count, Artist.count
+        t= Track.last
+        assert_equal '凍てついた街', t.name
+        assert_equal 2, t.tn
+        assert_equal @f, t.audio_file
+        assert_nil t.cd.name
+        assert_equal 0, t.cd.order_id
+        assert_equal 'メフィストフェレスの肖像', t.cd.album.name
+        assert_equal 1996, t.cd.album.year
+        assert_equal '聖飢魔II', t.cd.album.artist.name
       end
     end
 
