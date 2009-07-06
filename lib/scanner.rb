@@ -3,7 +3,11 @@ module Astacus
   class Scanner
 
     def scan(dir)
-
+      files= files_in(dir)
+      files.each_with_index{|file,i|
+        puts "[#{i+1}/#{files.size}] #{file}"
+        scan_file! file
+      }
     end
 
     def files_in(dir)

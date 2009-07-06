@@ -7,6 +7,10 @@ class AudioTag < ActiveRecord::Base
     artist && album && track
   end
 
+  def format
+    self[:format]
+  end
+
   def tag_attributes
     unless @ta and @data == @ta_data
       # Read tag attributes
