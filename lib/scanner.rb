@@ -1,5 +1,3 @@
-require 'lib/in_memory_file'
-
 module Astacus
   # Scans a dir tree looking for audio files.
   class Scanner

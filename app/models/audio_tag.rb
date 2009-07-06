@@ -8,33 +8,49 @@ class AudioTag < ActiveRecord::Base
   end
 
   def tag_attributes
-    return @ta if @ta and @data == @ta_data
-    @ta_data= @data
-    @ta= case format
-    when 'ape'
-      h= ApeTag.new(StringIO.new(data)).fields
-      h.each{|k,v| h[k]= v.first if v.is_a?(Array)}
-      h
-    else
-      raise "Unsupported tag format: #{format}"
+    unless @ta and @data == @ta_data
+      # Read tag attributes
+      @ta_data= @data
+      @ta= case format
+      when 'id3'
+        id3= Mp3Info.open(File.filename_for_stringio(data+"\xff\xfb\xa0\x40\x00"))
+        id3.tag2.merge(id3.tag)
+      when 'ape'
+        h= ApeTag.new(StringIO.new(data)).fields
+        h.each{|k,v| h[k]= v.first if v.is_a?(Array)}
+        h
+      else
+        raise "Unsupported tag format: #{format}"
+      end
+      @ta= CICPHash.new.merge @ta unless @ta.is_a?(CICPHash)
+
+      # Post-process
+      case format
+      when 'id3'
+        @ta[:tn]= @ta[:tracknum]
+        @ta[:year]||= @ta[:TDRC]
+      when 'ape'
+        @ta[:tn]= @ta[:track]
+      end
     end
+    @ta
   end
   alias_method :ta, :tag_attributes
 
   def artist
-    ta['Artist']
+    ta[:artist]
   end
   def album
-    ta['Album']
+    ta[:album]
   end
   def year
-    ta['Year'].safe_to_i
+    ta[:year].safe_to_i
   end
   def track
-    ta['Title']
+    ta[:title]
   end
   def tn
-    v= ta['Track']
+    v= ta[:tn]
     v.sub! /\/\d+$/, '' if v.is_a?(String)
     v.safe_to_i
   end
