@@ -6,6 +6,7 @@ glass_prison:
   bitrate: 192
   vbr: false
   samplerate: 44100
+  length: 834 # 13:54
 
 misunderstood:
   size: 13500000
@@ -15,6 +16,7 @@ misunderstood:
   bitrate: 192
   vbr: false
   samplerate: 44100
+  length: 564 # 9:24
 
 about_to_crash:
   size: 8420000
@@ -24,6 +26,7 @@ about_to_crash:
   bitrate: 192
   vbr: false
   samplerate: 44100
+  length: 352 # 5:52
 
 the_requiem:
   size: 11490000
@@ -33,3 +36,4 @@ the_requiem:
   bitrate: 247
   vbr: true
   samplerate: 44100
+  length: 372 # 6:12
