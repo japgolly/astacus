@@ -4,4 +4,6 @@ class Track < ActiveRecord::Base
 
   validates_presence_of :cd, :audio_file, :name
   validates_numericality_of :tn, :only_integer => true, :allow_nil => true
+
+  acts_as_unique
 end
