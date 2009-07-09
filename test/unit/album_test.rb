@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class AlbumTest < ActiveSupport::TestCase
+  should_belong_to :albumart
   should_belong_to :artist
   should_have_many :cds
   %w[artist name].each{|attr|

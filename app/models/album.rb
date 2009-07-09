@@ -1,4 +1,5 @@
 class Album < ActiveRecord::Base
+  belongs_to :albumart, :class_name => "Image"
   belongs_to :artist
   has_many :cds, :order => :order_id
 

@@ -1,5 +1,6 @@
 class AudioTag < ActiveRecord::Base
   belongs_to :audio_file
+  belongs_to :albumart, :class_name => "Image"
   validates_presence_of :audio_file, :format, :offset, :data
   validates_numericality_of :offset, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
 

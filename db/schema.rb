@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090706042153) do
+ActiveRecord::Schema.define(:version => 20090709152523) do
 
   create_table "album_types", :force => true do |t|
     t.string "name", :null => false
@@ -22,7 +22,10 @@ ActiveRecord::Schema.define(:version => 20090706042153) do
     t.integer  "original_year"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "albumart_id"
   end
+
+  add_index "albums", ["albumart_id"], :name => "index_albums_on_albumart_id"
 
   create_table "artists", :force => true do |t|
     t.string   "name",       :null => false
@@ -60,13 +63,23 @@ ActiveRecord::Schema.define(:version => 20090706042153) do
     t.string  "version",       :limit => 10
     t.integer "offset",                            :null => false
     t.binary  "data",          :limit => 16777215, :null => false
+    t.integer "albumart_id"
   end
+
+  add_index "audio_tags", ["albumart_id"], :name => "index_audio_tags_on_albumart_id"
 
   create_table "cds", :force => true do |t|
     t.integer  "album_id",      :null => false
     t.integer  "album_type_id"
     t.string   "name"
     t.integer  "order_id",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "images", :force => true do |t|
+    t.integer  "size",       :null => false
+    t.binary   "data",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
