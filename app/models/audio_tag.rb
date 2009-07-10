@@ -34,6 +34,7 @@ class AudioTag < ActiveRecord::Base
       when 'id3'
         @ta[:tn]= @ta[:tracknum]
         @ta[:year]||= @ta[:TDRC]
+        @ta[:albumart]= @ta['APIC']
       when 'ape'
         @ta[:tn]= @ta[:track]
       end

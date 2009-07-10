@@ -60,5 +60,33 @@ class AlbumTest < ActiveSupport::TestCase
       end
     end
 
+    should "use the most common albumart available" do
+      af= audio_files(:the_requiem)
+      i1= Image.create(:size => 1, :data => 'a')
+      i2= Image.create(:size => 1, :data => 'a')
+      a= albums(:ponk)
+      a.update_albumart!
+      assert_nil a.reload.albumart
+
+      4.times{ create_new_audio_tag af, i1 }
+      a.update_albumart!
+      assert_equal i1, a.reload.albumart
+
+      3.times{ create_new_audio_tag af, i2 }
+      a.update_albumart!
+      assert_equal i1, a.reload.albumart
+
+      2.times{ create_new_audio_tag af, i2 }
+      a.update_albumart!
+      assert_equal i2, a.reload.albumart
+
+      AudioTag.delete_all
+      a.update_albumart!
+      assert_nil a.reload.albumart
+    end
+  end
+
+  def create_new_audio_tag(af, image)
+    AudioTag.create(:audio_file => af, :format => 'id3', :offset => 0, :data => 'blah', :albumart => image)
   end
 end

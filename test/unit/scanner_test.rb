@@ -25,6 +25,7 @@ class ScannerTest < ActiveSupport::TestCase
         @cd_count= Cd.count
         @album_count= Album.count
         @artist_count= Artist.count
+        @image_count= Image.count
         @scanner.scan_file! @file
         @f= AudioFile.last unless @af_count == AudioFile.count
       end
@@ -83,6 +84,17 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal 'メフィストフェレスの肖像', t.cd.album.name
         assert_equal 1996, t.cd.album.year
         assert_equal '聖飢魔II', t.cd.album.artist.name
+      end
+
+      should "extract and save the album art from id3 tags" do
+        assert_equal @image_count+1, Image.count
+        tag= @f.audio_tags.select{|t| t.offset == 0}[0]
+        pic= tag.ta['APIC']
+        img= Image.last
+        assert_equal pic, img.data
+        assert_equal pic.size, img.size
+        assert_equal img, tag.albumart
+        assert_equal img, Album.last.albumart(true)
       end
     end
 

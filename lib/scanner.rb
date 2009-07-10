@@ -73,6 +73,14 @@ module Astacus
           raise "Unsupported format: #{file_ext.inspect}\nFile: #{file}"
         end
 
+        # Albumart on tags
+        tags.each{|t|
+          if imgdata= t.ta[:albumart]
+            img= Image.find_identical_or_create! :data => imgdata, :size => imgdata.size
+            t.albumart= img
+          end
+        }
+
         # Finalise audio content
         a.size= content.size
         a.md5= Digest::MD5.digest(content)
@@ -86,6 +94,7 @@ module Astacus
         tags.each{|t| t.save!}
 
         # Create artist/album/cd/track
+        albums= []
         tags.each{|t|
           if t.useable?
             artist= Artist.find_identical_or_create! :name => t.artist
@@ -94,6 +103,7 @@ module Astacus
               :name => t.album,
               :year => t.year,
             })
+            albums<< album
             cd= Cd.find_identical_or_create!({
               :album => album,
               :order_id => 0,
@@ -106,6 +116,15 @@ module Astacus
             })
           end
         }
+
+        # Albumart on albums
+        tags.each{|t|
+          if imgdata= t.ta[:albumart]
+            img= Image.find_identical_or_create! :data => imgdata, :size => imgdata.size
+            t.albumart= img
+          end
+        }
+        albums.uniq.each{|album| album.update_albumart!}
       end
     end
 
