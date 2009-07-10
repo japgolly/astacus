@@ -13,6 +13,7 @@ class Album < ActiveRecord::Base
   # album's tracks.
   def update_albumart!
     all= cds.map{|cd| cd.tracks.map{|t| t.audio_file.audio_tags.map(&:albumart)}}.flatten
+    all.delete nil
     all= all.inject({}){|h,a| h[a]||=0; h[a]+= 1; h}
     max= all.values.max
     img= all.select{|img,score| score == max}.map{|e| e[0]}.first
