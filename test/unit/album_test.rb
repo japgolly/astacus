@@ -60,6 +60,21 @@ class AlbumTest < ActiveSupport::TestCase
       end
     end
 
+    should "be reused when the albumart differs" do
+      img= Image.create(:size => 1, :data => 'a')
+      album= albums(:'6doit')
+      album.albumart= img
+      album.save!
+
+      dt= artists(:dream_theater)
+      a= nil
+      assert_difference 'Album.count', 0 do
+        a= Album.find_identical_or_create!(:artist => dt, :name => 'Six Degrees Of Inner Turbulence', :year => 2002)
+      end
+      assert !a.new_record?
+      assert_equal img, a.albumart
+    end
+
     should "use the most common albumart available" do
       af= audio_files(:the_requiem)
       i1= Image.create(:size => 1, :data => 'a')

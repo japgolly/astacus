@@ -7,7 +7,7 @@ class Album < ActiveRecord::Base
   validates_inclusion_of :year, :allow_nil => true, :in => 0..(Date.today.year+1)
   validates_inclusion_of :original_year, :allow_nil => true, :in => 0..(Date.today.year+1)
 
-  acts_as_unique
+  acts_as_unique :except => :albumart_id
 
   # Updates the albumart for this album based on the albumart in the tags in the
   # album's tracks.
