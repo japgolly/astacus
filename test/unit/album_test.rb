@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class AlbumTest < ActiveSupport::TestCase
+  should_belong_to :albumart
   should_belong_to :artist
   should_have_many :cds
   %w[artist name].each{|attr|
@@ -59,5 +60,48 @@ class AlbumTest < ActiveSupport::TestCase
       end
     end
 
+    should "be reused when the albumart differs" do
+      img= Image.create(:data => 'a', :mimetype => 'a')
+      album= albums(:'6doit')
+      album.albumart= img
+      album.save!
+
+      dt= artists(:dream_theater)
+      a= nil
+      assert_difference 'Album.count', 0 do
+        a= Album.find_identical_or_create!(:artist => dt, :name => 'Six Degrees Of Inner Turbulence', :year => 2002)
+      end
+      assert !a.new_record?
+      assert_equal img, a.albumart
+    end
+
+    should "use the most common albumart available" do
+      af= audio_files(:the_requiem)
+      i1= Image.create(:data => 'a', :mimetype => 'a')
+      i2= Image.create(:data => 'a', :mimetype => 'a')
+      a= albums(:ponk)
+      a.update_albumart!
+      assert_nil a.reload.albumart
+
+      4.times{ create_new_audio_tag af, i1 }
+      a.update_albumart!
+      assert_equal i1, a.reload.albumart
+
+      3.times{ create_new_audio_tag af, i2 }
+      a.update_albumart!
+      assert_equal i1, a.reload.albumart
+
+      2.times{ create_new_audio_tag af, i2 }
+      a.update_albumart!
+      assert_equal i2, a.reload.albumart
+
+      AudioTag.delete_all
+      a.update_albumart!
+      assert_nil a.reload.albumart
+    end
+  end
+
+  def create_new_audio_tag(af, image)
+    AudioTag.create(:audio_file => af, :format => 'id3', :offset => 0, :data => 'blah', :albumart => image)
   end
 end

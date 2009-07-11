@@ -1,5 +1,6 @@
 class AudioTag < ActiveRecord::Base
   belongs_to :audio_file
+  belongs_to :albumart, :class_name => "Image"
   validates_presence_of :audio_file, :format, :offset, :data
   validates_numericality_of :offset, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
 
@@ -33,6 +34,14 @@ class AudioTag < ActiveRecord::Base
       when 'id3'
         @ta[:tn]= @ta[:tracknum]
         @ta[:year]||= @ta[:TDRC]
+        if @ta['APIC']
+          if @ta['APIC'] =~ /^(.(.*?)\000.(.*?)\000)/m
+            @ta[:albumart_mimetype]= $2
+            @ta[:albumart_raw]= @ta['APIC'][$1.size..-1]
+          else
+            #raise
+          end
+        end
       when 'ape'
         @ta[:tn]= @ta[:track]
       end
@@ -41,12 +50,9 @@ class AudioTag < ActiveRecord::Base
   end
   alias_method :ta, :tag_attributes
 
-  def artist
-    ta[:artist]
-  end
-  def album
-    ta[:album]
-  end
+  %w[artist album albumart_mimetype albumart_raw].each{|m|
+    class_eval "def #{m}; ta[:#{m}] end"
+  }
   def year
     ta[:year].safe_to_i
   end

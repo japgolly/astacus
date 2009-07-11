@@ -7,14 +7,15 @@ module Acts
     end
 
     module ClassMethods
-      def acts_as_unique(options={:except => [:id, :updated_at, :created_at]})
+      def acts_as_unique(options={:except => []})
         options.symbolize_keys!
         options.assert_valid_keys(:only, :except)
         raise "Specify either :only or :except, not both." if options[:only] and options[:except]
 
         cattr_accessor :acts_as_unique_cols
         cattr_accessor :acts_as_unique_col_filter
-        self.acts_as_unique_cols= (options[:only] || options[:except]).map(&:to_sym).uniq
+        self.acts_as_unique_cols= [(options[:only] || options[:except])].flatten.map(&:to_sym).uniq
+        self.acts_as_unique_cols.concat [:id, :updated_at, :created_at] if options[:except]
         self.acts_as_unique_col_filter= options[:only] ? :select : :reject
 
         class_eval <<-END
@@ -44,6 +45,8 @@ module Acts
 
     module InstanceMethods
       def find_identical
+        before_validation
+        before_validation_on_create
         self.class.find_identical self
       end
 
