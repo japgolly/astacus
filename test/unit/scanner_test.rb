@@ -91,8 +91,9 @@ class ScannerTest < ActiveSupport::TestCase
         tag= @f.audio_tags.select{|t| t.offset == 0}[0]
         pic= tag.ta['APIC']
         img= Image.last
-        assert_equal pic, img.data
-        assert_equal pic.size, img.size
+        assert_equal 7750-14, img.data.size
+        assert_equal img.size, img.data.size
+        assert_equal pic[14..-1], img.data
         assert_equal img, tag.albumart
         assert_equal img, Album.last.albumart(true)
       end
