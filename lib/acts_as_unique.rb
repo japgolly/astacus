@@ -45,6 +45,8 @@ module Acts
 
     module InstanceMethods
       def find_identical
+        before_validation
+        before_validation_on_create
         self.class.find_identical self
       end
 
