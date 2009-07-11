@@ -3,6 +3,7 @@ class CreateImages < ActiveRecord::Migration
     create_table :images do |t|
       t.integer :size, :null => false
       t.binary :data, :null => false
+      t.string :mimetype, :null => false
       t.timestamps
     end
   end

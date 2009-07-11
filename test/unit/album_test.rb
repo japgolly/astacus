@@ -61,7 +61,7 @@ class AlbumTest < ActiveSupport::TestCase
     end
 
     should "be reused when the albumart differs" do
-      img= Image.create(:size => 1, :data => 'a')
+      img= Image.create(:size => 1, :data => 'a', :mimetype => 'a')
       album= albums(:'6doit')
       album.albumart= img
       album.save!
@@ -77,8 +77,8 @@ class AlbumTest < ActiveSupport::TestCase
 
     should "use the most common albumart available" do
       af= audio_files(:the_requiem)
-      i1= Image.create(:size => 1, :data => 'a')
-      i2= Image.create(:size => 1, :data => 'a')
+      i1= Image.create(:size => 1, :data => 'a', :mimetype => 'a')
+      i2= Image.create(:size => 1, :data => 'a', :mimetype => 'a')
       a= albums(:ponk)
       a.update_albumart!
       assert_nil a.reload.albumart

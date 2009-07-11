@@ -75,8 +75,8 @@ module Astacus
 
         # Albumart on tags
         tags.each{|t|
-          if t.albumart_raw
-            img= Image.find_identical_or_create! :data => t.albumart_raw, :size => t.albumart_raw.size
+          if t.albumart_raw and t.albumart_mimetype
+            img= Image.find_identical_or_create! :mimetype => t.albumart_mimetype, :data => t.albumart_raw, :size => t.albumart_raw.size
             t.albumart= img
           end
         }

@@ -94,6 +94,7 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal 7750-14, img.data.size
         assert_equal img.size, img.data.size
         assert_equal pic[14..-1], img.data
+        assert_equal "image/jpeg", img.mimetype
         assert_equal img, tag.albumart
         assert_equal img, Album.last.albumart(true)
       end
