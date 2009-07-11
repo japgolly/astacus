@@ -3,7 +3,7 @@ class Image < ActiveRecord::Base
   validates_presence_of :size, :data, :mimetype
   acts_as_unique
 
-#  before_save do |img|
-#    img.size= img.data.size if img.data
-#  end
+  def before_validation_on_create
+    self.size= data.size if attribute_present?(:data)
+  end
 end
