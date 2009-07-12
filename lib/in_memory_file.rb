@@ -39,7 +39,7 @@ class File
     end
 
     def is_stringio?(filename)
-      filename && filename.starts_with?("\000\000")
+      filename.respond_to? :starts_with? and filename.starts_with?("\000\000")
     end
 
     def stringio_content(filename)
