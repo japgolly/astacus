@@ -14,4 +14,10 @@ class ImageTest < ActiveSupport::TestCase
       Image.find_identical_or_create!(:data => 'abc', :mimetype => 'a')
     end
   end
+
+  def test_file_extention
+    assert_equal 'jpg', Image.new(:mimetype => 'image/jpeg').file_extention
+    assert_equal 'gif', Image.new(:mimetype => 'image/gif').file_extention
+    assert_equal 'png', Image.new(:mimetype => 'image/png').file_extention
+  end
 end
