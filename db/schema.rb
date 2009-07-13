@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090711233751) do
+ActiveRecord::Schema.define(:version => 20090713071138) do
 
   create_table "album_types", :force => true do |t|
     t.string "name", :null => false
@@ -81,6 +81,13 @@ ActiveRecord::Schema.define(:version => 20090711233751) do
     t.integer  "size",       :null => false
     t.binary   "data",       :null => false
     t.string   "mimetype",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locations", :force => true do |t|
+    t.text     "dir",        :null => false
+    t.string   "label",      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
