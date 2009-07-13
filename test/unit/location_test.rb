@@ -1,8 +1,7 @@
 require 'test_helper'
 
 class LocationTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+  should_validate_presence_of :label
+  should_validate_presence_of :dir
+  should_have_readonly_attributes :dir
 end
