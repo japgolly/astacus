@@ -22,6 +22,6 @@ class ActiveSupport::TestCase
     assert @response.body =~ regex, "Response should match #{regex.inspect}"
   end
   def assert_response_doesnt_match(regex)
-    assert !@response.body =~ regex, "Response shouldn't match #{regex.inspect}"
+    assert @response.body !~ regex, "Response shouldn't match #{regex.inspect}"
   end
 end
