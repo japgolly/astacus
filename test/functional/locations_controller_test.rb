@@ -12,7 +12,7 @@ class LocationsControllerTest < ActionController::TestCase
       xml_http_request :post, :create, "location"=>{"label"=>"aegg", "dir"=>"asd234"}
     end
     assert_response :success
-    assert !@response.body.include?('alert')
+    assert_response_doesnt_match /alert/
   end
 
   def test_create_bad
