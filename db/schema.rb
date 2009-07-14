@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090713071138) do
+ActiveRecord::Schema.define(:version => 20090714151131) do
 
   create_table "album_types", :force => true do |t|
     t.string "name", :null => false
@@ -55,7 +55,10 @@ ActiveRecord::Schema.define(:version => 20090713071138) do
     t.integer  "size",             :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "location_id",      :null => false
   end
+
+  add_index "audio_files", ["location_id"], :name => "index_audio_files_on_location_id"
 
   create_table "audio_tags", :force => true do |t|
     t.integer "audio_file_id",                     :null => false

@@ -2,6 +2,7 @@ require 'test_helper'
 
 class AudioFileTest < ActiveSupport::TestCase
   should_belong_to :audio_content
+  should_belong_to :location
   should_have_many :audio_tags
   should_have_many :tracks
   %w[audio_content dirname basename size].each{|attr|

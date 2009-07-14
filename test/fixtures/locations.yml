@@ -1,9 +1,6 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  label: MyString
-  dir: MyText
-
-two:
-  label: MyString
-  dir: MyText
+main:
+  label: main
+  dir: /x/music/Music Collection
+downloads:
+  label: downloads
+  dir: /c/my_downloads

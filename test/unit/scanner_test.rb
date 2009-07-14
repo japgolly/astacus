@@ -4,7 +4,9 @@ require 'lib/scanner.rb'
 class ScannerTest < ActiveSupport::TestCase
   context "The Scanner" do
     setup do
+      @location= locations(:downloads)
       @scanner= Astacus::Scanner.new
+      @scanner.instance_variable_set :@location, @location
     end
 
     should "find audio files" do
@@ -38,6 +40,7 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal 68177, @f.size
         assert_not_nil @f.created_at
         assert_not_nil @f.updated_at
+        assert_equal @location, @f.location
       end
 
       should "create a new audio content row" do

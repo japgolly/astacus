@@ -7,7 +7,6 @@ what about when scanner hits a file already in the system
 
 LOCATIONS
 =========
-(1) Audio files have location ids
 (1) Kick off scan from frontend
 (1) Scanner should keep errors
 (2) Rescan in background
@@ -15,6 +14,6 @@ LOCATIONS
 (2) Admin replay items on error queue
 (3) Stats page with total and per-label stats
 (3) For each dir have a last_run value
+(4) Deleting a location should delete all its audio_files but preserve its audio_contents
+    (What about tracks/albums/etc? Should keep and mark as non active? Or should all tags be on audio content?)
 (5) Keep track of all dir scans
-(/) Each dir has a tag/label
-(/) Have a number of locations

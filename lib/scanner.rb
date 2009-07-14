@@ -2,14 +2,12 @@ module Astacus
   # Scans a dir tree looking for audio files.
   class Scanner
 
-    def scan(dir)
-      dir= File.expand_path(dir)
-      puts "Scanning #{dir}"
+    def scan(location)
+      @location= location
+      dir= location.dir
       files= files_in(dir)
-      files.each_with_index{|file,i|
-        puts "[#{i+1}/#{files.size}] #{file}"
-        scan_file! file
-      }
+      files.each{|file| scan_file! file}
+      @location= nil
     end
 
     def files_in(dir)
@@ -20,11 +18,12 @@ module Astacus
     def scan_file!(file)
       AudioFile.transaction do
       
-        f= AudioFile.new
-        f.dirname= File.dirname(file)
-        f.basename= File.basename(file)
-        f.size= File.size(file)
-
+        f= AudioFile.new({
+          :dirname => File.dirname(file),
+          :basename => File.basename(file),
+          :size => File.size(file),
+          :location => @location,
+        })
         tags= []
         a= AudioContent.new
         content= File.read(file)

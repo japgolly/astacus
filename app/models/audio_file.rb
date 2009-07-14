@@ -1,5 +1,6 @@
 class AudioFile < ActiveRecord::Base
   belongs_to :audio_content
+  belongs_to :location
   has_many :audio_tags
   has_many :tracks
   validates_presence_of :audio_content, :dirname, :basename, :size
