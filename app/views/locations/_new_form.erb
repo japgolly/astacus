@@ -1,0 +1,5 @@
+<% remote_form_for(Location.new) do |f| %>
+  <div><%= f.text_field :label %></div>
+  <div><%= f.text_area :dir, :cols => 80, :rows => 2 %></div>
+  <div><%= submit_tag 'Add' %></div>
+<% end %>

@@ -17,4 +17,11 @@ class ActiveSupport::TestCase
     should_not_allow_values_for attr, -1, :message => 'must be greater than or equal to 0'
     should_allow_values_for attr, 0, 100.megabytes
   end
+
+  def assert_response_matches(regex)
+    assert @response.body =~ regex, "Response should match #{regex.inspect}"
+  end
+  def assert_response_doesnt_match(regex)
+    assert !@response.body =~ regex, "Response shouldn't match #{regex.inspect}"
+  end
 end
