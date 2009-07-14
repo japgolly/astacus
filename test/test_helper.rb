@@ -2,15 +2,22 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
-class ActiveSupport::TestCase
-  self.use_transactional_fixtures = true
-  self.use_instantiated_fixtures  = false
-  fixtures :all
-
+module FixtureAndTestHelpers
   MOCK_DATA_DIR= File.expand_path(File.dirname(__FILE__) + "/mock_data")
   def mock_data_dir
     MOCK_DATA_DIR
   end
+end
+
+module FixtureHelpers
+  include FixtureAndTestHelpers
+end
+
+class ActiveSupport::TestCase
+  self.use_transactional_fixtures = true
+  self.use_instantiated_fixtures  = false
+  fixtures :all
+  include FixtureAndTestHelpers
 
   def self.should_validate_positive_numericality_of(attr)
     should_validate_numericality_of attr

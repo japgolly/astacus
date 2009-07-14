@@ -1,6 +1,11 @@
+<% include FixtureHelpers %>
+
 main:
   label: main
   dir: /x/music/Music Collection
 downloads:
   label: downloads
   dir: /c/my_downloads
+mock_data_dir:
+  label: mock_data_dir
+  dir: <%= File.expand_path mock_data_dir %>

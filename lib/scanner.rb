@@ -3,11 +3,31 @@ module Astacus
   class Scanner
 
     def scan(location)
+      # Start
       @location= location
-      dir= location.dir
-      files= files_in(dir)
-      files.each{|file| scan_file! file}
+      sl= @sl= ScannerLog.new(:location => @location, :started => Time.now, :active => true)
+      sl.save!
+
+      # Find files
+      files= files_in(@location.dir)
+      sl.file_count= files.size
+      sl.save!
+
+      # Process files
+      files.in_groups_of(10, false) {|file_batch|
+        sl.reload
+        if sl.active? and not sl.aborted?
+          file_batch.each{|file| scan_file! file}
+        else
+          sl.aborted= true
+        end
+      }
+
+      # Done
       @location= nil
+      sl.ended= Time.now
+      sl.active= false
+      sl.save!
     end
 
     def files_in(dir)

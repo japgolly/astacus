@@ -123,5 +123,31 @@ class ScannerTest < ActiveSupport::TestCase
       assert_equal 2, f.audio_content.audio_files.count
     end
 
+    should "keep logs" do
+      def @scanner.scan_file!(file)
+        @during= @sl.attributes
+      end
+      loc= locations(:mock_data_dir)
+      assert_difference 'ScannerLog.count', 1 do
+        @scanner.scan loc
+      end
+
+      # Check completed
+      sl= ScannerLog.last
+      assert_equal loc, sl.location
+      assert_not_nil sl.ended
+      assert sl.file_count > 1
+      assert !sl.aborted?
+      assert !sl.active?
+
+      # Check during
+      sl= ScannerLog.new(@scanner.instance_variable_get(:@during))
+      assert_equal loc, sl.location
+      assert_nil sl.ended
+      assert sl.file_count > 1
+      assert !sl.aborted?
+      assert sl.active?
+    end
+
   end # the scanner context
 end

@@ -96,11 +96,12 @@ ActiveRecord::Schema.define(:version => 20090714153203) do
   end
 
   create_table "scanner_logs", :force => true do |t|
-    t.integer  "location_id", :null => false
-    t.datetime "started",     :null => false
+    t.integer  "location_id",                    :null => false
+    t.datetime "started",                        :null => false
     t.datetime "ended"
     t.integer  "file_count"
-    t.boolean  "active",      :null => false
+    t.boolean  "active",                         :null => false
+    t.boolean  "aborted",     :default => false, :null => false
   end
 
   add_index "scanner_logs", ["location_id", "active"], :name => "index_scanner_logs_on_location_id_and_active"

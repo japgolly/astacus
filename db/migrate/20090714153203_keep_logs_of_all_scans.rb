@@ -6,6 +6,7 @@ class KeepLogsOfAllScans < ActiveRecord::Migration
       t.datetime :ended
       t.integer :file_count
       t.boolean :active, :null => false
+      t.boolean :aborted, :null => false, :default => false
     end
     add_index :scanner_logs, [:location_id, :active]
   end
