@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class LocationTest < ActiveSupport::TestCase
+  should_have_many :scanner_logs
   should_validate_presence_of :label
   should_validate_presence_of :dir
   should_have_readonly_attributes :dir
@@ -26,6 +27,14 @@ class LocationTest < ActiveSupport::TestCase
       Location.create(:label => 'asd', :dir => "c:\\blah\\")
       assert_match %r!^(/cygdrive)?/c/blah$!, Location.last.dir
       end
+    end
+
+    should "return the active scanner log" do
+      loc= locations(:main)
+      assert_nil loc.active_scanner_log
+      sl= ScannerLog.create :started => 2.seconds.ago, :active => true, :location => loc
+      loc.reload
+      assert_equal sl, loc.active_scanner_log
     end
   end
 end

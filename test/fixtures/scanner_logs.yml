@@ -1,0 +1,12 @@
+main_1:
+  location: main
+  started: <%= 2.weeks.ago.to_s(:db) %>
+  ended: <%= (2.weeks.ago + 10.minutes).to_s(:db) %>
+  file_count: 100
+  active: false
+main_2:
+  location: main
+  started: <%= 4.hours.ago.to_s(:db) %>
+  ended: <%= (4.hours.ago + 7.minutes).to_s(:db) %>
+  file_count: 3
+  active: false

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090714151131) do
+ActiveRecord::Schema.define(:version => 20090714153203) do
 
   create_table "album_types", :force => true do |t|
     t.string "name", :null => false
@@ -94,6 +94,16 @@ ActiveRecord::Schema.define(:version => 20090714151131) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "scanner_logs", :force => true do |t|
+    t.integer  "location_id", :null => false
+    t.datetime "started",     :null => false
+    t.datetime "ended"
+    t.integer  "file_count"
+    t.boolean  "active",      :null => false
+  end
+
+  add_index "scanner_logs", ["location_id", "active"], :name => "index_scanner_logs_on_location_id_and_active"
 
   create_table "tracks", :force => true do |t|
     t.integer  "cd_id",         :null => false
