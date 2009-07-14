@@ -4,6 +4,7 @@ class KeepLogsOfAllScans < ActiveRecord::Migration
       t.references :location, :null => false
       t.datetime :started, :null => false
       t.datetime :ended
+      t.integer :files_scanned
       t.integer :file_count
       t.boolean :active, :null => false
       t.boolean :aborted, :null => false, :default => false

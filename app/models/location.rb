@@ -14,4 +14,8 @@ class Location < ActiveRecord::Base
   def active_scanner_log
     scanner_logs.select{|sl| sl.active?}.last
   end
+
+  def exists?
+    File.exists?(dir) and File.directory?(dir)
+  end
 end

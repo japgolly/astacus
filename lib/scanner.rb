@@ -10,14 +10,17 @@ module Astacus
 
       # Find files
       files= files_in(@location.dir)
+      sl.files_scanned= 0
       sl.file_count= files.size
       sl.save!
 
       # Process files
-      files.in_groups_of(10, false) {|file_batch|
+      files.in_groups_of(4, false) {|file_batch|
         sl.reload
         if sl.active? and not sl.aborted?
           file_batch.each{|file| scan_file! file}
+          sl.files_scanned+= file_batch.size
+          sl.save!
         else
           sl.aborted= true
         end

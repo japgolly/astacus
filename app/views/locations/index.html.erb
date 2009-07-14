@@ -1,9 +1,7 @@
-<div id="new_location">
+<div id="new">
   <%= render :partial => 'new_form' %>
 </div>
 
 <div id="locations">
-  <% @locations.each do |@location| %>
-    <%= render :partial => 'location' %>
-  <% end %>
+  <%= render @locations %>
 </div>

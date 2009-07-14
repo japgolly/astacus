@@ -137,6 +137,7 @@ class ScannerTest < ActiveSupport::TestCase
       assert_equal loc, sl.location
       assert_not_nil sl.ended
       assert sl.file_count > 1
+      assert_equal sl.file_count, sl.files_scanned
       assert !sl.aborted?
       assert !sl.active?
 

@@ -1,0 +1,1 @@
+page.replace_html "location_#{@location.id}", :partial => 'location', :object => @location, :locals => {:inner_only => true}

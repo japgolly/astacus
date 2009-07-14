@@ -2,6 +2,6 @@ if !@location.valid?
   page.alert(@location.errors.map{|a| "#{a[0].capitalize} #{a[1]}."}.join("\n\n"))
 else
   page.replace_html 'new_location', :partial => 'new_form'
-  page.insert_html :bottom, 'locations', :partial => 'location'
+  page.insert_html :bottom, 'locations', :partial => 'location', :object => @location
   page.visual_effect :highlight, "location_#{@location.id}", :duration => 2
 end

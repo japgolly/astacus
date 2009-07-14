@@ -1,5 +1,20 @@
-<p id="location_<%= @location.id -%>">
-  ID: <%= @location.id %><br/>
-  LABEL: <%= h @location.label %><br/>
-  DIR: <%= h @location.dir %><br/>
-</p>
+<% unless inner_only ||= false %>
+<div id="location_<%= location.id -%>" class="loc <%= location.exists? ? 'exists' : 'doesnt_exist' -%>">
+<% end %>
+
+  <% unless location.exists? %><div class="warning">DIRECTORY DOES NOT EXIST.</div><% end %>
+  ID: <%= location.id %><br/>
+  LABEL: <%= h location.label %><br/>
+  DIR: <%= h location.dir %><br/>
+  <% if asl= location.active_scanner_log %>
+    <div class="active">
+      CURRENTLY SCANNING.
+      <br/>Started <%= time_ago_in_words(asl.started) -%> ago.
+      <br/>Progress: <%= asl.files_scanned ? "#{asl.files_scanned} / #{asl.file_count}" : 'Unknown' -%>
+    </div>
+  <% else %>
+    LAST SCAN: <%= (sl= location.scanner_logs.last) ? "#{time_ago_in_words sl.started} ago" : 'Never.' %>
+    <br/><%= button_to_remote 'Start Scan', {:url => {:action => 'start_scan', :id => location.id}}, :disabled => !location.exists? %>
+  <% end %>
+
+<% unless inner_only %></div><% end %>

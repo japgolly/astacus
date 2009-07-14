@@ -7,7 +7,6 @@ what about when scanner hits a file already in the system
 
 LOCATIONS
 =========
-(1) Kick off scan from frontend
 (1) Scanner should keep errors
 (2) Rescan in background
 (2) Admin view error queue
