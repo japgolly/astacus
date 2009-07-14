@@ -5,3 +5,16 @@ have a flag or something for album art
 what about when ape/id3 tags differ - should create 2 tracks with same AF
 what about when scanner hits a file already in the system
 
+LOCATIONS
+=========
+(1) Audio files have location ids
+(1) Kick off scan from frontend
+(1) Scanner should keep errors
+(2) Rescan in background
+(2) Admin view error queue
+(2) Admin replay items on error queue
+(3) Stats page with total and per-label stats
+(3) For each dir have a last_run value
+(5) Keep track of all dir scans
+(/) Each dir has a tag/label
+(/) Have a number of locations
