@@ -150,5 +150,31 @@ class ScannerTest < ActiveSupport::TestCase
       assert sl.active?
     end
 
+    should "record errors" do
+      def @scanner.files_in(dir)
+        ['file_that_doesnt_exist1','file_that_doesnt_exist2']
+      end
+      loc= locations(:mock_data_dir)
+      assert_difference 'ScannerError.count', 2 do
+        @scanner.scan loc
+      end
+      se= ScannerError.last
+      assert_equal loc, se.location
+      assert_equal 'file_that_doesnt_exist2', se.file
+      assert_match /No such file or directory/, se.err_msg
+    end
+
+    should "remove errors when successful" do
+      file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+      assert File.exists?(file)
+      ScannerError.create :location => locations(:mock_data_dir), :file => '123', :err_msg => 'asd'
+      se= ScannerError.create :location => locations(:mock_data_dir), :file => file, :err_msg => 'asd'
+      ScannerError.create :location => locations(:mock_data_dir), :file => 'bca', :err_msg => 'asd'
+      assert_difference 'ScannerError.count', -1 do
+        @scanner.scan_file! file
+      end
+      assert_does_not_contain ScannerError.find(:all), se
+    end
+
   end # the scanner context
 end

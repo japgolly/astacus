@@ -18,7 +18,13 @@ module Astacus
       files.in_groups_of(4, false) {|file_batch|
         sl.reload
         if sl.active? and not sl.aborted?
-          file_batch.each{|file| scan_file! file}
+          file_batch.each do |file|
+            begin
+              scan_file! file
+            rescue => err
+              ScannerError.create :location => @location, :file => file, :err_msg => err.to_s
+            end
+          end
           sl.files_scanned+= file_batch.size
           sl.save!
         else
@@ -150,7 +156,10 @@ module Astacus
         }
         albums.uniq.each{|album| album.update_albumart!}
       end
-    end
+
+      # Remove any errors for this file
+      ScannerError.delete_all :file => file
+    end # scan_file!
 
   end
 end

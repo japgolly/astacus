@@ -1,4 +1,5 @@
 class Location < ActiveRecord::Base
+  has_many :scanner_errors, :order => 'file'
   has_many :scanner_logs, :order => 'started'
   attr_readonly :dir
   validates_presence_of :dir, :label

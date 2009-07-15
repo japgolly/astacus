@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class LocationTest < ActiveSupport::TestCase
+  should_have_many :scanner_errors
   should_have_many :scanner_logs
   should_validate_presence_of :label
   should_validate_presence_of :dir
