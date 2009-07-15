@@ -1,5 +1,5 @@
 if !@location.valid?
-  page.alert(@location.errors.map{|a| "#{a[0].capitalize} #{a[1]}."}.join("\n\n"))
+  page.alert model_errors_to_single_string(@location)
 else
   page.replace_html 'new_location', :partial => 'new_form'
   page.insert_html :bottom, 'locations', :partial => 'location', :object => @location
