@@ -1,0 +1,6 @@
+<% remote_form_for(@location) do |f| %>
+  <div>LABEL: <%= f.text_field :label %></div>
+  <div>DIR: <%= h @location.dir %></div>
+  <div><%= submit_tag 'Update' %></div>
+<% end %>
+<%= button_to_remote 'Cancel', :url => {:action => 'show', :id => @location.id}, :method => :get %>

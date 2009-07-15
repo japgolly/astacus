@@ -12,6 +12,16 @@ class LocationsController < ApplicationController
     @location= Location.find(params[:id])
   end
 
+  def edit
+    @location= Location.find(params[:id])
+  end
+
+  def update
+    @location= Location.find(params[:id])
+    @location.label= params[:location][:label]
+    @location.save
+  end
+
   # TODO Test start_scan
   def start_scan
     @location= Location.find(params[:id])
