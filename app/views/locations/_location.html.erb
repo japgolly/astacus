@@ -16,5 +16,6 @@
     LAST SCAN: <%= (sl= location.scanner_logs.last) ? "#{time_ago_in_words sl.started} ago" : 'Never.' %>
     <br/><%= button_to_remote 'Start Scan', {:url => {:action => 'start_scan', :id => location.id}}, :disabled => !location.exists? %>
   <% end %>
+  <br/><%= button_to_remote 'Refresh', :url => {:action => 'show', :id => location.id}, :method => :get %>
 
 <% unless inner_only %></div><% end %>

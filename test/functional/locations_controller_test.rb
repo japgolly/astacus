@@ -1,10 +1,16 @@
 require 'test_helper'
 
 class LocationsControllerTest < ActionController::TestCase
-
   def test_index
     get :index
     assert_response :success
+  end
+
+  def test_show
+    loc= locations(:main)
+    get :show, :id => loc.id
+    assert_response :success
+    assert_response_includes(loc.label)
   end
 
   def test_create_good

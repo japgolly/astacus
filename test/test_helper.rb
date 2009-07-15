@@ -31,4 +31,10 @@ class ActiveSupport::TestCase
   def assert_response_doesnt_match(regex)
     assert @response.body !~ regex, "Response shouldn't match #{regex.inspect}"
   end
+  def assert_response_includes(str)
+    assert @response.body.include?(str), "Response should include #{str.inspect}"
+  end
+  def assert_response_doesnt_include(str)
+    assert !@response.body.include?(str), "Response shouldn't include #{str.inspect}"
+  end
 end

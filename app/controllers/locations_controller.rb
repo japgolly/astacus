@@ -8,6 +8,10 @@ class LocationsController < ApplicationController
     @location.save
   end
 
+  def show
+    @location= Location.find(params[:id])
+  end
+
   # TODO Test start_scan
   def start_scan
     @location= Location.find(params[:id])
@@ -16,5 +20,6 @@ class LocationsController < ApplicationController
 #      sleep 1
       Astacus::Scanner.new.scan(@location) # TODO Fix start_scan runs in the foreground...
     end
+    render :action => 'show'
   end
 end
