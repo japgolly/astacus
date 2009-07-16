@@ -26,7 +26,7 @@ class SeparateAudioFilesAndContent < ActiveRecord::Migration
       t.string :format, :null => false, :limit => 8
       t.string :version, :limit => 10
       t.integer :offset, :null => false
-      t.binary :data, :null => false, :limit => 2.megabytes
+      t.binary :data, :null => false, :limit => 10.megabytes
     end
   end
 

@@ -81,9 +81,9 @@ ActiveRecord::Schema.define(:version => 20090715194431) do
   end
 
   create_table "images", :force => true do |t|
-    t.integer  "size",       :null => false
-    t.binary   "data",       :null => false
-    t.string   "mimetype",   :null => false
+    t.integer  "size",                           :null => false
+    t.binary   "data",       :limit => 16777215, :null => false
+    t.string   "mimetype",                       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

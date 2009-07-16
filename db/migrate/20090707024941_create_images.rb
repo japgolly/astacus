@@ -2,7 +2,7 @@ class CreateImages < ActiveRecord::Migration
   def self.up
     create_table :images do |t|
       t.integer :size, :null => false
-      t.binary :data, :null => false
+      t.binary :data, :null => false, :limit => 10.megabytes
       t.string :mimetype, :null => false
       t.timestamps
     end
