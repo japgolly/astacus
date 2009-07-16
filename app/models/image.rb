@@ -1,6 +1,8 @@
 class Image < ActiveRecord::Base
   attr_readonly :size, :data, :mimetype
   validates_presence_of :size, :data, :mimetype
+  has_many :audio_tags, :foreign_key => 'albumart_id'
+  has_many :albums, :foreign_key => 'albumart_id'
   acts_as_unique
 
   def before_validation_on_create

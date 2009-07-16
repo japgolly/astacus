@@ -5,6 +5,8 @@ class ImageTest < ActiveSupport::TestCase
     should_validate_presence_of attr
     should_have_readonly_attributes attr
   }
+  should_have_many :albums
+  should_have_many :audio_tags
 
   def test_acts_as_unique_without_setting_size
     assert_difference 'Image.count', +1 do
