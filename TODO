@@ -13,3 +13,11 @@ LOCATIONS
 (3) Stats page with total and per-label stats
 (4) Deleting a location should delete all its audio_files but preserve its audio_contents
     (What about tracks/albums/etc? Should keep and mark as non active? Or should all tags be on audio content?)
+
+WARNINGS
+========
+* Images over 1 meg
+* Images with bad mimetypes
+* Audio tags with apic tags but no albumart
+* Albums where albumart is inconsistant between tracks (i.e. missing from some, diff pic on some)
+* Audio files with multiple tracks (i.e. mismatch between tag metadata)
