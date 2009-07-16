@@ -47,7 +47,7 @@ class ActiveSupport::TestCase
 
   def table_counts
     h= {}
-    all_models.each{|t| h[t]= t.count}
+    all_models.each{|t| h[t.to_s]= t.count}
     h
   end
 end

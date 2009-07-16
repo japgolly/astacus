@@ -48,17 +48,13 @@ module Astacus
     # Processes an audio file and creates/updates a record in the DB.
     def scan_file!(file)
       AudioFile.transaction do
-      
-        f= AudioFile.new({
-          :dirname => File.dirname(file),
-          :basename => File.basename(file),
-          :size => File.size(file),
-          :location => @location,
-        })
+
+        file_basename= File.basename(file)
+        filesize= File.size(file)
         tags= []
         a= AudioContent.new
         content= File.read(file)
-        file_ext= f.basename.sub(/^.+\./,'') if f.basename.include?('.')
+        file_ext= file_basename.sub(/^.+\./,'') if file_basename.include?('.')
         if file_ext =~ /mp3/i
           a.format= 'mp3'
           Mp3Info.open(file){|mp3|
@@ -66,7 +62,6 @@ module Astacus
 
             # Read ID3 tag
             tags<< AudioTag.new({
-                :audio_file => f,
                 :format => 'id3',
                 :version => mp3.tag2.version,
                 :offset => 0,
@@ -80,10 +75,9 @@ module Astacus
             if ape.exists?
               raise "ape.tag_size != ape.raw.size\n#{ape.inspect}" unless ape.tag_size == ape.raw.size
               tags<< AudioTag.new({
-                  :audio_file => f,
                   :format => 'ape',
                   :version => '2',
-                  :offset => f.size - ape.tag_size,
+                  :offset => filesize - ape.tag_size,
                   :data => ape.raw,
               })
               content= content[0..-ape.tag_size-1]
@@ -113,39 +107,31 @@ module Astacus
           end
         }
 
-        # Finalise audio content
+        # Save audio content
         a.size= content.size
         a.md5= Digest::MD5.digest(content)
         a.sha2= Digest::SHA2.digest(content, 512)
-        a= a.unique
-        f.audio_content= a
+        a= a.find_identical_or_save!
 
-        # Save
-        a.save! if a.new_record?
-        f= f.find_identical_or_save!
-        tags.each{|t| t.save!}
+        # Save audio file
+        f= AudioFile.find_identical_or_create!({
+          :audio_content => a,
+          :dirname => File.dirname(file),
+          :basename => file_basename,
+          :size => filesize,
+          :location => @location,
+        })
 
-        # Create artist/album/cd/track
+        # Save tags
         albums= []
         tags.each{|t|
-          if t.useable?
-            artist= Artist.find_identical_or_create! :name => t.artist
-            album= Album.find_identical_or_create!({
-              :artist => artist,
-              :name => t.album,
-              :year => t.year,
-            })
-            albums<< album
-            cd= Cd.find_identical_or_create!({
-              :album => album,
-              :order_id => 0,
-            })
-            Track.find_identical_or_create!({
-              :cd => cd,
-              :name => t.track,
-              :tn => t.tn,
-              :audio_file => f,
-            })
+          t.audio_file= f
+
+          # Save if this is a new tag
+          matching_tags= f.audio_tags.select{|t2| get_tag_attributes(t) == get_tag_attributes(t2)}
+          if matching_tags.empty?
+            t.save!
+            process_tag t, albums, f
           end
         }
 
@@ -162,6 +148,35 @@ module Astacus
       # Remove any errors for this file
       ScannerError.delete_all :file => file
     end # scan_file!
+
+    def get_tag_attributes(tag)
+      a= tag.attributes
+      a.delete 'id'
+      a
+    end
+
+    def process_tag(t, albums, audio_file)
+      return false unless t.useable?
+
+      # Create artist/album/cd/track
+      artist= Artist.find_identical_or_create! :name => t.artist
+      album= Album.find_identical_or_create!({
+        :artist => artist,
+        :name => t.album,
+        :year => t.year,
+      })
+      albums<< album
+      cd= Cd.find_identical_or_create!({
+        :album => album,
+        :order_id => 0,
+      })
+      Track.find_identical_or_create!({
+        :cd => cd,
+        :name => t.track,
+        :tn => t.tn,
+        :audio_file => audio_file,
+      })
+    end
 
   end
 end

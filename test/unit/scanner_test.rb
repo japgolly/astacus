@@ -181,12 +181,20 @@ class ScannerTest < ActiveSupport::TestCase
         assert File.exists?(@file)
         @scanner.scan_file! @file
         @prev_counts= table_counts
-        @scanner.scan_file! @file
       end
 
       should "not recreate any existing rows" do
+        @scanner.scan_file! @file
         assert_equal @prev_counts, table_counts
       end
+
+#      should "replace incorrect tracks" do
+#        t= Track.last; t.tn= 99; t.save!
+#        @scanner.scan_file! @file
+#        assert_equal @prev_counts, table_counts
+#        t= Track.last
+#        assert_equal 2, t.tn
+#      end
     end
 
   end # the scanner context
