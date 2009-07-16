@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'lib/scanner.rb'
 
 class ScannerTest < ActiveSupport::TestCase
   context "The Scanner" do
@@ -174,6 +173,20 @@ class ScannerTest < ActiveSupport::TestCase
         @scanner.scan_file! file
       end
       assert_does_not_contain ScannerError.find(:all), se
+    end
+
+    context "when scanning the same file" do
+      setup do
+        @file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+        assert File.exists?(@file)
+        @scanner.scan_file! @file
+        @prev_counts= table_counts
+        @scanner.scan_file! @file
+      end
+
+      should "not recreate any existing rows" do
+        assert_equal @prev_counts, table_counts
+      end
     end
 
   end # the scanner context

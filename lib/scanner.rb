@@ -122,7 +122,7 @@ module Astacus
 
         # Save
         a.save! if a.new_record?
-        f.save!
+        f= f.find_identical_or_save!
         tags.each{|t| t.save!}
 
         # Create artist/album/cd/track

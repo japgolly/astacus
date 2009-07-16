@@ -37,4 +37,17 @@ class ActiveSupport::TestCase
   def assert_response_doesnt_include(str)
     assert !@response.body.include?(str), "Response shouldn't include #{str.inspect}"
   end
+
+  def all_models
+    @@all_models||= (
+      Dir.glob('app/models/**/*.rb').each{|f| require f}
+      Object.constants.map{|c| eval c}.select{|c| c.respond_to? :table_name}
+    )
+  end
+
+  def table_counts
+    h= {}
+    all_models.each{|t| h[t]= t.count}
+    h
+  end
 end

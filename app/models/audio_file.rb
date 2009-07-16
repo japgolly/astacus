@@ -3,6 +3,7 @@ class AudioFile < ActiveRecord::Base
   belongs_to :location
   has_many :audio_tags
   has_many :tracks
+  acts_as_unique
   validates_presence_of :audio_content, :dirname, :basename, :size
   validates_numericality_of :size, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
 
