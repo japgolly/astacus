@@ -22,7 +22,9 @@ module Astacus
             begin
               scan_file! file
             rescue => err
-              ScannerError.create :location => @location, :file => file, :err_msg => err.to_s
+              err_msg= err.to_s
+              err_msg.gsub! /(x'[0-9a-f]{64})[0-9a-f]+'/, '\1...\''
+              ScannerError.create :location => @location, :file => file, :err_msg => err_msg
             end
           end
           sl.files_scanned+= file_batch.size
