@@ -7,4 +7,8 @@ class Cd < ActiveRecord::Base
   validates_numericality_of :order_id, :only_integer => true, :allow_nil => true
 
   acts_as_unique
+
+  after_destroy do |r|
+    r.album.destroy if r.album.cds.empty?
+  end
 end

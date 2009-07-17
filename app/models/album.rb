@@ -9,6 +9,10 @@ class Album < ActiveRecord::Base
 
   acts_as_unique :except => :albumart_id
 
+  after_destroy do |r|
+    r.artist.destroy if r.artist.albums.empty?
+  end
+
   # Updates the albumart for this album based on the albumart in the tags in the
   # album's tracks.
   def update_albumart!

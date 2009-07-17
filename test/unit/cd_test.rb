@@ -30,4 +30,20 @@ class CdTest < ActiveSupport::TestCase
   test "belongs to album type" do
     assert_equal album_types(:std), cds(:'6doit_cd1').album_type
   end
+
+  context "Deleting a cd" do
+    should "not remove the album if other cds reference it" do
+      assert_difference 'Cd.count', -1 do
+        assert_difference 'Album.count', 0 do
+          cds(:'6doit_cd1').destroy
+        end
+      end
+    end
+
+    should "remove the album if no other cds reference it" do
+      assert_difference %w[Cd.count Album.count], -1 do
+        cds(:ponk).destroy
+      end
+    end
+  end
 end

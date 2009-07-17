@@ -6,4 +6,8 @@ class Track < ActiveRecord::Base
   validates_numericality_of :tn, :only_integer => true, :allow_nil => true
 
   acts_as_unique
+
+  after_destroy do |r|
+    r.cd.destroy if r.cd.tracks.empty?
+  end
 end

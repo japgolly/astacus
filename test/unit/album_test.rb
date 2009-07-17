@@ -104,4 +104,23 @@ class AlbumTest < ActiveSupport::TestCase
   def create_new_audio_tag(af, image)
     AudioTag.create(:audio_file => af, :format => 'id3', :offset => 0, :data => 'blah', :albumart => image)
   end
+
+  context "Deleting an album" do
+    should "not remove the artist if other albums reference it" do
+      assert_difference 'Album.count', 1 do
+        artists(:dream_theater).albums.create :name => 'n', :year => 2005
+      end
+      assert_difference 'Album.count', -1 do
+        assert_difference 'Artist.count', 0 do
+          albums(:'6doit').destroy
+        end
+      end
+    end
+
+    should "remove the artist if no other albums reference it" do
+      assert_difference %w[Album.count Artist.count], -1 do
+        albums(:ponk).destroy
+      end
+    end
+  end
 end
