@@ -3,19 +3,23 @@ glass_prison:
   audio_file: glass_prison
   tn: 1
   name: The Glass Prison
+  audio_tags: glass_prison_id3
 misunderstood:
   cd: 6doit_cd1
   audio_file: misunderstood
   tn: 3
   name: Misunderstood
+  audio_tags: misunderstood_id3
 about_to_crash:
   cd: 6doit_cd2
   audio_file: about_to_crash
   tn: 2
   name: 'Six Degrees Of Inner Turblence, Pt II: About To Crash'
+  audio_tags: about_to_crash_id3
 
 the_requiem:
   cd: ponk
   audio_file: the_requiem
   tn: 7
   name: The Requiem
+  audio_tags: the_requiem_id3, the_requiem_ape

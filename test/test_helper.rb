@@ -50,4 +50,8 @@ class ActiveSupport::TestCase
     all_models.each{|t| h[t.to_s]= t.count}
     h
   end
+
+  def count_audio_tags_tracks
+    ActiveRecord::Base.connection.select_value('select count(*) from audio_tags_tracks').to_i
+  end
 end

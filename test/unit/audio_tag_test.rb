@@ -3,6 +3,7 @@ require 'test_helper'
 class AudioTagTest < ActiveSupport::TestCase
   should_belong_to :audio_file
   should_belong_to :albumart
+  should_have_and_belong_to_many :tracks
   %w[audio_file format offset data].each{|attr|
     should_validate_presence_of attr
   }
@@ -52,6 +53,22 @@ class AudioTagTest < ActiveSupport::TestCase
 
     should "understand consolidated tn fields" do
       assert_equal 2, @at.tn
+    end
+  end
+
+  context "Deleting an audio tag" do
+    should "remove the track as well if not referenced by other tags" do
+      assert_difference %w[AudioTag.count Track.count count_audio_tags_tracks], -1 do
+        audio_tags(:glass_prison_id3).destroy
+      end
+    end
+
+    should "not remove the track if referenced by other tags" do
+      assert_difference 'Track.count', 0 do
+        assert_difference %w[AudioTag.count count_audio_tags_tracks], -1 do
+          audio_tags(:the_requiem_id3).destroy
+        end
+      end
     end
   end
 end

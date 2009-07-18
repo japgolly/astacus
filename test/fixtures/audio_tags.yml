@@ -1,0 +1,31 @@
+glass_prison_id3:
+  audio_file: glass_prison
+  format: id3
+  version: 2.4.0
+  offset: 0
+  data: xxxxxxxxxx
+misunderstood_id3:
+  audio_file: misunderstood
+  format: id3
+  version: 2.4.0
+  offset: 0
+  data: xxxxxxxxxx
+about_to_crash_id3:
+  audio_file: about_to_crash
+  format: id3
+  version: 2.4.0
+  offset: 0
+  data: xxxxxxxxxx
+
+the_requiem_id3:
+  audio_file: the_requiem
+  format: id3
+  version: 2.3.0
+  offset: 0
+  data: xxxxxxxxxx
+the_requiem_ape:
+  audio_file: the_requiem
+  format: ape
+  version: 2
+  offset: 123545
+  data: yyyyyyyyyy

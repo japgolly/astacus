@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090715194431) do
+ActiveRecord::Schema.define(:version => 20090718221624) do
 
   create_table "album_types", :force => true do |t|
     t.string "name", :null => false
@@ -70,6 +70,14 @@ ActiveRecord::Schema.define(:version => 20090715194431) do
   end
 
   add_index "audio_tags", ["albumart_id"], :name => "index_audio_tags_on_albumart_id"
+
+  create_table "audio_tags_tracks", :id => false, :force => true do |t|
+    t.integer "audio_tag_id", :null => false
+    t.integer "track_id",     :null => false
+  end
+
+  add_index "audio_tags_tracks", ["audio_tag_id", "track_id"], :name => "index_audio_tags_tracks_on_audio_tag_id_and_track_id", :unique => true
+  add_index "audio_tags_tracks", ["track_id"], :name => "index_audio_tags_tracks_on_track_id"
 
   create_table "cds", :force => true do |t|
     t.integer  "album_id",      :null => false
