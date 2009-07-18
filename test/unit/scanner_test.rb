@@ -62,6 +62,7 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal '2.4.0', t1.version
         assert_equal 0, t1.offset
         assert_equal 9088, t1.data.size
+        assert_equal 1, t1.tracks.size
       end
 
       should "store the ape tag" do
@@ -70,6 +71,7 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal '2', t2.version
         assert_equal 68177-359, t2.offset
         assert_equal 359, t2.data.size
+        assert_equal 1, t2.tracks.size
       end
 
       should "create a new track" do
@@ -86,6 +88,7 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal 'メフィストフェレスの肖像', t.cd.album.name
         assert_equal 1996, t.cd.album.year
         assert_equal '聖飢魔II', t.cd.album.artist.name
+        assert_equal 2, t.audio_tags.size
       end
 
       should "extract and save the album art from id3 tags" do
@@ -188,14 +191,14 @@ class ScannerTest < ActiveSupport::TestCase
         assert_equal @prev_counts, table_counts
       end
 
-#      should "replace incorrect tracks" do
-#        t= Track.last; t.tn= 99; t.save!
-#        @scanner.scan_file! @file
-#        assert_equal @prev_counts, table_counts
-#        t= Track.last
-#        assert_equal 2, t.tn
-#      end
-    end
+      should "replace incorrect tracks" do
+        t= Track.last; t.tn= 99; t.save!
+        AudioTag.update_all 'data="qwe"'
+        @scanner.scan_file! @file
+        assert_equal 2, Track.last.tn
+        assert_equal @prev_counts, table_counts
+      end
+    end # context
 
-  end # the scanner context
+  end # context
 end

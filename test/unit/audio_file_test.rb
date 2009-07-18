@@ -21,5 +21,12 @@ class AudioFileTest < ActiveSupport::TestCase
       assert_equal false, AudioFile.new(:dirname => mock_data_dir, :basename => 'asd').exists?
       assert_equal true, AudioFile.new(:dirname => "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像", :basename => "02 - Frozen City.mp3").exists?
     end
+
+    should "delete tags and tracks when deleting an associated tag" do
+      assert_difference %w[AudioTag.count Track.count], -1 do
+        af= audio_files(:glass_prison)
+        af.audio_tags.delete af.audio_tags.first
+      end
+    end
   end
 end

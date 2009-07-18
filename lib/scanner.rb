@@ -124,6 +124,7 @@ module Astacus
 
         # Save tags
         albums= []
+        tags_to_delete= f.audio_tags.dup
         tags.each{|t|
           t.audio_file= f
 
@@ -132,8 +133,11 @@ module Astacus
           if matching_tags.empty?
             t.save!
             process_tag t, albums, f
+          else
+            matching_tags.each{|t2| tags_to_delete.delete t2}
           end
         }
+        f.audio_tags.delete *tags_to_delete unless tags_to_delete.empty?
 
         # Albumart on albums
         tags.each{|t|
@@ -147,7 +151,7 @@ module Astacus
 
       # Remove any errors for this file
       ScannerError.delete_all :file => file
-    end # scan_file!
+    end
 
     def get_tag_attributes(tag)
       a= tag.attributes
@@ -155,27 +159,28 @@ module Astacus
       a
     end
 
-    def process_tag(t, albums, audio_file)
-      return false unless t.useable?
+    def process_tag(tag, albums, audio_file)
+      return false unless tag.useable?
 
       # Create artist/album/cd/track
-      artist= Artist.find_identical_or_create! :name => t.artist
+      artist= Artist.find_identical_or_create! :name => tag.artist
       album= Album.find_identical_or_create!({
         :artist => artist,
-        :name => t.album,
-        :year => t.year,
+        :name => tag.album,
+        :year => tag.year,
       })
       albums<< album
       cd= Cd.find_identical_or_create!({
         :album => album,
         :order_id => 0,
       })
-      Track.find_identical_or_create!({
+      track= Track.find_identical_or_create!({
         :cd => cd,
-        :name => t.track,
-        :tn => t.tn,
+        :name => tag.track,
+        :tn => tag.tn,
         :audio_file => audio_file,
       })
+      tag.tracks<< track
     end
 
   end

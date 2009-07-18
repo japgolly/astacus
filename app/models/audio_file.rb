@@ -1,7 +1,7 @@
 class AudioFile < ActiveRecord::Base
   belongs_to :audio_content
   belongs_to :location
-  has_many :audio_tags
+  has_many :audio_tags, :dependent => :destroy
   has_many :tracks
   acts_as_unique
   validates_presence_of :audio_content, :dirname, :basename, :size
