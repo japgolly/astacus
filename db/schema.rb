@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090718221624) do
+ActiveRecord::Schema.define(:version => 20090719161948) do
 
   create_table "album_types", :force => true do |t|
     t.string "name", :null => false
@@ -78,6 +78,26 @@ ActiveRecord::Schema.define(:version => 20090718221624) do
 
   add_index "audio_tags_tracks", ["audio_tag_id", "track_id"], :name => "index_audio_tags_tracks_on_audio_tag_id_and_track_id", :unique => true
   add_index "audio_tags_tracks", ["track_id"], :name => "index_audio_tags_tracks_on_track_id"
+
+  create_table "bdrb_job_queues", :force => true do |t|
+    t.text     "args"
+    t.string   "worker_name"
+    t.string   "worker_method"
+    t.string   "job_key"
+    t.integer  "taken"
+    t.integer  "finished"
+    t.integer  "timeout"
+    t.integer  "priority"
+    t.datetime "submitted_at"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "archived_at"
+    t.string   "tag"
+    t.string   "submitter_info"
+    t.string   "runner_info"
+    t.string   "worker_key"
+    t.datetime "scheduled_at"
+  end
 
   create_table "cds", :force => true do |t|
     t.integer  "album_id",      :null => false
