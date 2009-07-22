@@ -26,7 +26,7 @@ class LocationsController < ApplicationController
   def start_scan
     @location= Location.find(params[:id])
     if @location.exists?
-      MiddleMan.worker(:scanner_worker).async_scan(:arg => @location)
+      @location.scan_async
     end
     render :action => 'show'
   end

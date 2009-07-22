@@ -19,4 +19,9 @@ class Location < ActiveRecord::Base
   def exists?
     File.exists?(dir) and File.directory?(dir)
   end
+
+  def scan_async
+    return false unless self.exists?
+    MiddleMan.worker(:scanner_worker).async_scan(:arg => self)
+  end
 end
