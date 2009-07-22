@@ -7,11 +7,14 @@ class ScannerWorker < BackgrounDRb::MetaWorker
   def scan(location)
     # Start
     @location= location
+    logger.info "Scanning location ##{@location.id} [#{@location.dir}]"
     sl= @sl= ScannerLog.new(:location => @location, :started => Time.now, :active => true)
     sl.save!
+    logger.info "  Created scanner log ##{sl.id}"
 
     # Find files
     files= files_in(@location.dir)
+    logger.info "  Found #{files.size} files in location."
     sl.files_scanned= 0
     sl.file_count= files.size
     sl.save!
@@ -37,6 +40,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
     }
 
     # Done
+    logger.info "Scan complete for scanner log ##{sl.id}, location ##{@location.id} [#{@location.dir}]\n"
     @sl= @location= nil
     sl.ended= Time.now
     sl.active= false
