@@ -1,0 +1,12 @@
+<% 1.upto(1000) do |i| %>
+audio_content_<%= i %>:
+  id: <%= i %>
+  size: <%= 10000000 + i %>
+  md5: <%= ("%08s" % 1000.to_s(16)) * (16/8) %>
+  sha2: <%= ("%08s" % 1000.to_s(16)) * (64/8) %>
+  format: mp3
+  bitrate: 192
+  vbr: false
+  samplerate: 44100
+  length: 666
+<% end %>
