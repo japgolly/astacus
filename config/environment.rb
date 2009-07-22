@@ -23,6 +23,8 @@ Rails::Initializer.run do |config|
   config.gem 'apetag'
   config.gem 'ruby-mp3info', :lib => 'mp3info'
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
+  config.gem 'packet' # for BackgrounDRb
+  config.gem 'chronic' # for BackgrounDRb
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -52,4 +54,3 @@ require 'digest/md5'
 require 'digest/sha2'
 require 'lib/core_ext'
 require 'lib/in_memory_file'
-require 'lib/scanner'

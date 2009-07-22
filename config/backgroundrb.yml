@@ -1,4 +1,7 @@
---- 
-:backgroundrb: 
-  :ip: 0.0.0.0
+---
+:backgroundrb:
+  :ip: 127.0.0.1
   :port: 11006
+  :environment: development
+  #:log: foreground # will print log messages to STDOUT, defaults to seperate log worker
+  #:debug_log: true # whether to print debug logs to a seperate worker, defaults to true

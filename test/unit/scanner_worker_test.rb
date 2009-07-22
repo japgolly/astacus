@@ -1,10 +1,12 @@
-require 'test_helper'
+require File.join(File.dirname(__FILE__) + "/../bdrb_test_helper")
+#require 'test_helper'
+require 'scanner_worker'
 
-class ScannerTest < ActiveSupport::TestCase
+class ScannerWorkerTest < ActiveSupport::TestCase
   context "The Scanner" do
     setup do
       @location= locations(:downloads)
-      @scanner= Astacus::Scanner.new
+      @scanner= ScannerWorker.new
       @scanner.instance_variable_set :@location, @location
     end
 

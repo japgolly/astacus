@@ -1,5 +1,6 @@
 # Backgroundrb
 # FIXME: check if data that we are writing to the socket should end with newline
+require 'timeout'
 require "pathname"
 require "packet"
 require "ostruct"

@@ -1,6 +1,7 @@
 require File.join(File.dirname(__FILE__) + "/../config/environment")
 WORKER_ROOT = RAILS_ROOT + "/lib/workers"
 $LOAD_PATH.unshift(WORKER_ROOT)
+require 'test_helper'
 
 class Object
   def self.metaclass; class << self; self; end; end
