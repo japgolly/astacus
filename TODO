@@ -1,9 +1,7 @@
 Handle cds
 understand album types
-have a flag or something for album art
 
 what about when ape/id3 tags differ - should create 2 tracks with same AF
-what about when scanner hits a file already in the system
 
 LOCATIONS
 =========
@@ -21,3 +19,7 @@ WARNINGS
 * Audio tags with apic tags but no albumart
 * Albums where albumart is inconsistant between tracks (i.e. missing from some, diff pic on some)
 * Audio files with multiple tracks (i.e. mismatch between tag metadata)
+* Audio files with no tracks
+* Albums with a single non-0 cd
+* Albums with 0 and non-0 cds
+* Duplicates
