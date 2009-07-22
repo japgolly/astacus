@@ -26,9 +26,7 @@ class LocationsController < ApplicationController
   def start_scan
     @location= Location.find(params[:id])
     if @location.exists?
-#      Thread.start {Astacus::Scanner.new.scan(@location)}
-#      sleep 1
-      Astacus::Scanner.new.scan(@location) # TODO Fix start_scan runs in the foreground...
+      MiddleMan.worker(:scanner_worker).async_scan(:arg => @location)
     end
     render :action => 'show'
   end

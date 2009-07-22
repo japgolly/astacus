@@ -7,6 +7,7 @@
   LABEL: <%= h location.label %><br/>
   DIR: <%= h location.dir %><br/>
   <% if asl= location.active_scanner_log %>
+    <%= delayed_call_remote :url => {:action => 'show', :id => location.id}, :method => :get, :frequency => 2 %>
     <div class="active">
       CURRENTLY SCANNING.
       <br/>Started <%= time_ago_in_words(asl.started) -%> ago.
