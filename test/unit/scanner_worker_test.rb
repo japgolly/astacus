@@ -14,7 +14,18 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       assert_same_elements [
         "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3",
         "#{mock_data_dir}/frozen city (no tags).mp3",
+        "#{mock_data_dir}/01. Boum Boum Yüla.mp3",
       ], @scanner.files_in(mock_data_dir)
+    end
+
+    should "not attempt to convert unicode tag strings to ansi" do
+      # Don't know why the Japanese tags pass but u with an umlat doesnt
+      assert_difference 'Track.count' do
+        @file= "#{mock_data_dir}/01. Boum Boum Yüla.mp3"
+        assert File.exists?(@file)
+        @scanner.scan_file! @file
+      end
+      assert_equal 'Boum Boum Yüla', Track.last.name
     end
 
     context "when scanning a new file" do

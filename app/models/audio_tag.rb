@@ -23,7 +23,7 @@ class AudioTag < ActiveRecord::Base
       @ta_data= @data
       @ta= case format
       when 'id3'
-        id3= Mp3Info.open(File.filename_for_stringio(data+"\xff\xfb\xa0\x40\x00"))
+        id3= Mp3Info.open(File.filename_for_stringio(data+"\xff\xfb\xa0\x40\x00"), :encoding => 'utf-8')
         id3.tag2.merge(id3.tag)
       when 'ape'
         h= ApeTag.new(StringIO.new(data)).fields
