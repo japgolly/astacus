@@ -9,6 +9,7 @@ FEATURES
 * Add tags to albums
 * Show stats by location label
 * Show stats by age buckets
+* Show stats over time (i.e. graph)
 
 LOCATIONS
 =========
