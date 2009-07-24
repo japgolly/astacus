@@ -14,7 +14,8 @@ CREATE TABLE `albums` (
   `updated_at` datetime DEFAULT NULL,
   `albumart_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_albums_on_albumart_id` (`albumart_id`)
+  KEY `index_albums_on_albumart_id` (`albumart_id`),
+  KEY `index_albums_on_artist_id` (`artist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `artists` (
@@ -51,7 +52,8 @@ CREATE TABLE `audio_files` (
   `updated_at` datetime DEFAULT NULL,
   `location_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_audio_files_on_location_id` (`location_id`)
+  KEY `index_audio_files_on_location_id` (`location_id`),
+  KEY `index_audio_files_on_audio_content_id` (`audio_content_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `audio_tags` (
@@ -63,7 +65,8 @@ CREATE TABLE `audio_tags` (
   `data` mediumblob NOT NULL,
   `albumart_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_audio_tags_on_albumart_id` (`albumart_id`)
+  KEY `index_audio_tags_on_albumart_id` (`albumart_id`),
+  KEY `index_audio_tags_on_audio_file_id` (`audio_file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `audio_tags_tracks` (
@@ -103,7 +106,9 @@ CREATE TABLE `cds` (
   `order_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_cds_on_album_id_and_order_id` (`album_id`,`order_id`),
+  KEY `index_cds_on_album_type_id` (`album_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `images` (
@@ -162,7 +167,8 @@ CREATE TABLE `tracks` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `audio_file_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_tracks_on_audio_file_id` (`audio_file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO schema_migrations (version) VALUES ('20090608100525');
@@ -192,3 +198,5 @@ INSERT INTO schema_migrations (version) VALUES ('20090718221624');
 INSERT INTO schema_migrations (version) VALUES ('20090719161948');
 
 INSERT INTO schema_migrations (version) VALUES ('20090722095012');
+
+INSERT INTO schema_migrations (version) VALUES ('20090724093539');
