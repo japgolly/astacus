@@ -3,7 +3,7 @@ class Image < ActiveRecord::Base
   validates_presence_of :size, :data, :mimetype
   has_many :audio_tags, :foreign_key => 'albumart_id'
   has_many :albums, :foreign_key => 'albumart_id'
-  acts_as_unique
+  acts_as_unique :secondary => :data
 
   def before_validation_on_create
     self.size= data.size if attribute_present?(:data)

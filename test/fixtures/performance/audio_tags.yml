@@ -5,6 +5,7 @@ audio_tag_<%= i %>_id3:
   version: 2.3.0
   offset: 0
   data: <%= ("%08s" % 1000.to_s(16)) * (30.kilobytes/8) %>
+  albumart_id: <%= i %>
 audio_tag_<%= i %>_ape:
   audio_file_id: <%= i %>
   format: ape

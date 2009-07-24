@@ -118,7 +118,8 @@ CREATE TABLE `images` (
   `mimetype` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_images_on_size` (`size`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `locations` (
@@ -200,3 +201,5 @@ INSERT INTO schema_migrations (version) VALUES ('20090719161948');
 INSERT INTO schema_migrations (version) VALUES ('20090722095012');
 
 INSERT INTO schema_migrations (version) VALUES ('20090724093539');
+
+INSERT INTO schema_migrations (version) VALUES ('20090724221744');

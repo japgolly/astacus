@@ -1,0 +1,7 @@
+<% 1.upto(1000) do |i| %>
+image_<%= i %>:
+  id: <%= i %>
+  size: <%= sz= 40.kilobytes + (i/2).to_i * 120 %>
+  data: <%= %w[a b][i%2] * sz %>
+  mimetype: image/jpeg
+<% end %>
