@@ -8,7 +8,7 @@ class PerformanceTest < ActiveSupport::TestCase
     test_name= model.to_s.underscore
     class_eval <<-EOB
       def test_#{test_name}_new
-        assert #{model}.count >= MINIMUM_ROWS, "Fixture too small. #{model}.count = \#{#{model}.count}."
+        assert_sufficient_amount_of_data_for #{model}
         m= #{model}.first
         #{model}.delete m.id
         m= m.clone
@@ -23,6 +23,7 @@ class PerformanceTest < ActiveSupport::TestCase
       end
 
       def test_#{test_name}_existing
+        assert_sufficient_amount_of_data_for #{model}
         m= #{model}.first
         m= m.clone
         silence #{model} do
@@ -43,7 +44,7 @@ class PerformanceTest < ActiveSupport::TestCase
     PROCS[test_name]= condition_proc
     class_eval <<-EOB
       def #{test_name}
-        assert #{model}.count >= MINIMUM_ROWS, "Fixture too small. #{model}.count = \#{#{model}.count}."
+        assert_sufficient_amount_of_data_for #{model}
         silence #{model} do
           elapsed_time= Benchmark.realtime do
             #{reps}.times {
@@ -62,5 +63,9 @@ class PerformanceTest < ActiveSupport::TestCase
 
   def assert_time_within(max, actual_time)
     assert actual_time < max, "Too slow. Actual time was %.2f which is above #{max}." % [actual_time]
+  end
+
+  def assert_sufficient_amount_of_data_for(model)
+    assert model.count >= MINIMUM_ROWS, "Fixture too small. #{model}.count = #{model.count}."
   end
 end
