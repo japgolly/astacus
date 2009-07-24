@@ -11,7 +11,7 @@ class AudioTagTest < ActiveSupport::TestCase
 
   context "AudioTags based on APE tags" do
     setup do
-      file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+      file= SEIKIMA_CD2_08
       @at= AudioTag.new({
           :format => 'ape',
           :version => '2',
@@ -21,19 +21,23 @@ class AudioTagTest < ActiveSupport::TestCase
 
     should "provide basic tag attributes" do
       assert_equal '聖飢魔II', @at.artist
-      assert_equal 'メフィストフェレスの肖像', @at.album
-      assert_equal '凍てついた街', @at.track
-      assert_equal 1996, @at.year
+      assert_equal '愛と虐殺の日々', @at.album
+      assert_equal '赤い玉の伝説', @at.track
+      assert_equal 1991, @at.year
     end
 
     should "understand consolidated tn fields" do
-      assert_equal 2, @at.tn
+      assert_equal 8, @at.tn
+    end
+
+    should "understand consolidated cd fields" do
+      assert_equal 2, @at.cd
     end
   end
 
   context "AudioTags based on ID3v2 tags" do
     setup do
-      file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+      file= SEIKIMA_CD2_08
       Mp3Info.open(file){|mp3|
         start,len= mp3.audio_content
         @at= AudioTag.new({
@@ -46,13 +50,17 @@ class AudioTagTest < ActiveSupport::TestCase
 
     should "provide basic tag attributes" do
       assert_equal '聖飢魔II', @at.artist
-      assert_equal 'メフィストフェレスの肖像', @at.album
-      assert_equal '凍てついた街', @at.track
-      assert_equal 1996, @at.year
+      assert_equal '愛と虐殺の日々', @at.album
+      assert_equal '赤い玉の伝説', @at.track
+      assert_equal 1991, @at.year
     end
 
     should "understand consolidated tn fields" do
-      assert_equal 2, @at.tn
+      assert_equal 8, @at.tn
+    end
+
+    should "understand consolidated cd fields" do
+      assert_equal 2, @at.cd
     end
   end
 

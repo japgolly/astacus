@@ -1,4 +1,5 @@
-Handle cds
+Handle cds like 'Disc A - Paris 1937'
+Handle case where we have two cds: 'CD 1 - Paris 1937', 'CD 1 - Germany'
 understand album types
 
 what about when ape/id3 tags differ - should create 2 tracks with same AF

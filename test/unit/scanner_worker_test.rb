@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__) + "/../bdrb_test_helper")
 require 'scanner_worker'
 
 class ScannerWorkerTest < ActiveSupport::TestCase
+
   context "The Scanner" do
     setup do
       @location= locations(:downloads)
@@ -12,25 +13,26 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
     should "find audio files" do
       assert_same_elements [
-        "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3",
-        "#{mock_data_dir}/frozen city (no tags).mp3",
-        "#{mock_data_dir}/01. Boum Boum Yüla.mp3",
+        FROZEN_CITY_TAGGED,
+        FROZEN_CITY_NOTAGS,
+        BOUM_BOUM_YULA,
+        SEIKIMA_CD1_06,
+        SEIKIMA_CD1_13,
+        SEIKIMA_CD2_08,
       ], @scanner.files_in(mock_data_dir)
     end
 
     should "not attempt to convert unicode tag strings to ansi" do
       # Don't know why the Japanese tags pass but u with an umlat doesnt
       assert_difference 'Track.count' do
-        @file= "#{mock_data_dir}/01. Boum Boum Yüla.mp3"
-        assert File.exists?(@file)
-        @scanner.scan_file! @file
+        @scanner.scan_file! BOUM_BOUM_YULA
       end
       assert_equal 'Boum Boum Yüla', Track.last.name
     end
 
     context "when scanning a new file" do
       setup do
-        @file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+        @file= FROZEN_CITY_TAGGED
         assert File.exists?(@file)
         @ac_count= AudioContent.count
         @af_count= AudioFile.count
@@ -121,13 +123,13 @@ class ScannerWorkerTest < ActiveSupport::TestCase
     should "reuse existing audio_content when it matches" do
       # Scan tagged version first
       assert_difference 'AudioContent.count', +1 do
-        @scanner.scan_file! "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+        @scanner.scan_file! FROZEN_CITY_TAGGED
       end
 
       # Scan untagged version next
       assert_difference ['AudioContent.count','AudioTag.count'], 0 do
         assert_difference 'AudioFile.count', +1 do
-          @scanner.scan_file! "#{mock_data_dir}/frozen city (no tags).mp3"
+          @scanner.scan_file! FROZEN_CITY_NOTAGS
         end
       end
       f= AudioFile.last
@@ -180,8 +182,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
     end
 
     should "remove errors when successful" do
-      file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
-      assert File.exists?(file)
+      file= FROZEN_CITY_TAGGED
       ScannerError.create :location => locations(:mock_data_dir), :file => '123', :err_msg => 'asd'
       se= ScannerError.create :location => locations(:mock_data_dir), :file => file, :err_msg => 'asd'
       ScannerError.create :location => locations(:mock_data_dir), :file => 'bca', :err_msg => 'asd'
@@ -193,7 +194,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
     context "when scanning the same file" do
       setup do
-        @file= "#{mock_data_dir}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+        @file= FROZEN_CITY_TAGGED
         assert File.exists?(@file)
         @scanner.scan_file! @file
         @prev_counts= table_counts
@@ -213,5 +214,34 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       end
     end # context
 
-  end # context
+    context "when scanning files with cds" do
+      should "create a cd row if a new cd" do
+        # Cd 1
+        assert_difference 'Cd.count' do
+          @scanner.scan_file! SEIKIMA_CD1_06
+        end
+        cd= Cd.last
+        assert "CD 1", cd.name
+        assert 1, cd.order_id
+
+        # Cd 2
+        assert_difference 'Cd.count' do
+          @scanner.scan_file! SEIKIMA_CD2_08
+        end
+        cd= Cd.last
+        assert "CD 2", cd.name
+        assert 2, cd.order_id
+      end
+
+      should "reuse an existing cd row if exists" do
+        assert_difference 'Cd.count' do
+          @scanner.scan_file! SEIKIMA_CD1_06
+        end
+        assert_difference 'Cd.count', 0 do
+          @scanner.scan_file! SEIKIMA_CD1_13
+        end
+      end
+    end
+
+  end # context: The scanner
 end

@@ -38,6 +38,7 @@ class AudioTag < ActiveRecord::Base
       case format
       when 'id3'
         @ta[:tn]= @ta[:tracknum]
+        @ta[:cd]= @ta[:TPOS] # TODO Test this with id3 tag < 2.3
         @ta[:year]||= @ta[:TDRC]
         if @ta['APIC']
           if @ta['APIC'] =~ /^([\000\003](.*?)\000[\x00-\x14](.*?)\000)/m or @ta['APIC'] =~ /^([\001\002](.*?)\000[\x00-\x14](.*?)\000\000)/m
@@ -49,24 +50,27 @@ class AudioTag < ActiveRecord::Base
         end
       when 'ape'
         @ta[:tn]= @ta[:track]
+        @ta[:cd]= @ta[:disc]
       end
     end
     @ta
   end
   alias_method :ta, :tag_attributes
 
+  # Raw string fields
   %w[artist album albumart_mimetype albumart_raw].each{|m|
     class_eval "def #{m}; ta[:#{m}] end"
   }
-  def year
-    ta[:year].safe_to_i
-  end
+  # Integer fields
+  %w[year].each{|m|
+    class_eval "def #{m}; ta[:#{m}].safe_to_i end"
+  }
+  # Compound integer fields
+  %w[tn cd].each{|m|
+    class_eval "def #{m}; v= ta[:#{m}]; v.sub! /\\/\\d+$/, '' if v.is_a?(String); v.safe_to_i end"
+  }
+  # Other
   def track
     ta[:title]
-  end
-  def tn
-    v= ta[:tn]
-    v.sub! /\/\d+$/, '' if v.is_a?(String)
-    v.safe_to_i
   end
 end

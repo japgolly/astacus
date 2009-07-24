@@ -19,6 +19,13 @@ class ActiveSupport::TestCase
   fixtures :all
   include FixtureAndTestHelpers
 
+  FROZEN_CITY_TAGGED= "#{MOCK_DATA_DIR}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
+  FROZEN_CITY_NOTAGS= "#{MOCK_DATA_DIR}/frozen city (no tags).mp3"
+  BOUM_BOUM_YULA= "#{MOCK_DATA_DIR}/01. Boum Boum Yüla.mp3"
+  SEIKIMA_CD1_06= "#{MOCK_DATA_DIR}/聖飢魔II/Compilations/1991 - 愛と虐殺の日々/CD 1/06 - Burning Blood.mp3"
+  SEIKIMA_CD1_13= "#{MOCK_DATA_DIR}/聖飢魔II/Compilations/1991 - 愛と虐殺の日々/CD 1/13 - Shiroi Kiseki.mp3"
+  SEIKIMA_CD2_08= "#{MOCK_DATA_DIR}/聖飢魔II/Compilations/1991 - 愛と虐殺の日々/CD 2/08 - Akai Dama No Densetsu.mp3"
+
   def self.should_validate_positive_numericality_of(attr)
     should_validate_numericality_of attr
     should_not_allow_values_for attr, -1, :message => 'must be greater than or equal to 0'

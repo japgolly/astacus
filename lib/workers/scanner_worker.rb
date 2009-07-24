@@ -176,10 +176,12 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       :year => tag.year,
     })
     albums<< album
-    cd= Cd.find_identical_or_create!({
-      :album => album,
-      :order_id => 0,
-    })
+    cd_attr= case tag.cd
+      when nil    then {:order_id => 0}
+      when Fixnum then {:order_id => tag.cd, :name => "CD #{tag.cd}"}
+      else raise "Unsupported cd type: #{tag.cd.inspect}"
+      end
+    cd= Cd.find_identical_or_create!({:album => album}.merge cd_attr)
     track= Track.find_identical_or_create!({
       :cd => cd,
       :name => tag.track,
