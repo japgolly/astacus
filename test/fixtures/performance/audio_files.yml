@@ -1,0 +1,9 @@
+<% 1.upto(1000) do |i| %>
+audio_file_<%= i %>:
+  id: <%= i %>
+  audio_content_id: <%= i %>
+  dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
+  basename: audio_file_<%= i %>.mp3
+  size: <%= 10100000 + i %>
+  location_id: 1
+<% end %>
