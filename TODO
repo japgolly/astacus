@@ -10,6 +10,8 @@ FEATURES
 * Show stats by location label
 * Show stats by age buckets
 * Show stats over time (i.e. graph)
+* Show length/song count by artist
+* Show list of albums missing albumart
 
 LOCATIONS
 =========
@@ -30,3 +32,6 @@ WARNINGS
 * Albums with a single non-0 cd
 * Albums with 0 and non-0 cds
 * Duplicates
+* replaygain missing
+* album replaygain different between cd tracks
+* Missing tracks (eg. 1,2,6,7,8)
