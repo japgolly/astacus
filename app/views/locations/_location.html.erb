@@ -11,7 +11,7 @@
     <div class="active">
       CURRENTLY SCANNING.
       <br/>Started <%= time_ago_in_words(asl.started) -%> ago.
-      <br/>Progress: <%= asl.files_scanned ? "#{asl.files_scanned} / #{asl.file_count}" : 'Unknown' -%>
+      <br/>Progress: <%= asl.files_scanned ? "#{asl.files_scanned} / #{asl.file_count} (#{(asl.files_scanned * 100.0 / asl.file_count).to_i}%)" : 'Unknown' -%>
       <% if asl.active? and asl.files_scanned and asl.files_scanned > 4 %>
         <br/>ETA: <%= distance_of_time_in_words asl.time_remaining -%>.
       <% end %>
