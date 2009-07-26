@@ -1,28 +1,37 @@
 class ScannerWorker < BackgrounDRb::MetaWorker
   set_worker_name :scanner_worker
 
-  def create(args=nil)
+  def create(*)
   end
 
-  def scan(location)
+  def reset
+    @location= @sl= @files= nil
+  end
+
+  def init(location)
     # Start
     @location= location
     logger.info "Scanning location ##{@location.id} [#{@location.dir}]"
-    sl= @sl= ScannerLog.new(:location => @location, :started => Time.now, :active => true)
-    sl.save!
-    logger.info "  Created scanner log ##{sl.id}"
+    @sl= ScannerLog.new(:location => @location, :started => Time.now, :active => true)
+    @sl.save!
+    logger.info "  Created scanner log ##{@sl.id}"
 
     # Find files
-    files= files_in(@location.dir)
-    logger.info "  Found #{files.size} files in location."
-    sl.files_scanned= 0
-    sl.file_count= files.size
-    sl.save!
+    @files= files_in(@location.dir)
+    logger.info "  Found #{@files.size} files in location."
+    @sl.files_scanned= 0
+    @sl.file_count= @files.size
+    @sl.save!
+  end
+
+  def scan(location)
+    reset
+    init(location)
 
     # Process files
-    files.in_groups_of(4, false) {|file_batch|
-      sl.reload
-      if sl.active? and not sl.aborted?
+    @files.in_groups_of(4, false) {|file_batch|
+      @sl.reload
+      if @sl.active? and not @sl.aborted?
         file_batch.each do |file|
           begin
             scan_file! file
@@ -32,19 +41,22 @@ class ScannerWorker < BackgrounDRb::MetaWorker
             ScannerError.create :location => @location, :file => file, :err_msg => err_msg
           end
         end
-        sl.files_scanned+= file_batch.size
-        sl.save!
+        @sl.files_scanned+= file_batch.size
+        @sl.save!
       else
-        sl.aborted= true
+        @sl.aborted= true
       end
     }
 
+    # Remove dead files
+    remove_dead_files!
+
     # Done
-    logger.info "Scan complete for scanner log ##{sl.id}, location ##{@location.id} [#{@location.dir}]\n"
-    @sl= @location= nil
-    sl.ended= Time.now
-    sl.active= false
-    sl.save!
+    logger.info "Scan complete for scanner log ##{@sl.id}, location ##{@location.id} [#{@location.dir}]\n"
+    @sl.ended= Time.now
+    @sl.active= false
+    @sl.save!
+    reset
   end
 
   def files_in(dir)
@@ -189,5 +201,13 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       :audio_file => audio_file,
     })
     tag.tracks<< track
+  end
+
+  def remove_dead_files!
+    dead_files= @location.audio_files.reject{|af| @files.include? af.filename}
+    unless dead_files.empty?
+      logger.info "   Removing #{dead_files.size} dead files."
+      dead_files.each(&:destroy)
+    end
   end
 end

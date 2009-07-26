@@ -25,6 +25,14 @@ class ActiveSupport::TestCase
   SEIKIMA_CD1_06= "#{MOCK_DATA_DIR}/聖飢魔II/Compilations/1991 - 愛と虐殺の日々/CD 1/06 - Burning Blood.mp3"
   SEIKIMA_CD1_13= "#{MOCK_DATA_DIR}/聖飢魔II/Compilations/1991 - 愛と虐殺の日々/CD 1/13 - Shiroi Kiseki.mp3"
   SEIKIMA_CD2_08= "#{MOCK_DATA_DIR}/聖飢魔II/Compilations/1991 - 愛と虐殺の日々/CD 2/08 - Akai Dama No Densetsu.mp3"
+  ALL_MOCK_DATA_FILES= [
+    FROZEN_CITY_TAGGED,
+    FROZEN_CITY_NOTAGS,
+    BOUM_BOUM_YULA,
+    SEIKIMA_CD1_06,
+    SEIKIMA_CD1_13,
+    SEIKIMA_CD2_08,
+  ].freeze
 
   def self.should_validate_positive_numericality_of(attr)
     should_validate_numericality_of attr

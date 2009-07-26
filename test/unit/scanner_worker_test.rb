@@ -6,20 +6,13 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
   context "The Scanner" do
     setup do
-      @location= locations(:downloads)
+      @location= locations(:mock_data_dir)
       @scanner= ScannerWorker.new
-      @scanner.instance_variable_set :@location, @location
+      @scanner.init @location
     end
 
     should "find audio files" do
-      assert_same_elements [
-        FROZEN_CITY_TAGGED,
-        FROZEN_CITY_NOTAGS,
-        BOUM_BOUM_YULA,
-        SEIKIMA_CD1_06,
-        SEIKIMA_CD1_13,
-        SEIKIMA_CD2_08,
-      ], @scanner.files_in(mock_data_dir)
+      assert_same_elements ALL_MOCK_DATA_FILES, @scanner.files_in(mock_data_dir)
     end
 
     should "not attempt to convert unicode tag strings to ansi" do
@@ -240,6 +233,41 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         assert_difference 'Cd.count', 0 do
           @scanner.scan_file! SEIKIMA_CD1_13
         end
+      end
+    end
+
+    context "when there are dead files" do
+      setup do
+        assert_equal 0, @location.audio_files.size
+        assert_difference 'AudioFile.count' do
+          @scanner.scan_file! FROZEN_CITY_TAGGED
+        end
+        @dead= AudioFile.last
+
+        @scanner.init @location.reload
+        assert_difference 'AudioFile.count' do
+          @scanner.scan_file! BOUM_BOUM_YULA
+        end
+        @alive= AudioFile.last
+
+        @dead.basename= 'bullshit'
+        @dead.save!
+        @scanner.init @location.reload
+      end
+
+      should "remove them" do
+        assert_difference %w[AudioFile.count Track.count Album.count], -1 do
+          @scanner.remove_dead_files!
+        end
+        assert_equal 1, @location.audio_files(true).size
+        assert_equal @alive, @location.audio_files.first
+      end
+
+      should "remove them as part of full scan" do
+        assert @location.audio_files.map(&:basename).include?('bullshit')
+        @scanner.scan @location
+        assert_equal ALL_MOCK_DATA_FILES.size, @location.audio_files(true).size
+        assert !@location.audio_files.map(&:basename).include?('bullshit')
       end
     end
 
