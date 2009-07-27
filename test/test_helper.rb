@@ -18,6 +18,7 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
   fixtures :all
   include FixtureAndTestHelpers
+  include RailsReflection
 
   FROZEN_CITY_TAGGED= "#{MOCK_DATA_DIR}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
   FROZEN_CITY_NOTAGS= "#{MOCK_DATA_DIR}/frozen city (no tags).mp3"
@@ -53,13 +54,6 @@ class ActiveSupport::TestCase
   end
   def assert_response_doesnt_include(str)
     assert !@response.body.include?(str), "Response shouldn't include #{str.inspect}"
-  end
-
-  def all_models
-    @@all_models||= (
-      Dir.glob('app/models/**/*.rb').each{|f| require f}
-      Object.constants.map{|c| eval c}.select{|c| c.respond_to? :table_name}
-    )
   end
 
   def table_counts
