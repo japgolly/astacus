@@ -11,6 +11,15 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       @scanner.init @location
     end
 
+    should "correctly derive the basename of files with utf8 filenames" do
+      assert_difference 'AudioFile.count' do
+        @scanner.scan_file! GOGO7188
+      end
+      af= AudioFile.last
+      assert_equal '06 - 雪が降らない街.mp3', af.basename
+      assert_equal "#{MOCK_DATA_DIR}/GO!GO!7188/Albums/2006 - パレード", af.dirname
+    end
+
     should "find audio files" do
       assert_same_elements ALL_MOCK_DATA_FILES, @scanner.files_in(mock_data_dir)
     end
@@ -162,7 +171,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
     should "record errors" do
       def @scanner.files_in(dir)
-        ['file_that_doesnt_exist1','file_that_doesnt_exist2']
+        ['file_that_doesnt_exist/1','file_that_doesnt_exist/2']
       end
       loc= locations(:mock_data_dir)
       assert_difference 'ScannerError.count', 2 do
@@ -170,7 +179,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       end
       se= ScannerError.last
       assert_equal loc, se.location
-      assert_equal 'file_that_doesnt_exist2', se.file
+      assert_equal 'file_that_doesnt_exist/2', se.file
       assert_match /No such file or directory/, se.err_msg
     end
 

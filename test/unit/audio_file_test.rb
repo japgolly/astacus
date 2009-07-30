@@ -9,6 +9,7 @@ class AudioFileTest < ActiveSupport::TestCase
     should_validate_presence_of attr
   }
   should_validate_positive_numericality_of :size
+  should_not_allow_values_for :basename, '2006 - パレード/06 - 雪が降らない街.mp3'#, :message => 'must be greater than or equal to 0'
 
   context "An audio file" do
 

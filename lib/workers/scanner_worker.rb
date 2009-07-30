@@ -67,7 +67,9 @@ class ScannerWorker < BackgrounDRb::MetaWorker
   def scan_file!(file)
     AudioFile.transaction do
 
-      file_basename= File.basename(file)
+      file= File.expand_path(file)
+      raise "Unable to derive dirname and basename for #{file.inspect}" unless file =~ /\A(^.+)[\\\/](.+)$\Z/
+      file_dirname,file_basename= $1,$2
       filesize= File.size(file)
       tags= []
       a= AudioContent.new
@@ -134,7 +136,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       # Save audio file
       f= AudioFile.find_identical_or_create!({
         :audio_content => a,
-        :dirname => File.dirname(file),
+        :dirname => file_dirname,
         :basename => file_basename,
         :size => filesize,
         :location => @location,
