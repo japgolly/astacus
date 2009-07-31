@@ -1,0 +1,8 @@
+#!/bin/bash
+
+> log/development.log \
+  && script/backgroundrb start \
+  && script/server > log/out.txt
+
+script/backgroundrb stop
+
