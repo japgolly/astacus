@@ -3,7 +3,7 @@ require 'test_helper'
 class AlbumTest < ActiveSupport::TestCase
   should_belong_to :albumart
   should_belong_to :artist
-  should_have_many :cds
+  should_have_many :discs
   %w[artist name].each{|attr|
     should_validate_presence_of attr
   }
@@ -11,18 +11,18 @@ class AlbumTest < ActiveSupport::TestCase
     should_ensure_value_in_range attr, 0..(Date.today.year+1)
   }
 
-  test "has cds" do
-    assert_equal [cds(:'6doit_cd1'), cds(:'6doit_cd2')], albums(:'6doit').cds
+  test "has discs" do
+    assert_equal [discs(:'6doit_cd1'), discs(:'6doit_cd2')], albums(:'6doit').discs
   end
 
-  test "cds ordered" do
-    cd= cds(:'6doit_cd1')
-    cd.order_id= 2
-    cd.save!
-    assert_equal [cds(:'6doit_cd2'), cds(:'6doit_cd1')], albums(:'6doit').cds(true)
-    cd.order_id= 0
-    cd.save!
-    assert_equal [cds(:'6doit_cd1'), cds(:'6doit_cd2')], albums(:'6doit').cds(true)
+  test "discs ordered" do
+    disc= discs(:'6doit_cd1')
+    disc.order_id= 2
+    disc.save!
+    assert_equal [discs(:'6doit_cd2'), discs(:'6doit_cd1')], albums(:'6doit').discs(true)
+    disc.order_id= 0
+    disc.save!
+    assert_equal [discs(:'6doit_cd1'), discs(:'6doit_cd2')], albums(:'6doit').discs(true)
   end
 
   test "belongs to artist" do

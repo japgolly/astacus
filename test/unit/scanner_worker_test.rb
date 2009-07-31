@@ -40,7 +40,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         @af_count= AudioFile.count
         @at_count= AudioTag.count
         @track_count= Track.count
-        @cd_count= Cd.count
+        @disc_count= Disc.count
         @album_count= Album.count
         @artist_count= Artist.count
         @image_count= Image.count
@@ -94,17 +94,17 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       should "create a new track" do
         assert_equal @track_count+1, Track.count
         assert_equal @album_count+1, Album.count
-        assert_equal @cd_count+1, Cd.count
+        assert_equal @disc_count+1, Disc.count
         assert_equal @artist_count, Artist.count
         t= Track.last
         assert_equal '凍てついた街', t.name
         assert_equal 2, t.tn
         assert_equal @f, t.audio_file
-        assert_nil t.cd.name
-        assert_equal 0, t.cd.order_id
-        assert_equal 'メフィストフェレスの肖像', t.cd.album.name
-        assert_equal 1996, t.cd.album.year
-        assert_equal '聖飢魔II', t.cd.album.artist.name
+        assert_nil t.disc.name
+        assert_equal 0, t.disc.order_id
+        assert_equal 'メフィストフェレスの肖像', t.disc.album.name
+        assert_equal 1996, t.disc.album.year
+        assert_equal '聖飢魔II', t.disc.album.artist.name
         assert_equal 2, t.audio_tags.size
       end
 
@@ -216,30 +216,30 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       end
     end # context
 
-    context "when scanning files with cds" do
-      should "create a cd row if a new cd" do
-        # Cd 1
-        assert_difference 'Cd.count' do
+    context "when scanning files with discs" do
+      should "create a disc row if a new disc" do
+        # Disc 1
+        assert_difference 'Disc.count' do
           @scanner.scan_file! SEIKIMA_CD1_06
         end
-        cd= Cd.last
-        assert "CD 1", cd.name
-        assert 1, cd.order_id
+        disc= Disc.last
+        assert "Disc 1", disc.name
+        assert 1, disc.order_id
 
-        # Cd 2
-        assert_difference 'Cd.count' do
+        # Disc 2
+        assert_difference 'Disc.count' do
           @scanner.scan_file! SEIKIMA_CD2_08
         end
-        cd= Cd.last
-        assert "CD 2", cd.name
-        assert 2, cd.order_id
+        disc= Disc.last
+        assert "Disc 2", disc.name
+        assert 2, disc.order_id
       end
 
-      should "reuse an existing cd row if exists" do
-        assert_difference 'Cd.count' do
+      should "reuse an existing disc row if exists" do
+        assert_difference 'Disc.count' do
           @scanner.scan_file! SEIKIMA_CD1_06
         end
-        assert_difference 'Cd.count', 0 do
+        assert_difference 'Disc.count', 0 do
           @scanner.scan_file! SEIKIMA_CD1_13
         end
       end

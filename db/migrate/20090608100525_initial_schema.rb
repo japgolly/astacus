@@ -17,7 +17,7 @@ class InitialSchema < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :cds do |t|
+    create_table :discs do |t|
       t.references :album, :null => false
       t.references :album_type
       t.string :name
@@ -26,7 +26,7 @@ class InitialSchema < ActiveRecord::Migration
     end
 
     create_table :tracks do |t|
-      t.references :cd, :null => false
+      t.references :disc, :null => false
       t.integer :tn
       t.string :name, :null => false
       t.integer :length
@@ -36,7 +36,7 @@ class InitialSchema < ActiveRecord::Migration
 
   def self.down
     drop_table :tracks
-    drop_table :cds
+    drop_table :discs
     drop_table :albums
     drop_table :artists
     drop_table :album_types

@@ -1,7 +1,7 @@
 class Album < ActiveRecord::Base
   belongs_to :albumart, :class_name => "Image"
   belongs_to :artist
-  has_many :cds, :order => :order_id
+  has_many :discs, :order => :order_id
 
   validates_presence_of :artist, :name
   validates_inclusion_of :year, :allow_nil => true, :in => 0..(Date.today.year+1)
@@ -16,7 +16,7 @@ class Album < ActiveRecord::Base
   # Updates the albumart for this album based on the albumart in the tags in the
   # album's tracks.
   def update_albumart!
-    all= cds.map{|cd| cd.tracks.map{|t| t.audio_file.audio_tags.map(&:albumart)}}.flatten
+    all= discs.map{|d| d.tracks.map{|t| t.audio_file.audio_tags.map(&:albumart)}}.flatten
     all.delete nil
     all= all.inject({}){|h,a| h[a]||=0; h[a]+= 1; h}
     max= all.values.max

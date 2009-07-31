@@ -1,4 +1,4 @@
-class Cd < ActiveRecord::Base
+class Disc < ActiveRecord::Base
   has_many :tracks, :order => :tn
   belongs_to :album
   belongs_to :album_type
@@ -9,6 +9,6 @@ class Cd < ActiveRecord::Base
   acts_as_unique
 
   after_destroy do |r|
-    r.album.destroy if r.album.cds.empty?
+    r.album.destroy if r.album.discs.empty?
   end
 end

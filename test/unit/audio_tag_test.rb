@@ -30,8 +30,8 @@ class AudioTagTest < ActiveSupport::TestCase
       assert_equal 8, @at.tn
     end
 
-    should "understand consolidated cd fields" do
-      assert_equal 2, @at.cd
+    should "understand consolidated disc fields" do
+      assert_equal 2, @at.disc
     end
   end
 
@@ -59,8 +59,8 @@ class AudioTagTest < ActiveSupport::TestCase
       assert_equal 8, @at.tn
     end
 
-    should "understand consolidated cd fields" do
-      assert_equal 2, @at.cd
+    should "understand consolidated disc fields" do
+      assert_equal 2, @at.disc
     end
   end
 

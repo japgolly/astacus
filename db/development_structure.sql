@@ -98,7 +98,7 @@ CREATE TABLE `bdrb_job_queues` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `cds` (
+CREATE TABLE `discs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `album_id` int(11) NOT NULL,
   `album_type_id` int(11) DEFAULT NULL,
@@ -107,8 +107,8 @@ CREATE TABLE `cds` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_cds_on_album_id_and_order_id` (`album_id`,`order_id`),
-  KEY `index_cds_on_album_type_id` (`album_type_id`)
+  KEY `index_discs_on_album_id_and_order_id` (`album_id`,`order_id`),
+  KEY `index_discs_on_album_type_id` (`album_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `images` (
@@ -162,7 +162,7 @@ CREATE TABLE `schema_migrations` (
 
 CREATE TABLE `tracks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cd_id` int(11) NOT NULL,
+  `disc_id` int(11) NOT NULL,
   `tn` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL,

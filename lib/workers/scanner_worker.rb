@@ -182,7 +182,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
   def process_tag(tag, albums, audio_file)
     return false unless tag.useable?
 
-    # Create artist/album/cd/track
+    # Create artist/album/disc/track
     artist= Artist.find_identical_or_create! :name => tag.artist
     album= Album.find_identical_or_create!({
       :artist => artist,
@@ -190,14 +190,14 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       :year => tag.year,
     })
     albums<< album
-    cd_attr= case tag.cd
+    disc_attr= case tag.disc
       when nil    then {:order_id => 0}
-      when Fixnum then {:order_id => tag.cd, :name => "CD #{tag.cd}"}
-      else raise "Unsupported cd type: #{tag.cd.inspect}"
+      when Fixnum then {:order_id => tag.disc, :name => "Disc #{tag.disc}"}
+      else raise "Unsupported disc type: #{tag.disc.inspect}"
       end
-    cd= Cd.find_identical_or_create!({:album => album}.merge cd_attr)
+    disc= Disc.find_identical_or_create!({:album => album}.merge disc_attr)
     track= Track.find_identical_or_create!({
-      :cd => cd,
+      :disc => disc,
       :name => tag.track,
       :tn => tag.tn,
       :audio_file => audio_file,
