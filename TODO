@@ -7,16 +7,6 @@ what about when ape/id3 tags differ - should create 2 tracks with same AF
 Fix: large insert SQLs going into log files
 Fix: backgroundrb spams logs. Can we shut it up?
 
-FEATURES
-========
-* Show albums by date added
-* Add tags to albums
-* Show stats by location label
-* Show stats by age buckets
-* Show stats over time (i.e. graph)
-* Show length/song count by artist
-* Show list of albums missing albumart
-
 LOCATIONS
 =========
 (2) Rescan in background
@@ -40,3 +30,8 @@ WARNINGS
 * album replaygain different between cd tracks
 * Missing tracks (eg. 1,2,6,7,8)
 * Albums without albums art
+
+FUTURE FEATURES
+===============
+* Show stats by age buckets
+* Show stats over time (i.e. graph)
