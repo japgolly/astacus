@@ -99,6 +99,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         t= Track.last
         assert_equal '凍てついた街', t.name
         assert_equal 2, t.tn
+        assert_equal 2.93615, t.length
         assert_equal @f, t.audio_file
         assert_nil t.disc.name
         assert_equal 0, t.disc.order_id
