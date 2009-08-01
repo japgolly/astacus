@@ -40,4 +40,8 @@ module ApplicationHelper
     res= "#{res} (#{format v} bytes)" if display_exact_also and v >= 1.kilobytes
     res
   end
+
+  def format_mmss(length)
+    "%d:%02d" % [length / 60, length % 60]
+  end
 end

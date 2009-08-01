@@ -12,7 +12,15 @@ class Track < ActiveRecord::Base
     r.disc.destroy if r.disc.tracks.empty?
   end
 
+  def bitrate
+    audio_file.audio_content.bitrate
+  end
+
   def length
     audio_file.audio_content.length
+  end
+
+  def size
+    audio_file.size
   end
 end

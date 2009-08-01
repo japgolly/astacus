@@ -37,4 +37,11 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal '1.00 GB (1,073,741,824 bytes)', format_bytes(1.gigabyte)
     assert_equal '1.000 TB (1,099,511,627,776 bytes)', format_bytes(1.terabyte)
   end
+
+  def test_format_mmss
+    assert_equal '0:00', format_mmss(0)
+    assert_equal '0:17', format_mmss(17.3)
+    assert_equal '1:36', format_mmss(96)
+    assert_equal '140:03', format_mmss(60.0 * 140 + 3.1)
+  end
 end
