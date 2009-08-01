@@ -7,7 +7,8 @@
     font-style:italic; width:200px; height:210px; color:#666
 }
 .album_obj .artist {font-weight:bold; font-size:24px}
-.album_obj .album {font-weight:bold; font-size:22px}
+.album_obj .album {font-weight:bold; font-size:22px; color:#e82222}
+.album_obj .year {padding-left:8px; color:#322}
 
 .discs {margin-top:16px}
 .discs td {font-size:11px}
