@@ -13,11 +13,13 @@
 .discs td {font-size:11px}
 .discs .sep {width:16px}
 .discs .titles td {font-weight:bold}
-.discs td.tracks {border-top:solid 1px #222; width:260px}
+.discs td.tracks {border-top:solid 1px #222}
+.discs tr.single td.tracks {min-width:260px; max-width:/*260*2+16(sep)*/536px}
+.discs tr.double td.tracks {width:260px}
 .discs table.tracks {width:100%}
 .discs .tracks td {font-size:10px}
 .discs .tracks .alt1 td {background:#e4e8ff}
 .discs .track td {padding:1px}
 .discs .tracks .tn {width:16px}
-.discs .tracks .len {text-align:right; padding-left:8px}
+.discs .tracks .len {text-align:right; padding-left:10px}
 .discs .summary {text-align:right; font-style:italic; border-top:solid 1px #222}
