@@ -1,8 +1,18 @@
 #!/bin/bash
 
-> log/development.log \
-  && script/backgroundrb start \
-  && script/server > log/out.txt
+echo "Preparing to start..."
+script/backgroundrb status > /dev/null && script/backgroundrb stop
+rake tmp:clear log:clear || exit 1
+echo
 
+echo "Starting BackgrounDRb..."
+script/backgroundrb start || exit 1
+echo; echo
+
+echo "Starting server..."
+script/server > log/out.txt
+echo
+
+echo "Stopping BackgrounDRb..."
 script/backgroundrb stop
 
