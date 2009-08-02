@@ -19,7 +19,6 @@ class SearchQueryTest < ActiveSupport::TestCase
   }
 
   context "A search query object" do
-
     should "clean up params objects on assignment" do
       {
         {} => {},
