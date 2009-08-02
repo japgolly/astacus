@@ -160,6 +160,14 @@ CREATE TABLE `schema_migrations` (
   UNIQUE KEY `unique_schema_migrations` (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `search_queries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `params` text NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_search_queries_on_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `tracks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `disc_id` int(11) NOT NULL,
@@ -205,3 +213,5 @@ INSERT INTO schema_migrations (version) VALUES ('20090724093539');
 INSERT INTO schema_migrations (version) VALUES ('20090724221744');
 
 INSERT INTO schema_migrations (version) VALUES ('20090802102256');
+
+INSERT INTO schema_migrations (version) VALUES ('20090802153304');

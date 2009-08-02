@@ -10,44 +10,18 @@ class SearchController < ApplicationController
     }
 
     # Filter options
-    filter_options= {}
-    if params[:artist]
-      add_to_array_param filter_options, :joins, :artist
-      add_conditions filter_options, 'upper(artists.name) LIKE upper(?)', "%#{params[:artist]}%"
-    end
-    if params[:album]
-      add_conditions filter_options, 'upper(albums.name) LIKE upper(?)', "%#{params[:album]}%"
-    end
-    if params[:track]
-      add_to_array_param filter_options, :joins, {:discs => :tracks}
-      add_conditions filter_options, 'upper(tracks.name) LIKE upper(?)', "%#{params[:track]}%"
-    end
-    options.deep_merge! filter_options
+    query_params= params.symbolize_keys
+    query_params.delete :page
+    query_params.delete :action
+    query_params.delete :controller
+    sq= SearchQuery.new(:params => query_params)
+    options.deep_merge! sq.to_find_options
 
     # Sort options
-    add_to_array_param options, :joins, :artist
+    sq.add_associations! options, :joins, :artist
     options.merge! :order => 'artists.name, albums.year, albums.name'
 
     # Get results
     @albums= Album.paginate(options)
   end
-
-  private
-    def add_to_array_param(hash, key, value)
-      if hash[key]
-        hash[key]= [hash[key]] unless hash[key].is_a?(Array)
-        hash[key]<< value unless hash[key].include?(value)
-      else
-        hash[key]= [value]
-      end
-    end
-
-    def add_conditions(hash, sql, *params)
-      if hash[:conditions]
-        hash[:conditions][0]+= " AND #{sql}"
-        hash[:conditions].concat params
-      else
-        hash[:conditions]= [sql, *params]
-      end
-    end
 end
