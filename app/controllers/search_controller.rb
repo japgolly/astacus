@@ -10,15 +10,11 @@ class SearchController < ApplicationController
     }
 
     # Filter options
-    query_params= params.symbolize_keys
-    query_params.delete :page
-    query_params.delete :action
-    query_params.delete :controller
-    sq= SearchQuery.new(:params => query_params)
+    sq= SearchQuery.new(:params => params)
     options.deep_merge! sq.to_find_options
 
     # Sort options
-    sq.add_associations! options, :joins, :artist
+    SearchQuery.add_associations! options, :joins, :artist
     options.merge! :order => 'artists.name, albums.year, albums.name'
 
     # Get results
