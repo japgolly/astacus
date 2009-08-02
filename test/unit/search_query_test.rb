@@ -8,7 +8,7 @@ class SearchQueryTest < ActiveSupport::TestCase
   include SearchQueryFilterResults
   ALBUM_FILTERS.each{|params,albums|
     class_eval <<-EOB
-      test "filter by #{params.keys.map(&:to_s).sort.join ' and '}" do
+      test "filter by #{params.map{|k,v|"#{k} #{v}"}.sort.join ' and '}" do
         sq= SearchQuery.new(:params => #{params.inspect})
         options= {:select => 'distinct albums.*'}
         options.merge! sq.to_find_options
@@ -26,6 +26,19 @@ class SearchQueryTest < ActiveSupport::TestCase
         {:book=>'1','artist'=>'2',:album=>'3'} => {:artist=>'2',:album=>'3'},
         {:book=>'1','artist'=>'2',:album=>nil} => {:artist=>'2'},
       }.each{|before,after|
+        assert_equal after, SearchQuery.new(:params => before).params
+      }
+    end
+    should "clean up int params" do
+      {
+        '1996' => '1996',
+        ' 1996 ' => '1996',
+        ' 1996 -  2002  ,2009' => '1996-2002, 2009',
+        '2001,2003,2010-2008' => '2001, 2003, 2008-2010',
+        '2001,2003,2009-2009' => '2001, 2003, 2009',
+      }.each{|before,after|
+        before= {:year => before}
+        after= {:year => after}
         assert_equal after, SearchQuery.new(:params => before).params
       }
     end

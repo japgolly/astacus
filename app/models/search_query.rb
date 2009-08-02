@@ -11,10 +11,24 @@ class SearchQuery < ActiveRecord::Base
     @options
   end
 
+  # TODO Test with bad params
   def params=(params)
     if params
       raise "Invalid type of params object. Hash expected but was #{params.class}." unless params.is_a?(Hash)
       params= params.symbolize_keys.reject{|k,v| !VALID_PARAMS.include?(k) or v.blank?}
+      if params[:year] # TODO Hardcoded omg
+        params[:year]= params[:year].gsub(/\s+/,'').gsub(',',', ') \
+          .gsub(/(\d+)\-(\d+)/){|f|
+            a,b=$1.to_i,$2.to_i
+            if a == b
+              a.to_s
+            elsif b < a
+              "#{b}-#{a}"
+            else
+              f
+            end
+          }
+      end
     end
     write_attribute :params, params
   end
@@ -30,6 +44,10 @@ class SearchQuery < ActiveRecord::Base
     add_text_condition 'albums.name', v
   end
 
+  def process_param_year(v)
+    add_int_condition 'albums.year', v
+  end
+
   def process_param_track(v)
     add_associations :joins, {:discs => :tracks}
     add_text_condition 'tracks.name', v
@@ -38,6 +56,37 @@ class SearchQuery < ActiveRecord::Base
   private
     def add_text_condition(field, v)
       add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
+    end
+
+    def add_int_condition(field, value_str)
+      sql= []
+      params= []
+      value_str.split(', ').each{|v|
+        case v
+        when /^\d+$/
+          sql<< "#{field} = ?"
+          params<< v
+        when /^(\d+)\-(\d+)$/
+          sql<< "#{field} between ? and ?"
+          params<< $1
+          params<< $2
+        when /^\-(\d+)$/, /^\<\=(\d+)$/, /^\=\<(\d+)$/
+          sql<< "#{field} <= ?"
+          params<< $1
+        when /^(\d+)\+$/, /^(\d+)\>\=$/, /^(\d+)\=\>$/
+          sql<< "#{field} >= ?"
+          params<< $1
+        when /^\<(\d+)$/
+          sql<< "#{field} < ?"
+          params<< $1
+        when /^(\d+)\>$/
+          sql<< "#{field} > ?"
+          params<< $1
+        else
+          raise "Cannot process integer field: #{v.inspect}"
+        end
+      }
+      add_conditions "(#{sql.join ' OR '})", *params
     end
 
   # ============================== Constants ==============================

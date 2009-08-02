@@ -34,7 +34,7 @@ class SearchControllerTest < ActionController::TestCase
   include SearchQueryFilterResults
   ALBUM_FILTERS.each{|params,albums|
     class_eval <<-EOB
-      context "Search filtered by #{params.keys.map(&:to_s).sort.join ' and '}" do
+      context "Search filtered by #{params.map{|k,v|"#{k} #{v}"}.sort.join ' and '}" do
         setup {get :search, #{params.inspect}}
         should_pass_common_assertions
         should "filter its results appropriately" do
