@@ -19,9 +19,11 @@ end
 
 class FixtureExtractor
   include RailsReflection
+  OUTPUT_DIR= "#{RAILS_ROOT}/test/fixtures/extracted"
   
   def do_it!
     ActiveRecord::Base.establish_connection
+    Dir.mkdir(OUTPUT_DIR) unless File.exists?(OUTPUT_DIR)
     @names= {}
 
     @table_map= all_models.inject({}){|map,model| map[model.table_name]= model; map}
@@ -36,13 +38,16 @@ class FixtureExtractor
       objs= model.find(:all)
 
       # Analyse associations
-      # TODO has_and_belongs_to_many
       cols_to_ignore= %[created_at updated_at id]
       belongs_to_associations= {}
+      habtm_associations= {}
       model.reflections.each{|name,details|
-        if details.macro == :belongs_to
+        case details.macro
+        when :belongs_to
           belongs_to_associations[name]= details
           cols_to_ignore<< details.primary_key_name
+        when :has_and_belongs_to_many
+          habtm_associations[name]= details if model == Track # TODO has_and_belongs_to_many only enabled for Track
         end
       }
 
@@ -50,18 +55,21 @@ class FixtureExtractor
         rec= {}
         obj.attributes.each{|k,v|
           unless cols_to_ignore.include?(k) or v.nil?
-            rec[k]= v #.safe_to_i.safe_to_f
+            rec[k]= v
           end
         }
         belongs_to_associations.each{|name,details|
           a= obj.send(name)
           rec[name.to_s]= name_fixture_row(a) if a
         }
+        habtm_associations.each{|name,details|
+          coll= obj.send(name)
+          rec[name.to_s]= coll.map{|a| name_fixture_row(a)} unless coll.empty?
+        }
         row_name= name_fixture_row(obj)
-#        p ["rec", rec]
         fixture[row_name]= rec
       }
-      File.open("#{RAILS_ROOT}/test/fixtures/#{table_name}.yml", 'w') do |file|
+      File.open("#{OUTPUT_DIR}/#{table_name}.yml", 'w') do |file|
         file.write fixture.ya2yaml.sub(/\A---\s+/m,'')
       end
     end
@@ -78,11 +86,11 @@ class FixtureExtractor
     # Generate a name
     name= case model.to_s
     when AudioContent.to_s
-      if obj.audio_files.size == 1
-        normalise_for_name obj.audio_files[0].basename.gsub(/^\d+? ?[\.-]\s*|\.[^\.]{1,5}$/,'')
-      end
+      normalise_for_name obj.audio_files[0].basename.gsub(/^\d+? ?[\.-]\s*|\.[^\.]{1,5}$/,'') if obj.audio_files.size == 1
     when AudioFile.to_s
       normalise_for_name obj.basename.gsub(/^\d+? ?[\.-]\s*|\.[^\.]{1,5}$/,'')
+    when AudioTag.to_s
+      normalise_for_name "#{obj.tracks[0].name}_#{obj.format}" if obj.tracks.size == 1
     when Artist.to_s, Album.to_s, Track.to_s
       normalise_for_name obj.name
     when Disc.to_s
@@ -90,7 +98,7 @@ class FixtureExtractor
       name= "#{name}_#{obj.order_id}" unless obj.order_id == 0
       name
     when Image.to_s
-      normalise_for_name(obj.albums[0].name) if obj.albums.size > 1
+      normalise_for_name(obj.albums[0].name) unless obj.albums.empty?
     end
     name||= model.table_name.singularize
 
