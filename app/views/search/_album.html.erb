@@ -1,17 +1,17 @@
 <table class="album_obj">
 <tr>
   <td class="albumart">
-    <% if album.albumart_id %>
+    <% if album.albumart_id -%>
       <img alt="" src="<%= image_url(:id => album.albumart_id) -%>"/>
-    <% else %>
+    <% else -%>
       <table class="none"><tr><td>
         Album cover not available.
       </td></tr></table>
-    <% end %>
+    <% end -%>
   </td>
   <td class="details">
-    <div class="artist"><%= h album.artist.name %></div>
-    <div class="album"><%= h album.name %><%= %! <span class="year">(#{album.year})</span>! if album.year -%></div>
+    <div class="artist"><%= h album.artist.name -%></div>
+    <div class="album"><%= h album.name -%><%= %! <span class="year">(#{album.year})</span>! if album.year -%></div>
     <%= render :partial => 'discs', :object => album.discs %>
   </td>
 </tr>

@@ -1,49 +1,49 @@
 <table class="discs">
-  <% first_cd_row= true %>
-  <% discs.in_groups_of(2,false) do |batch_of_discs| %>
-  <% tr_class= batch_of_discs.size == 1 ? 'single' : 'double' %>
+  <% first_cd_row= true -%>
+  <% discs.in_groups_of(2,false) do |batch_of_discs| -%>
+  <% tr_class= batch_of_discs.size == 1 ? 'single' : 'double' -%>
 
   <%# ===== Disc titles ===== %>
-  <% if discs.size > 1 %>
+  <% if discs.size > 1 -%>
     <% non_first_disc_row= first_cd_row ? first_cd_row= nil : 'non_first_disc_row' %>
     <tr class="<%= tr_class -%> <%= non_first_disc_row -%> titles">
-      <% batch_of_discs.each_with_index do |disc,i| %>
-      <%= empty_cell_unless_first i, :sep %>
-      <td><%= h disc.name %></td>
-      <% end %>
+      <% batch_of_discs.each_with_index do |disc,i| -%>
+        <%= empty_cell_unless_first i, :sep %>
+        <td><%= h disc.name -%></td>
+      <% end -%>
     </tr>
-  <% end %>
+  <% end -%>
 
   <%# ===== Disc tracks ===== %>
   <tr class="<%= tr_class -%> tracks">
-    <% batch_of_discs.each_with_index do |disc,i| %>
+    <% batch_of_discs.each_with_index do |disc,i| -%>
     <%= empty_cell_unless_first i, :sep %>
     <td class="tracks">
       <table class="tracks">
-        <% alt= 1 %>
-        <% disc.tracks.each do |track| %>
+        <% alt= 1 -%>
+        <% disc.tracks.each do |track| -%>
         <tr class="track alt<%= alt^=1 -%>">
           <td class="tn"><%= "%02d" % [track.tn] -%>.</td>
           <td class="name"><%= h track.name -%></td>
           <td class="len"><%= format_mmss track.length -%></td>
         </tr>
-        <% end %>
+        <% end -%>
       </table>
     </td>
-    <% end %>
+    <% end -%>
   </tr>
 
   <%# ===== Disc summaries ===== %>
   <tr class="<%= tr_class -%> summaries">
-    <% batch_of_discs.each_with_index do |disc,i| %>
-    <%= empty_cell_unless_first i, :sep %>
-    <td class="summary">
-      <%= format_mmss disc.length %>,
-      <%= format_bytes disc.size, false -%>,
-      <%= disc.formats.map(&:upcase).join('/') -%>,
-      <%= disc.avg_bitrate -%> kbps
-    </td>
-    <% end %>
+    <% batch_of_discs.each_with_index do |disc,i| -%>
+      <%= empty_cell_unless_first i, :sep %>
+      <td class="summary">
+        <%= format_mmss disc.length -%>,
+        <%= format_bytes disc.size, false -%>,
+        <%= disc.formats.map(&:upcase).join('/') -%>,
+        <%= disc.avg_bitrate -%> kbps
+      </td>
+    <% end -%>
   </tr>
-  <% end %>
+  <% end -%>
 </table>
