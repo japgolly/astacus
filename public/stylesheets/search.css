@@ -13,6 +13,7 @@
 .discs {margin-top:16px}
 .discs td {font-size:11px}
 .discs .sep {width:16px}
+.discs .non_first_disc_row td {padding-top:14px}
 .discs .titles td {font-weight:bold}
 .discs td.tracks {border-top:solid 1px #222}
 .discs tr.single td.tracks {min-width:260px; max-width:/*260*2+16(sep)*/536px}
