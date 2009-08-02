@@ -32,6 +32,9 @@ WARNINGS
 * Missing tracks (eg. 1,2,6,7,8)
 * Albums without albums art
 * Dirs with multiple artist tags
+* Discs split across multiple dirs (disc:dir should be 1:1)
+* Make sure that max tracks/discs is correct
+* Check replaygain
 
 FUTURE FEATURES
 ===============
