@@ -2,11 +2,14 @@ require 'autotest/timestamp'
 require 'redgreen/autotest'
 require 'autotest/restart'
 
-
 Autotest.add_hook :initialize do |at|
+  at.add_exception %r!^\./(?:\.git)!
 
   at.add_mapping %r%^lib/workers/(.*)_worker\.rb$% do |_, m|
     "test/unit/#{m[1]}_worker_test.rb"
   end
 
+  at.add_mapping %r!^test/search_query_filter_results\.rb$! do
+    ["test/unit/search_query_test.rb", "test/functional/search_controller_test.rb"]
+  end
 end

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'search_query_filter_results'
 
 class SearchControllerTest < ActionController::TestCase
 
@@ -30,40 +31,16 @@ class SearchControllerTest < ActionController::TestCase
     end
   end
 
-  context "Search filtered by artist" do
-    setup {get :search, :artist => 'RCupIN'}
-    should_pass_common_assertions
-    should "filter its results appropriately" do
-      assert_same_named_elements artists(:porcupine_tree).albums, assigns(:albums)
-    end
-  end
-
-  context "Search filtered by album name" do
-    setup {get :search, :album => 'in'}
-    should_pass_common_assertions
-    should "filter its results appropriately" do
-      assert_same_named_elements [albums(:'6doit'),albums(:in_absentia)], assigns(:albums)
-    end
-  end
-
-  context "Search filtered by artist and album name" do
-    setup {get :search, :album => 'in', :artist => 'dream'}
-    should_pass_common_assertions
-    should "filter its results appropriately" do
-      assert_same_named_elements [albums(:'6doit')], assigns(:albums)
-    end
-  end
-
-  context "Search filtered by track name" do
-    setup {get :search, :track => 'y'}
-    should_pass_common_assertions
-    should "filter its results appropriately" do
-      assert_same_named_elements [albums(:still_life),albums(:in_absentia)], assigns(:albums)
-    end
-  end
-
-  def assert_same_named_elements(expected, actual)
-    assert_same_elements expected.map(&:name), actual.map(&:name)
-    assert_same_elements expected, actual
-  end
+  include SearchQueryFilterResults
+  ALBUM_FILTERS.each{|params,albums|
+    class_eval <<-EOB
+      context "Search filtered by #{params.keys.map(&:to_s).sort.join ' and '}" do
+        setup {get :search, #{params.inspect}}
+        should_pass_common_assertions
+        should "filter its results appropriately" do
+          assert_same_named_elements [#{albums.map{|a| "albums('#{a}')"}.join(',')}], assigns(:albums)
+        end
+      end
+    EOB
+  }
 end

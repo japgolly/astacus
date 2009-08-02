@@ -1,10 +1,25 @@
 require 'test_helper'
+require 'search_query_filter_results'
 
 class SearchQueryTest < ActiveSupport::TestCase
   should_validate_presence_of :name
   should_validate_presence_of :params
 
+  include SearchQueryFilterResults
+  ALBUM_FILTERS.each{|params,albums|
+    class_eval <<-EOB
+      test "filter by #{params.keys.map(&:to_s).sort.join ' and '}" do
+        sq= SearchQuery.new(:params => #{params.inspect})
+        options= {:select => 'distinct albums.*'}
+        options.merge! sq.to_find_options
+        albums= Album.find(:all,options)
+        assert_same_named_elements [#{albums.map{|a| "albums('#{a}')"}.join(',')}], albums
+      end
+    EOB
+  }
+
   context "A search query object" do
+
     should "clean up params objects on assignment" do
       {
         {} => {},

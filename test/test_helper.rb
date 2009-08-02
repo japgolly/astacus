@@ -52,6 +52,11 @@ class ActiveSupport::TestCase
   def count_audio_tags_tracks
     ActiveRecord::Base.connection.select_value('select count(*) from audio_tags_tracks').to_i
   end
+
+  def assert_same_named_elements(expected, actual)
+    assert_same_elements expected.map(&:name), actual.map(&:name)
+    assert_same_elements expected, actual
+  end
 end
 
 class ActionController::TestCase
