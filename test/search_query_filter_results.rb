@@ -15,6 +15,9 @@ module SearchQueryFilterResults
       {:year => '1994,2002'} => %w[ponk 6doit in_absentia],
       {:year => '-1990, 1994, 2000+'} => %w[ponk 6doit in_absentia],
       {:year => '1992-1995, 1990, 2002'} => %w[ponk 6doit in_absentia],
+
+      {:albumart => '0'} => %w[6doit still_life],
+      {:albumart => '1'} => %w[ponk in_absentia],
     }.freeze
   end
 end

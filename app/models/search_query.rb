@@ -53,6 +53,10 @@ class SearchQuery < ActiveRecord::Base
     add_text_condition 'tracks.name', v
   end
 
+  def process_param_albumart(v)
+    add_conditions "albums.albumart_id IS #{'NOT' if v == '1'} NULL"
+  end
+
   private
     def add_text_condition(field, v)
       add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
