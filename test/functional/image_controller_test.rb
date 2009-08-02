@@ -16,6 +16,7 @@ class ImageControllerTest < ActionController::TestCase
       assert_equal 'image/jpeg', h['Content-Type']
       assert_equal @img.size.to_s, h['Content-Length'].to_s
       assert_equal %!inline; filename="#{@img.id}.jpg"!, h['Content-Disposition']
+      assert_equal 'binary', h['Content-Transfer-Encoding']
     end
   end
 
@@ -33,6 +34,7 @@ class ImageControllerTest < ActionController::TestCase
       assert_equal 'image/png', h['Content-Type']
       assert_equal @img.size.to_s, h['Content-Length'].to_s
       assert_equal %!inline; filename="#{@img.id}.png"!, h['Content-Disposition']
+      assert_equal 'binary', h['Content-Transfer-Encoding']
     end
   end
 
