@@ -76,6 +76,8 @@ class AlbumTest < ActiveSupport::TestCase
     end
 
     should "use the most common albumart available" do
+      AudioTag.update_all 'albumart_id=NULL'
+      Album.update_all 'albumart_id=NULL'
       af= audio_files(:the_requiem)
       i1= Image.create(:data => 'a', :mimetype => 'a')
       i2= Image.create(:data => 'a', :mimetype => 'a')

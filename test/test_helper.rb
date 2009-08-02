@@ -43,19 +43,6 @@ class ActiveSupport::TestCase
     should_allow_values_for attr, 0, 100.megabytes
   end
 
-  def assert_response_matches(regex)
-    assert @response.body =~ regex, "Response should match #{regex.inspect}"
-  end
-  def assert_response_doesnt_match(regex)
-    assert @response.body !~ regex, "Response shouldn't match #{regex.inspect}"
-  end
-  def assert_response_includes(str)
-    assert @response.body.include?(str), "Response should include #{str.inspect}"
-  end
-  def assert_response_doesnt_include(str)
-    assert !@response.body.include?(str), "Response shouldn't include #{str.inspect}"
-  end
-
   def table_counts
     h= {}
     all_models.each{|t| h[t.to_s]= t.count}
@@ -64,5 +51,22 @@ class ActiveSupport::TestCase
 
   def count_audio_tags_tracks
     ActiveRecord::Base.connection.select_value('select count(*) from audio_tags_tracks').to_i
+  end
+end
+
+class ActionController::TestCase
+  attr_accessor :controller, :request, :response
+
+  def assert_response_matches(regex)
+    assert response.body =~ regex, "Response should match #{regex.inspect}"
+  end
+  def assert_response_doesnt_match(regex)
+    assert response.body !~ regex, "Response shouldn't match #{regex.inspect}"
+  end
+  def assert_response_includes(str)
+    assert response.body.include?(str), "Response should include #{str.inspect}"
+  end
+  def assert_response_doesnt_include(str)
+    assert !response.body.include?(str), "Response shouldn't include #{str.inspect}"
   end
 end

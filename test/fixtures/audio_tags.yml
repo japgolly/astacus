@@ -21,6 +21,7 @@ about_to_crash_id3:
 # ========== PONK ==========
 the_requiem_id3:
   audio_file: the_requiem
+  albumart: ponk
   format: id3
   version: 2.3.0
   offset: 0

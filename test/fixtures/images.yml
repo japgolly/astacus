@@ -1,3 +1,8 @@
+ponk:
+  data: <%= 'x' * 157 %>
+  mimetype: image/png
+  size: 157
+
 in_absentia: 
   data: !binary |
       /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcH
