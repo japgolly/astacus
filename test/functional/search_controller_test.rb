@@ -14,7 +14,7 @@ class SearchControllerTest < ActionController::TestCase
     setup {get :search}
     should_pass_common_assertions
     should "contain all albums" do
-      assert_same_elements Album.find(:all), assigns(:albums)
+      assert_same_named_elements Album.find(:all), assigns(:albums)
     end
     should "render album data" do
       assert_select '.albumart img'
@@ -34,7 +34,7 @@ class SearchControllerTest < ActionController::TestCase
     setup {get :search, :artist => 'RCupIN'}
     should_pass_common_assertions
     should "filter its results appropriately" do
-      assert_same_elements artists(:porcupine_tree).albums, assigns(:albums)
+      assert_same_named_elements artists(:porcupine_tree).albums, assigns(:albums)
     end
   end
 
@@ -42,7 +42,7 @@ class SearchControllerTest < ActionController::TestCase
     setup {get :search, :album => 'in'}
     should_pass_common_assertions
     should "filter its results appropriately" do
-      assert_same_elements [albums(:'6doit'),albums(:in_absentia)], assigns(:albums)
+      assert_same_named_elements [albums(:'6doit'),albums(:in_absentia)], assigns(:albums)
     end
   end
 
@@ -50,7 +50,20 @@ class SearchControllerTest < ActionController::TestCase
     setup {get :search, :album => 'in', :artist => 'dream'}
     should_pass_common_assertions
     should "filter its results appropriately" do
-      assert_same_elements [albums(:'6doit')], assigns(:albums)
+      assert_same_named_elements [albums(:'6doit')], assigns(:albums)
     end
+  end
+
+  context "Search filtered by track name" do
+    setup {get :search, :track => 'y'}
+    should_pass_common_assertions
+    should "filter its results appropriately" do
+      assert_same_named_elements [albums(:still_life),albums(:in_absentia)], assigns(:albums)
+    end
+  end
+
+  def assert_same_named_elements(expected, actual)
+    assert_same_elements expected.map(&:name), actual.map(&:name)
+    assert_same_elements expected, actual
   end
 end

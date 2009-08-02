@@ -4,6 +4,7 @@ class SearchController < ApplicationController
     options= {
       :page => params[:page] || 1,
       :per_page => 10,
+      :select => 'distinct albums.*',
       :include => [:artist, {:discs => {:tracks => {:audio_file => :audio_content}}}],
       :readonly => true,
     }
@@ -16,6 +17,10 @@ class SearchController < ApplicationController
     end
     if params[:album]
       add_conditions filter_options, 'upper(albums.name) LIKE upper(?)', "%#{params[:album]}%"
+    end
+    if params[:track]
+      add_to_array_param filter_options, :joins, {:discs => :tracks}
+      add_conditions filter_options, 'upper(tracks.name) LIKE upper(?)', "%#{params[:track]}%"
     end
     options.deep_merge! filter_options
 
