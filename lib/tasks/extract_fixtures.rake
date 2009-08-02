@@ -85,7 +85,7 @@ class FixtureExtractor
       normalise_for_name obj.basename.gsub(/^\d+? ?[\.-]\s*|\.[^\.]{1,5}$/,'')
     when Artist.to_s, Album.to_s, Track.to_s
       normalise_for_name obj.name
-    when Cd.to_s
+    when Disc.to_s
       name= normalise_for_name(obj.album.name)
       name= "#{name}_#{obj.order_id}" unless obj.order_id == 0
       name
