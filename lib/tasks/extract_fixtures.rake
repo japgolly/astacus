@@ -67,8 +67,10 @@ class FixtureExtractor
         fixture[row_name]= rec
       }
       # Create fixture file
+      yml= fixture.ya2yaml.sub(/\A---\s+/m,'')
+      yml= yml.split(/[\r\n]+/).reject{|l| l =~ /^\s*$/}.join("\n")+"\n"
       File.open("#{OUTPUT_DIR}/#{table_name}.yml", 'w') do |file|
-        file.write fixture.ya2yaml.sub(/\A---\s+/m,'')
+        file.write yml
       end
     end
   end
