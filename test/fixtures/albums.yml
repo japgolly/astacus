@@ -7,3 +7,14 @@ ponk:
   artist: seikima2
   name: PONK!!
   year: 1994
+
+in_absentia:
+  albumart: in_absentia
+  artist: porcupine_tree
+  name: In Absentia
+  year: 2002
+
+still_life:
+  artist: fates_warning
+  name: Still Life
+  year: 1998

@@ -1,3 +1,4 @@
+# ========== 6DOIT ==========
 glass_prison:
   size: 19980000
   md5: <%= 'a' * 16 %>
@@ -7,7 +8,6 @@ glass_prison:
   vbr: false
   samplerate: 44100
   length: 834 # 13:54
-
 misunderstood:
   size: 13500000
   md5: <%= 'b' * 16 %>
@@ -17,7 +17,6 @@ misunderstood:
   vbr: false
   samplerate: 44100
   length: 564 # 9:24
-
 about_to_crash:
   size: 8420000
   md5: <%= 'c' * 16 %>
@@ -28,6 +27,7 @@ about_to_crash:
   samplerate: 44100
   length: 352 # 5:52
 
+# ========== PONK ==========
 the_requiem:
   size: 11490000
   md5: <%= 'd' * 16 %>
@@ -37,3 +37,139 @@ the_requiem:
   vbr: true
   samplerate: 44100
   length: 372 # 6:12
+
+# ========== STILL LIFE ==========
+a_pleasant_shade_of_gray_i:
+  bitrate: 192
+  format: mp3
+  length: 129.463
+  md5: !binary |
+      M34hxKj6rQCVySXrGPVuMQ==
+  samplerate: 44100
+  sha2: !binary |
+      9V+ZJ03CmJiuTWGZTIkAkFjLRO5n5YdC/mCW7jM2iWBWbaoUDME4nayKaUFg
+      pqtNrqf9yml/pljHFX02/5QPaw==
+  size: 3107109
+  vbr: false
+a_pleasant_shade_of_gray_ii:
+  bitrate: 192
+  format: mp3
+  length: 215.719
+  md5: !binary |
+      EUV+uwEG5nnLNdTYfVvdVA==
+  samplerate: 44100
+  sha2: !binary |
+      hsUP7Q3E64CCvlHyer0XNCaWX0PnQD/fVnmV+ZqcRMEueHVY63ooZOptGwIM
+      LR/4kpeklcPO/Nu2MgtYDdhqIQ==
+  size: 5177261
+  vbr: false
+a_pleasant_shade_of_gray_x:
+  bitrate: 192
+  format: mp3
+  length: 71.262
+  md5: !binary |
+      f2ApNeYlWOlL1b6/kD884Q==
+  samplerate: 44100
+  sha2: !binary |
+      /yN75xWHpc6TySKKPwoJO6i9eI2rGAUB4nPOMEg6jJAeuns4uzMFHdN17FCS
+      F7kU3RjWAzqrNsWZoV4nWTCRmQ==
+  size: 1710289
+  vbr: false
+a_pleasant_shade_of_gray_xi:
+  bitrate: 192
+  format: mp3
+  length: 203.076
+  md5: !binary |
+      Kgb/nyI6JEj6X8n+inndTw==
+  samplerate: 44100
+  sha2: !binary |
+      lUD9MMPr1XV+vO5V1G7hxXkU6V+atCeX5IOVjB2u2JPzsfivWGx8gOJKJ4x5
+      weDNXRS/nD10amq89VN/XGmn6A==
+  size: 4873823
+  vbr: false
+a_pleasant_shade_of_gray_xii:
+  bitrate: 192
+  format: mp3
+  length: 451.318
+  md5: !binary |
+      gkryxrOs28WfJVeVAzxNkA==
+  samplerate: 44100
+  sha2: !binary |
+      WEKgKtT5F+yRSofmrJQUzeqQBVGh5Q8a48Y9voNqf6/PijmXhIjk4xQztP/J
+      RvB7jcCqFUO3TDdPdYmpYzuuFQ==
+  size: 10831621
+  vbr: false
+the_ivory_gate_of_dreams:
+  bitrate: 192
+  format: mp3
+  length: 1254.35
+  md5: !binary |
+      fTJPpIFwfvFq6vLHp8f+8w==
+  samplerate: 44100
+  sha2: !binary |
+      djULcWaCysuoVMcDHDKKuwXMrKv0ptxSClol2y5K6iJZ1AbgE/aSwKzHexFC
+      HNSbM5cGk7bIUJXv0z/vU3HxLw==
+  size: 30104347
+  vbr: false
+the_eleventh_hour:
+  bitrate: 192
+  format: mp3
+  length: 494.942
+  md5: !binary |
+      fn6SWNjAOn6FyvClkrdAuw==
+  samplerate: 44100
+  sha2: !binary |
+      L7G8JKRbRTYGvYQnXq47IdfvY+Rm4T+78TubmZQzZBMd+KuKtvkvcuywEg37
+      sRWiblUDWOk7X/JM4jtiyYWH1w==
+  size: 11878610
+  vbr: false
+
+# ========== IN ABSENTIA ==========
+blackest_eyes:
+  bitrate: 264
+  format: mp3
+  length: 263.654
+  md5: !binary |
+      M/XgTE/js1amYOYyDzyP3w==
+  samplerate: 44100
+  sha2: !binary |
+      4jBTsFORMquI88ELTcWmwYj+5pXpFULm5w+B/nooeYXeG6N860ONHv9eT85U
+      q/m0UHnZMe5RK6UR49ZoszEfPA==
+  size: 74378
+  vbr: true
+trains:
+  bitrate: 260
+  format: mp3
+  length: 356.467
+  md5: !binary |
+      LGMUFCwhznAcoMMDN6wiIw==
+  samplerate: 44100
+  sha2: !binary |
+      izc8yCy2XDZDg9zM1mqeYUtJbuEjgxKzka9TKGQWmMONcf6E/Q8a99TmvEZN
+      13705yA3+NkUPnAPSQnLGBdcug==
+  size: 74328
+  vbr: true
+lips_of_ashes:
+  bitrate: 246
+  format: mp3
+  length: 279.301
+  md5: !binary |
+      lJMeLDTaLO4M27k1A0l35A==
+  samplerate: 44100
+  sha2: !binary |
+      5nrzvi/xlV7bYJaShwlDhqHISUiB5KEEbgjcg4VHsANV1//Ab0oOUG7NH2tP
+      aQ3n4CQuf8A+dAV6J2ATulxhIg==
+  size: 74849
+  vbr: true
+the_sound_of_muzak:
+  bitrate: 260
+  format: mp3
+  length: 299.154
+  md5: !binary |
+      P1vC2Jg+zD0WiHlC1+gH3w==
+  samplerate: 44100
+  sha2: !binary |
+      Tifl+ISxBkkFDJ8uhJBgmMof8tqa0AT1eCdNdW27eBHx8SJWEBXyuO2O9f0e
+      9gvOHRhQ0C2efh+eYM+qctQMiw==
+  size: 75615
+  vbr: true

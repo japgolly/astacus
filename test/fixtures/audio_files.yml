@@ -1,17 +1,16 @@
+# ========== 6DOIT ==========
 glass_prison:
   audio_content: glass_prison
   dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
   basename: 01 - The Glass Prison.mp3
   size: 19989119
   location: main
-
 misunderstood:
   audio_content: misunderstood
   dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
   basename: 03 - Misunderstood.mp3
   size: 13507820
   location: main
-
 about_to_crash:
   audio_content: about_to_crash
   dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
@@ -19,9 +18,80 @@ about_to_crash:
   size: 8427118
   location: main
 
+# ========== PONK ==========
 the_requiem:
   audio_content: the_requiem
   dirname: /x/music/Music Collection/Japanese/聖飢魔II/Albums/1994 - Ponk!!
   basename: 07 - The Requiem.mp3
   size: 11494512
   location: main
+
+# ========== STILL LIFE ==========
+a_pleasant_shade_of_gray_i:
+  audio_content: a_pleasant_shade_of_gray_i
+  basename: 01 - A Pleasant Shade Of Gray I.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 1
+  location: main
+  size: 3108860
+a_pleasant_shade_of_gray_ii:
+  audio_content: a_pleasant_shade_of_gray_ii
+  basename: 02 - A Pleasant Shade Of Gray II.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 1
+  location: main
+  size: 5179014
+a_pleasant_shade_of_gray_x:
+  audio_content: a_pleasant_shade_of_gray_x
+  basename: 10 - A Pleasant Shade Of Gray X.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 2
+  location: main
+  size: 1712044
+a_pleasant_shade_of_gray_xi:
+  audio_content: a_pleasant_shade_of_gray_xi
+  basename: 11 - A Pleasant Shade Of Gray XI.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 2
+  location: main
+  size: 4875580
+a_pleasant_shade_of_gray_xii:
+  audio_content: a_pleasant_shade_of_gray_xii
+  basename: 12 - A Pleasant Shade of Gray XII.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 2
+  location: main
+  size: 10834006
+the_ivory_gate_of_dreams:
+  audio_content: the_ivory_gate_of_dreams
+  basename: 01 - The Ivory Gate Of Dreams.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 3
+  location: main
+  size: 30106094
+the_eleventh_hour:
+  audio_content: the_eleventh_hour
+  basename: 03 - The Eleventh Hour.mp3
+  dirname: /c/1/tmp/Fates Warning/Live Albums/1998 - Still Life/Disc 3
+  location: main
+  size: 11880343
+
+# ========== IN ABSENTIA ==========
+blackest_eyes:
+  audio_content: blackest_eyes
+  basename: 01 - Blackest Eyes.mp3
+  dirname: /c/1/tmp/2002 - In Absentia
+  location: main
+  size: 98897
+trains:
+  audio_content: trains
+  basename: 02 - Trains.mp3
+  dirname: /c/1/tmp/2002 - In Absentia
+  location: main
+  size: 98797
+lips_of_ashes:
+  audio_content: lips_of_ashes
+  basename: 03 - Lips Of Ashes.mp3
+  dirname: /c/1/tmp/2002 - In Absentia
+  location: main
+  size: 99839
+the_sound_of_muzak:
+  audio_content: the_sound_of_muzak
+  basename: 04 - The Sound Of Muzak.mp3
+  dirname: /c/1/tmp/2002 - In Absentia
+  location: main
+  size: 101371

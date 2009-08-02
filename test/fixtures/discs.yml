@@ -2,15 +2,31 @@
   album: 6doit
   album_type: std
   order_id: 0
-  name: CD 1
-
+  name: Disc 1
 6doit_cd2:
   album: 6doit
   album_type: std
   order_id: 1
-  name: CD 2
+  name: Disc 2
 
 ponk:
   album: ponk
   album_type: std
+  order_id: 0
+
+still_life_1:
+  album: still_life
+  name: Disc 1
+  order_id: 1
+still_life_2:
+  album: still_life
+  name: Disc 2
+  order_id: 2
+still_life_3:
+  album: still_life
+  name: Disc 3
+  order_id: 3
+
+in_absentia:
+  album: in_absentia
   order_id: 0

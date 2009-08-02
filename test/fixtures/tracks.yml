@@ -1,3 +1,4 @@
+# ========== 6DOIT ==========
 glass_prison:
   disc: 6doit_cd1
   audio_file: glass_prison
@@ -17,9 +18,98 @@ about_to_crash:
   name: 'Six Degrees Of Inner Turblence, Pt II: About To Crash'
   audio_tags: about_to_crash_id3
 
+# ========== PONK ==========
 the_requiem:
   disc: ponk
   audio_file: the_requiem
   tn: 7
   name: The Requiem
   audio_tags: the_requiem_id3, the_requiem_ape
+
+# ========== STILL LIFE ==========
+a_pleasant_shade_of_gray_i:
+  audio_file: a_pleasant_shade_of_gray_i
+  audio_tags:
+    - a_pleasant_shade_of_gray_i_id3
+    - a_pleasant_shade_of_gray_i_ape
+  disc: still_life_1
+  name: A Pleasant Shade Of Gray I
+  tn: 1
+a_pleasant_shade_of_gray_ii:
+  audio_file: a_pleasant_shade_of_gray_ii
+  audio_tags:
+    - a_pleasant_shade_of_gray_ii_id3
+    - a_pleasant_shade_of_gray_ii_ape
+  disc: still_life_1
+  name: A Pleasant Shade Of Gray II
+  tn: 2
+a_pleasant_shade_of_gray_x:
+  audio_file: a_pleasant_shade_of_gray_x
+  audio_tags:
+    - a_pleasant_shade_of_gray_x_id3
+    - a_pleasant_shade_of_gray_x_ape
+  disc: still_life_2
+  name: A Pleasant Shade Of Gray X
+  tn: 10
+a_pleasant_shade_of_gray_xi:
+  audio_file: a_pleasant_shade_of_gray_xi
+  audio_tags:
+    - a_pleasant_shade_of_gray_xi_id3
+    - a_pleasant_shade_of_gray_xi_ape
+  disc: still_life_2
+  name: A Pleasant Shade Of Gray XI
+  tn: 11
+a_pleasant_shade_of_gray_xii:
+  audio_file: a_pleasant_shade_of_gray_xii
+  audio_tags:
+    - a_pleasant_shade_of_gray_xii_id3
+    - a_pleasant_shade_of_gray_xii_ape
+  disc: still_life_2
+  name: A Pleasant Shade of Gray XII
+  tn: 12
+the_ivory_gate_of_dreams:
+  audio_file: the_ivory_gate_of_dreams
+  audio_tags:
+    - the_ivory_gate_of_dreams_id3
+    - the_ivory_gate_of_dreams_ape
+  disc: still_life_3
+  name: The Ivory Gate Of Dreams
+  tn: 1
+the_eleventh_hour:
+  audio_file: the_eleventh_hour
+  audio_tags:
+    - the_eleventh_hour_id3
+    - the_eleventh_hour_ape
+  disc: still_life_3
+  name: The Eleventh Hour
+  tn: 3
+
+# ========== IN ABSENTIA ==========
+blackest_eyes:
+  audio_file: blackest_eyes
+  audio_tags:
+    - blackest_eyes_id3
+  disc: in_absentia
+  name: Blackest Eyes
+  tn: 1
+trains:
+  audio_file: trains
+  audio_tags:
+    - trains_id3
+  disc: in_absentia
+  name: Trains
+  tn: 2
+lips_of_ashes:
+  audio_file: lips_of_ashes
+  audio_tags:
+    - lips_of_ashes_id3
+  disc: in_absentia
+  name: Lips Of Ashes
+  tn: 3
+the_sound_of_muzak:
+  audio_file: the_sound_of_muzak
+  audio_tags:
+    - the_sound_of_muzak_id3
+  disc: in_absentia
+  name: The Sound Of Muzak
+  tn: 4
