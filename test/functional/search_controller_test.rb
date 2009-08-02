@@ -37,4 +37,20 @@ class SearchControllerTest < ActionController::TestCase
       assert_same_elements artists(:porcupine_tree).albums, assigns(:albums)
     end
   end
+
+  context "Search filtered by album name" do
+    setup {get :search, :album => 'in'}
+    should_pass_common_assertions
+    should "filter its results appropriately" do
+      assert_same_elements [albums(:'6doit'),albums(:in_absentia)], assigns(:albums)
+    end
+  end
+
+  context "Search filtered by artist and album name" do
+    setup {get :search, :album => 'in', :artist => 'dream'}
+    should_pass_common_assertions
+    should "filter its results appropriately" do
+      assert_same_elements [albums(:'6doit')], assigns(:albums)
+    end
+  end
 end

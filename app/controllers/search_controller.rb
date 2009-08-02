@@ -12,7 +12,10 @@ class SearchController < ApplicationController
     filter_options= {}
     if params[:artist]
       add_to_array_param filter_options, :joins, :artist
-      filter_options[:conditions]= ['upper(artists.name) LIKE upper(?)', "%#{params[:artist]}%"]
+      add_conditions filter_options, 'upper(artists.name) LIKE upper(?)', "%#{params[:artist]}%"
+    end
+    if params[:album]
+      add_conditions filter_options, 'upper(albums.name) LIKE upper(?)', "%#{params[:album]}%"
     end
     options.deep_merge! filter_options
 
@@ -34,4 +37,12 @@ class SearchController < ApplicationController
       end
     end
 
+    def add_conditions(hash, sql, *params)
+      if hash[:conditions]
+        hash[:conditions][0]+= " AND #{sql}"
+        hash[:conditions].concat params
+      else
+        hash[:conditions]= [sql, *params]
+      end
+    end
 end
