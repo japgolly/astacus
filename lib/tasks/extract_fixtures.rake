@@ -5,37 +5,28 @@ Defaults to development database.  Set RAILS_ENV to override.'
 require File.join(File.dirname(__FILE__),"../../vendor/ya2yaml.rb")
 require 'lib/rails_reflection'
 
-class Ya2YAML
-  private
-	def is_one_plain_line?(str)
-		# YAML 1.1 / 4.6.11.
-		str !~ /^([\-\?:,\[\]\{\}\#&\*!\|>'"%@`\s]|---|\.\.\.)/    &&
-		str !~ /[:\#\r\n\t\[\]\{\},]/                              && # Changed \s to \r\n\t
-		str !~ /#{REX_ANY_LB}/                                     
-#		str !~ /^(#{REX_BOOL}|#{REX_FLOAT}|#{REX_INT}|#{REX_MERGE}
-#			|#{REX_NULL}|#{REX_TIMESTAMP}|#{REX_VALUE})$/x
-	end
-end
-
 class FixtureExtractor
   include RailsReflection
   OUTPUT_DIR= "#{RAILS_ROOT}/test/fixtures/extracted"
-  
+
+  # This is the entry point
   def do_it!
     ActiveRecord::Base.establish_connection
     Dir.mkdir(OUTPUT_DIR) unless File.exists?(OUTPUT_DIR)
     @names= {}
 
+    # Find tables/models to extract
     @table_map= all_models.inject({}){|map,model| map[model.table_name]= model; map}
     @table_map.delete "bdrb_job_queues"
     @table_map.delete "scanner_errors"
+    @table_map.delete "scanner_logs"
     tables= @table_map.keys.sort
 
+    # Extract each table
     tables.each_with_index do |table_name, table_index|
       puts "[#{table_index+1}/#{tables.size}] #{table_name}"
       model= @table_map[table_name]
       fixture= {}
-      objs= model.find(:all)
 
       # Analyse associations
       cols_to_ignore= %[created_at updated_at id]
@@ -51,24 +42,31 @@ class FixtureExtractor
         end
       }
 
+      # Start extraction...
+      objs= model.find(:all, :order => :id)
       objs.each{|obj|
         rec= {}
+        # Set simple attributes
         obj.attributes.each{|k,v|
           unless cols_to_ignore.include?(k) or v.nil?
             rec[k]= v
           end
         }
+        # Set belongs_to associations
         belongs_to_associations.each{|name,details|
           a= obj.send(name)
           rec[name.to_s]= name_fixture_row(a) if a
         }
+        # Set habtm associations
         habtm_associations.each{|name,details|
           coll= obj.send(name)
           rec[name.to_s]= coll.map{|a| name_fixture_row(a)} unless coll.empty?
         }
+        # Save row
         row_name= name_fixture_row(obj)
         fixture[row_name]= rec
       }
+      # Create fixture file
       File.open("#{OUTPUT_DIR}/#{table_name}.yml", 'w') do |file|
         file.write fixture.ya2yaml.sub(/\A---\s+/m,'')
       end
@@ -116,11 +114,26 @@ class FixtureExtractor
     names_for_this_model[obj.id]= name
   end
 
+  # Takes a string and modifies it so that it's more appropriate as a fixture row name
   def normalise_for_name(str)
     str.to_s.gsub(/\s|:/,'_').underscore
   end
 end
 
+# Patch Ya2YAML. It's a little too strict with its escaping...
+class Ya2YAML
+  private
+	def is_one_plain_line?(str)
+		# YAML 1.1 / 4.6.11.
+		str !~ /^([\-\?:,\[\]\{\}\#&\*!\|>'"%@`\s]|---|\.\.\.)/    &&
+		str !~ /[:\#\r\n\t\[\]\{\},]/                              && # Changed \s to \r\n\t
+		str !~ /#{REX_ANY_LB}/
+#		str !~ /^(#{REX_BOOL}|#{REX_FLOAT}|#{REX_INT}|#{REX_MERGE}
+#			|#{REX_NULL}|#{REX_TIMESTAMP}|#{REX_VALUE})$/x
+	end
+end
+
+# Create a rake task
 task :extract_fixtures => :environment do
   FixtureExtractor.new.do_it!
 end
