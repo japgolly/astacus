@@ -1,7 +1,11 @@
 # To add a new param type:
-# * Add a process_param_xxxx() method.
-# * Optionally add a preprocess_param_xxxx() method.
-# * Add tests to search_query_filter_results.rb
+# Either a)
+#   * Add a process_param_xxxx() method.
+#   * Optionally add a preprocess_param_xxxx() method.
+#   * Add tests to search_query_filter_results.rb
+# or b)
+#   * Declare the param using one of the generic add_xxx_param methods.
+#   * Add tests to search_query_filter_results.rb
 class SearchQuery < ActiveRecord::Base
   serialize :params #, Hash
   validates_presence_of :name, :params
@@ -34,8 +38,24 @@ class SearchQuery < ActiveRecord::Base
   # ========================= Generic Conditions =========================
   protected
 
-  def add_text_condition(field, v)
-    add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
+  def self.apply_param_def_options(body, options={})
+    options.assert_valid_keys(:joins)
+    if v= options[:joins]
+      body= "add_associations :joins, #{v.inspect}\n#{body}"
+    end
+    body
+  end
+
+  def add_boolean_condition(field, v)
+    add_conditions "#{field} IS #{'NOT ' if v == '1'}NULL"
+  end
+  def self.add_boolean_param(name, sql_column, options={})
+    process_body= apply_param_def_options("add_boolean_condition '#{sql_column}',v", options)
+    class_eval <<-EOB
+      def process_param_#{name}(v)
+        #{process_body}
+      end
+    EOB
   end
 
   # Removes whitespace.
@@ -95,41 +115,41 @@ class SearchQuery < ActiveRecord::Base
     }
     add_conditions "(#{sql.join ' OR '})", *params
   end
+  def self.add_int_param(name, sql_column, options={})
+    process_body= apply_param_def_options("add_int_condition '#{sql_column}',v", options)
+    class_eval <<-EOB
+      def preprocess_param_#{name}(v)
+        preprocess_int_condition(v)
+      end
+      def process_param_#{name}(v)
+        #{process_body}
+      end
+    EOB
+  end
+
+  def add_text_condition(field, v)
+    add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
+  end
+  def self.add_text_param(name, sql_column, options={})
+    process_body= apply_param_def_options("add_text_condition '#{sql_column}',v", options)
+    class_eval <<-EOB
+      def process_param_#{name}(v)
+        #{process_body}
+      end
+    EOB
+  end
 
   # ============================= Conditions =============================
   protected
 
-  def process_param_artist(v)
-    add_associations :joins, :artist
-    add_text_condition 'artists.name', v
-  end
+  add_boolean_param :albumart, 'albums.albumart_id'
 
-  def process_param_album(v)
-    add_text_condition 'albums.name', v
-  end
+  add_int_param :discs, 'albums.discs_count'
+  add_int_param :year, 'albums.year'
 
-  def preprocess_param_year(v)
-    preprocess_int_condition(v)
-  end
-  def process_param_year(v)
-    add_int_condition 'albums.year', v
-  end
-
-  def preprocess_param_discs(v)
-    preprocess_int_condition(v)
-  end
-  def process_param_discs(v)
-    add_int_condition 'albums.discs_count', v
-  end
-
-  def process_param_track(v)
-    add_associations :joins, {:discs => :tracks}
-    add_text_condition 'tracks.name', v
-  end
-
-  def process_param_albumart(v)
-    add_conditions "albums.albumart_id IS #{'NOT' if v == '1'} NULL"
-  end
+  add_text_param :album, 'albums.name'
+  add_text_param :artist, 'artists.name', :joins => :artist
+  add_text_param :track, 'tracks.name', :joins => {:discs => :tracks}
 
   # ============================== Constants ==============================
 
