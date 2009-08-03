@@ -1,14 +1,18 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  # Takes all validation errors on a model and turns it into a single sentence.
   def model_errors_to_single_string(model)
     model.errors.map{|a| "#{a[0].capitalize} #{a[1]}."}.join("\n\n")
   end
 
+  # Returns a javascript tag that invokes a remote call after a certain amount of time.
+  # Takes the same args as periodically_call_remote.
   def delayed_call_remote(*args)
     periodically_call_remote(*args).sub(/(function\s*?\(\)\s*?\{)/,'\1this.stop(); ')
   end
 
+  # Formats any generic object as follows
+  # * Integers get commas every digits.
   def format(v)
     case v
     when nil then nil
@@ -24,6 +28,8 @@ module ApplicationHelper
     end
   end
 
+  # Returns human-friendly string representation of a number of bytes.
+  # Eg. "24.7 MB"
   def format_bytes(v, display_exact_also= true)
     raise if v < 0
     res= if v >= 1.terabytes
@@ -41,6 +47,8 @@ module ApplicationHelper
     res
   end
 
+  # Takes a number of seconds and turns it into a mm:ss string.
+  # Eg. 24:07
   def format_mmss(length)
     "%d:%02d" % [length / 60, length % 60]
   end
