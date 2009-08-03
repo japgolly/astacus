@@ -19,7 +19,7 @@ class ActiveSupport::TestCase
   fixtures :all
   include FixtureAndTestHelpers
   include RailsReflection
-  setup :log_test
+  setup :log_test_name
 
   FROZEN_CITY_TAGGED= "#{MOCK_DATA_DIR}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
   FROZEN_CITY_NOTAGS= "#{MOCK_DATA_DIR}/frozen city (no tags).mp3"
@@ -61,15 +61,11 @@ class ActiveSupport::TestCase
 
   private
     # This prints the test name to the log before each test.
-    def log_test
-      if Rails::logger
-        # When I run tests in rake or autotest I see the same log message multiple times per test for some reason.
-        # This guard prevents that.
-        unless @already_logged_this_test
-          Rails::logger.info "\n\n\e[32;1mStarting #{@method_name}\e[0m\n\e[32;1m#{'-' * (9 + @method_name.length)}\e[0m\n"
-          @already_logged_this_test= true
-        end
-      end
+    def log_test_name
+      return unless l= Rails::logger and !@already_logged_this_test
+      @already_logged_this_test= true
+      name= "#{self.class}: #{@method_name.sub /^test: /, ''}"
+      l.info "\n\n\e[32;1m#{name}\e[0m\n\e[32;1m#{'-' * name.length}\e[0m\n"
     end
 end
 
