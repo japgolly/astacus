@@ -9,26 +9,28 @@ class DiscTest < ActiveSupport::TestCase
   }
   should_validate_numericality_of :order_id
 
-  test "has tracks" do
-    assert_equal [tracks(:glass_prison), tracks(:misunderstood)], discs(:'6doit_cd1').tracks
-  end
+  context "A disc" do
+    should "have tracks" do
+      assert_equal [tracks(:glass_prison), tracks(:misunderstood)], discs(:'6doit_cd1').tracks
+    end
 
-  test "tracks ordered by tn" do
-    t= tracks(:glass_prison)
-    t.tn= 9
-    t.save!
-    assert_equal [tracks(:misunderstood), tracks(:glass_prison)], discs(:'6doit_cd1').tracks(true)
-    t.tn= 1
-    t.save!
-    assert_equal [tracks(:glass_prison), tracks(:misunderstood)], discs(:'6doit_cd1').tracks(true)
-  end
+    should "order its tracks by tn" do
+      t= tracks(:glass_prison)
+      t.tn= 9
+      t.save!
+      assert_equal [tracks(:misunderstood), tracks(:glass_prison)], discs(:'6doit_cd1').tracks(true)
+      t.tn= 1
+      t.save!
+      assert_equal [tracks(:glass_prison), tracks(:misunderstood)], discs(:'6doit_cd1').tracks(true)
+    end
 
-  test "belongs to album" do
-    assert_equal albums(:'6doit'), discs(:'6doit_cd1').album
-  end
+    should "belong to an album" do
+      assert_equal albums(:'6doit'), discs(:'6doit_cd1').album
+    end
 
-  test "belongs to album type" do
-    assert_equal album_types(:std), discs(:'6doit_cd1').album_type
+    should "belong to an album type" do
+      assert_equal album_types(:std), discs(:'6doit_cd1').album_type
+    end
   end
 
   context "Deleting a disc" do
