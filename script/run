@@ -10,7 +10,7 @@ script/backgroundrb start || exit 1
 echo; echo
 
 echo "Starting server..."
-script/server > log/out.txt
+script/server > /dev/null
 echo
 
 echo "Stopping BackgrounDRb..."
