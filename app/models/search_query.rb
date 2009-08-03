@@ -149,6 +149,7 @@ class SearchQuery < ActiveRecord::Base
 
   add_text_param :album, 'albums.name'
   add_text_param :artist, 'artists.name', :joins => :artist
+  add_text_param :disc, 'discs.name', :joins => :discs
   add_text_param :track, 'tracks.name', :joins => {:discs => :tracks}
 
   # ============================== Constants ==============================

@@ -24,6 +24,9 @@ module SearchQueryFilterResults
       {:discs => '3'} => %w[still_life],
       {:discs => ' 2+'} => %w[6doit still_life],
       {:discs => ' 3  - 4'} => %w[still_life],
+
+      {:disc => 'disc 2'} => %w[6doit still_life],
+      {:disc => '3'} => %w[still_life],
     }.freeze
   end
 end
