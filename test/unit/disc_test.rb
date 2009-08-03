@@ -31,6 +31,46 @@ class DiscTest < ActiveSupport::TestCase
     should "belong to an album type" do
       assert_equal album_types(:std), discs(:'6doit_cd1').album_type
     end
+
+    should "provide a total disc length" do
+      assert_equal 372, discs(:ponk).length
+      assert_equal 129.463+215.719, discs(:still_life_1).length
+    end
+
+    should "provide a total disc size" do
+      assert_equal 11494512, discs(:ponk).size
+      assert_equal 3108860+5179014, discs(:still_life_1).size
+    end
+
+    should "provide all formats used by track files" do
+      disc= discs(:still_life_1)
+      assert_equal ['mp3'], disc.formats
+
+      disc.tracks[0].audio_file.audio_content.format= 'flac'
+      assert_equal ['flac','mp3'], disc.formats
+    end
+
+    should "provide an average bitrate" do
+      assert_equal 247, discs(:ponk).avg_bitrate
+
+      disc= discs(:still_life_1)
+      assert_equal 192, disc.avg_bitrate
+
+      disc.tracks[0].audio_file.audio_content.length= 1000
+      disc.tracks[1].audio_file.audio_content.length= 1000
+      disc.tracks[0].audio_file.audio_content.bitrate= 100
+      disc.tracks[1].audio_file.audio_content.bitrate= 200
+      assert_equal 150, disc.avg_bitrate
+    end
+
+    should "provide an average bitrate that takes length into consideration" do
+      disc= discs(:still_life_1)
+      disc.tracks[0].audio_file.audio_content.bitrate= 100
+      disc.tracks[1].audio_file.audio_content.bitrate= 400
+      disc.tracks[0].audio_file.audio_content.length= 20 # 100kbps for 20 sec
+      disc.tracks[1].audio_file.audio_content.length= 10 # 400kbps for 10 sec
+      assert_equal 200, disc.avg_bitrate # (100 + 100 + 400) / 3 = 200
+    end
   end
 
   context "Deleting a disc" do

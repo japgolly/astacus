@@ -14,7 +14,6 @@ class Disc < ActiveRecord::Base
     album.destroy if album and album.discs_count == 0
   end
 
-  # TODO Test these when we get better fixtures
   def length
     tracks.inject(0.0){|sum,t| sum + t.length}
   end
