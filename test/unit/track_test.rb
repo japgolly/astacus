@@ -19,9 +19,9 @@ class TrackTest < ActiveSupport::TestCase
 
   test "belong to audio_tags" do
     assert_same_elements [
-      audio_tags(:a_pleasant_shade_of_gray_x_id3),
-      audio_tags(:a_pleasant_shade_of_gray_x_ape),
-    ], tracks(:a_pleasant_shade_of_gray_x).audio_tags
+      audio_tags(:apsog_x_id3),
+      audio_tags(:apsog_x_ape),
+    ], tracks(:apsog_x).audio_tags
   end
 
   context "Deleting a track" do

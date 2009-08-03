@@ -27,43 +27,43 @@ the_requiem:
   audio_tags: the_requiem_id3, the_requiem_ape
 
 # ========== STILL LIFE ==========
-a_pleasant_shade_of_gray_i:
-  audio_file: a_pleasant_shade_of_gray_i
+apsog_i:
+  audio_file: apsog_i
   audio_tags:
-    - a_pleasant_shade_of_gray_i_id3
-    - a_pleasant_shade_of_gray_i_ape
+    - apsog_i_id3
+    - apsog_i_ape
   disc: still_life_1
   name: A Pleasant Shade Of Gray I
   tn: 1
-a_pleasant_shade_of_gray_ii:
-  audio_file: a_pleasant_shade_of_gray_ii
+apsog_ii:
+  audio_file: apsog_ii
   audio_tags:
-    - a_pleasant_shade_of_gray_ii_id3
-    - a_pleasant_shade_of_gray_ii_ape
+    - apsog_ii_id3
+    - apsog_ii_ape
   disc: still_life_1
   name: A Pleasant Shade Of Gray II
   tn: 2
-a_pleasant_shade_of_gray_x:
-  audio_file: a_pleasant_shade_of_gray_x
+apsog_x:
+  audio_file: apsog_x
   audio_tags:
-    - a_pleasant_shade_of_gray_x_id3
-    - a_pleasant_shade_of_gray_x_ape
+    - apsog_x_id3
+    - apsog_x_ape
   disc: still_life_2
   name: A Pleasant Shade Of Gray X
   tn: 10
-a_pleasant_shade_of_gray_xi:
-  audio_file: a_pleasant_shade_of_gray_xi
+apsog_xi:
+  audio_file: apsog_xi
   audio_tags:
-    - a_pleasant_shade_of_gray_xi_id3
-    - a_pleasant_shade_of_gray_xi_ape
+    - apsog_xi_id3
+    - apsog_xi_ape
   disc: still_life_2
   name: A Pleasant Shade Of Gray XI
   tn: 11
-a_pleasant_shade_of_gray_xii:
-  audio_file: a_pleasant_shade_of_gray_xii
+apsog_xii:
+  audio_file: apsog_xii
   audio_tags:
-    - a_pleasant_shade_of_gray_xii_id3
-    - a_pleasant_shade_of_gray_xii_ape
+    - apsog_xii_id3
+    - apsog_xii_ape
   disc: still_life_2
   name: A Pleasant Shade of Gray XII
   tn: 12

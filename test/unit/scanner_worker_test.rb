@@ -279,8 +279,8 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
       should "decrement the album disc counter cache when appropriate" do
         AudioFile.update_all "location_id = #{locations(:main).id}"
-        audio_files(:a_pleasant_shade_of_gray_i).update_attribute :location_id, @location.id
-        audio_files(:a_pleasant_shade_of_gray_ii).update_attribute :location_id, @location.id
+        audio_files(:apsog_i).update_attribute :location_id, @location.id
+        audio_files(:apsog_ii).update_attribute :location_id, @location.id
         @scanner.init @location.reload
         a= albums(:still_life)
         assert_difference 'a.reload; a.discs_count', -1 do

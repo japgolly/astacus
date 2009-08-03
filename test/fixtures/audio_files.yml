@@ -27,32 +27,32 @@ the_requiem:
   location: main
 
 # ========== STILL LIFE ==========
-a_pleasant_shade_of_gray_i:
-  audio_content: a_pleasant_shade_of_gray_i
+apsog_i:
+  audio_content: apsog_i
   basename: 01 - A Pleasant Shade Of Gray I.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 1
   location: main
   size: 3108860
-a_pleasant_shade_of_gray_ii:
-  audio_content: a_pleasant_shade_of_gray_ii
+apsog_ii:
+  audio_content: apsog_ii
   basename: 02 - A Pleasant Shade Of Gray II.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 1
   location: main
   size: 5179014
-a_pleasant_shade_of_gray_x:
-  audio_content: a_pleasant_shade_of_gray_x
+apsog_x:
+  audio_content: apsog_x
   basename: 10 - A Pleasant Shade Of Gray X.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 2
   location: main
   size: 1712044
-a_pleasant_shade_of_gray_xi:
-  audio_content: a_pleasant_shade_of_gray_xi
+apsog_xi:
+  audio_content: apsog_xi
   basename: 11 - A Pleasant Shade Of Gray XI.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 2
   location: main
   size: 4875580
-a_pleasant_shade_of_gray_xii:
-  audio_content: a_pleasant_shade_of_gray_xii
+apsog_xii:
+  audio_content: apsog_xii
   basename: 12 - A Pleasant Shade of Gray XII.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 2
   location: main

@@ -39,7 +39,7 @@ the_requiem:
   length: 372 # 6:12
 
 # ========== STILL LIFE ==========
-a_pleasant_shade_of_gray_i:
+apsog_i:
   bitrate: 192
   format: mp3
   length: 129.463
@@ -51,7 +51,7 @@ a_pleasant_shade_of_gray_i:
       pqtNrqf9yml/pljHFX02/5QPaw==
   size: 3107109
   vbr: false
-a_pleasant_shade_of_gray_ii:
+apsog_ii:
   bitrate: 192
   format: mp3
   length: 215.719
@@ -63,7 +63,7 @@ a_pleasant_shade_of_gray_ii:
       LR/4kpeklcPO/Nu2MgtYDdhqIQ==
   size: 5177261
   vbr: false
-a_pleasant_shade_of_gray_x:
+apsog_x:
   bitrate: 192
   format: mp3
   length: 71.262
@@ -75,7 +75,7 @@ a_pleasant_shade_of_gray_x:
       F7kU3RjWAzqrNsWZoV4nWTCRmQ==
   size: 1710289
   vbr: false
-a_pleasant_shade_of_gray_xi:
+apsog_xi:
   bitrate: 192
   format: mp3
   length: 203.076
@@ -87,7 +87,7 @@ a_pleasant_shade_of_gray_xi:
       weDNXRS/nD10amq89VN/XGmn6A==
   size: 4873823
   vbr: false
-a_pleasant_shade_of_gray_xii:
+apsog_xii:
   bitrate: 192
   format: mp3
   length: 451.318
