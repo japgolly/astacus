@@ -2,20 +2,24 @@
   artist: dream_theater
   name: Six Degrees Of Inner Turbulence
   year: 2002
+  discs_count: 2
 
 ponk:
   albumart: ponk
   artist: seikima2
   name: PONK!!
   year: 1994
+  discs_count: 1
 
 in_absentia:
   albumart: in_absentia
   artist: porcupine_tree
   name: In Absentia
   year: 2002
+  discs_count: 1
 
 still_life:
   artist: fates_warning
   name: Still Life
   year: 1998
+  discs_count: 3

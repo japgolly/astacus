@@ -42,6 +42,7 @@ class TrackTest < ActiveSupport::TestCase
     end
 
     should "remove up to the artist if not in use" do
+      assert_equal 1, albums(:ponk).discs_count
       assert_difference %w[Track.count Disc.count Artist.count Album.count], -1 do
         tracks(:the_requiem).destroy
       end

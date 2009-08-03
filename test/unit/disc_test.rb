@@ -40,6 +40,13 @@ class DiscTest < ActiveSupport::TestCase
       end
     end
 
+    should "decrement the parent album's disc counter" do
+      a= albums("6doit")
+      assert_difference 'a.reload; a.discs_count', -1 do
+        discs(:'6doit_cd1').destroy
+      end
+    end
+
     should "remove the album if no other discs reference it" do
       assert_difference %w[Disc.count Album.count], -1 do
         discs(:ponk).destroy

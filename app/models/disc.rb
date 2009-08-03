@@ -1,6 +1,6 @@
 class Disc < ActiveRecord::Base
   has_many :tracks, :order => :tn
-  belongs_to :album
+  belongs_to :album, :counter_cache => true
   belongs_to :album_type
 
   validates_presence_of :album, :order_id
@@ -9,7 +9,9 @@ class Disc < ActiveRecord::Base
   acts_as_unique
 
   after_destroy do |r|
-    r.album.destroy if r.album.discs.empty?
+    album= r.album(true)
+    log_vars 'Disc.after_destroy', 'DISC' => r.inspect, 'ALBUM' => album.inspect, 'ALBUM DISCS' => (album && album.discs.inspect) if logger.debug?
+    album.destroy if album and album.discs_count == 0
   end
 
   # TODO Test these when we get better fixtures

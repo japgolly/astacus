@@ -9,7 +9,9 @@ class Track < ActiveRecord::Base
   acts_as_unique
 
   after_destroy do |r|
-    r.disc.destroy if r.disc.tracks.empty?
+    disc= r.disc
+    log_vars 'Track.after_destroy', 'TRACK' => r.inspect, 'DISC' => disc.inspect, 'DISC TRACKS' => (disc && disc.tracks.inspect) if logger.debug?
+    disc.destroy if disc and disc.tracks.empty?
   end
 
   def bitrate

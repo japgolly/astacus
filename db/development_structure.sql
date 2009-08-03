@@ -13,6 +13,7 @@ CREATE TABLE `albums` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `albumart_id` int(11) DEFAULT NULL,
+  `discs_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `index_albums_on_albumart_id` (`albumart_id`),
   KEY `index_albums_on_artist_id` (`artist_id`)
@@ -215,3 +216,5 @@ INSERT INTO schema_migrations (version) VALUES ('20090724221744');
 INSERT INTO schema_migrations (version) VALUES ('20090802102256');
 
 INSERT INTO schema_migrations (version) VALUES ('20090802153304');
+
+INSERT INTO schema_migrations (version) VALUES ('20090803084224');

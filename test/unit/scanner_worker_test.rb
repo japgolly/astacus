@@ -1,5 +1,4 @@
-require File.join(File.dirname(__FILE__) + "/../bdrb_test_helper")
-#require 'test_helper'
+require 'bdrb_test_helper'
 require 'scanner_worker'
 
 class ScannerWorkerTest < ActiveSupport::TestCase
@@ -105,6 +104,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         assert_equal 0, t.disc.order_id
         assert_equal 'メフィストフェレスの肖像', t.disc.album.name
         assert_equal 1996, t.disc.album.year
+        assert_equal 1, t.disc.album.discs_count
         assert_equal '聖飢魔II', t.disc.album.artist.name
         assert_equal 2, t.audio_tags.size
       end
@@ -226,6 +226,8 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         disc= Disc.last
         assert "Disc 1", disc.name
         assert 1, disc.order_id
+        album= disc.album
+        assert_equal 1, album.discs_count
 
         # Disc 2
         assert_difference 'Disc.count' do
@@ -234,6 +236,8 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         disc= Disc.last
         assert "Disc 2", disc.name
         assert 2, disc.order_id
+        album.reload
+        assert_equal 2, album.discs_count
       end
 
       should "reuse an existing disc row if exists" do
@@ -271,6 +275,19 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         end
         assert_equal 1, @location.audio_files(true).size
         assert_equal @alive, @location.audio_files.first
+      end
+
+      should "decrement the album disc counter cache when appropriate" do
+        AudioFile.update_all "location_id = #{locations(:main).id}"
+        audio_files(:a_pleasant_shade_of_gray_i).update_attribute :location_id, @location.id
+        audio_files(:a_pleasant_shade_of_gray_ii).update_attribute :location_id, @location.id
+        @scanner.init @location.reload
+        a= albums(:still_life)
+        assert_difference 'a.reload; a.discs_count', -1 do
+          assert_difference 'Track.count', -2 do
+            @scanner.remove_dead_files!
+          end
+        end
       end
 
       should "remove them as part of full scan" do
