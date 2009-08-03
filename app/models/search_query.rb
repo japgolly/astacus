@@ -1,16 +1,11 @@
-# TODO Doc how to add new params
+# To add a new param type:
+# * Add a process_param_xxxx() method.
+# * Optionally add a preprocess_param_xxxx() method.
+# * Add tests to search_query_filter_results.rb
 class SearchQuery < ActiveRecord::Base
   serialize :params #, Hash
   validates_presence_of :name, :params
   validates_uniqueness_of :name, :allow_blank => false, :allow_nil => true
-
-  def to_find_options
-    @options= {}
-    params.each{|key,value|
-      send PARAM_PROCESSOR_MAP[key], value if value
-    }
-    @options
-  end
 
   # TODO Test with bad params
   def params=(params)
@@ -28,7 +23,81 @@ class SearchQuery < ActiveRecord::Base
     write_attribute :params, params
   end
 
+  def to_find_options
+    @options= {}
+    params.each{|key,value|
+      send PARAM_PROCESSOR_MAP[key], value if value
+    }
+    @options
+  end
+
+  # ========================= Generic Conditions =========================
+  protected
+
+  def add_text_condition(field, v)
+    add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
+  end
+
+  # Removes whitespace.
+  # Adds a single space after commas
+  # Changes bbb-aaa to aaa-bbb
+  # Changes aaa-aaa to aaa
+  def preprocess_int_condition(v)
+    v.gsub(/\s+/,'').gsub(',',', ').gsub(/(\d+)\-(\d+)/){|f|
+      a,b=$1.to_i,$2.to_i
+      if a == b
+        a.to_s
+      elsif b < a
+        "#{b}-#{a}"
+      else
+        f
+      end
+    }
+  end
+  # Accepts a list of clauses, each of which must be one of the following
+  # where xxxx is an integer:
+  # * xxxx
+  # * xxxx-yyyy
+  # * xxxx+
+  # * -xxxx
+  # * <xxxx
+  # * <=xxxx
+  # * xxxx>
+  # * xxxx>=
+  # * xxxx=>
+  def add_int_condition(field, value_str)
+    sql= []
+    params= []
+    value_str.split(', ').each{|v|
+      case v
+      when /^\d+$/
+        sql<< "#{field} = ?"
+        params<< v
+      when /^(\d+)\-(\d+)$/
+        sql<< "#{field} between ? and ?"
+        params<< $1
+        params<< $2
+      when /^\-(\d+)$/, /^\<\=(\d+)$/, /^\=\<(\d+)$/
+        sql<< "#{field} <= ?"
+        params<< $1
+      when /^(\d+)\+$/, /^(\d+)\>\=$/, /^(\d+)\=\>$/
+        sql<< "#{field} >= ?"
+        params<< $1
+      when /^\<(\d+)$/
+        sql<< "#{field} < ?"
+        params<< $1
+      when /^(\d+)\>$/
+        sql<< "#{field} > ?"
+        params<< $1
+      else
+        raise "Cannot process integer field: #{v.inspect}"
+      end
+    }
+    add_conditions "(#{sql.join ' OR '})", *params
+  end
+
   # ============================= Conditions =============================
+  protected
 
   def process_param_artist(v)
     add_associations :joins, :artist
@@ -62,66 +131,18 @@ class SearchQuery < ActiveRecord::Base
     add_conditions "albums.albumart_id IS #{'NOT' if v == '1'} NULL"
   end
 
-  private
-    def add_text_condition(field, v)
-      add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
-    end
-
-    def preprocess_int_condition(v)
-      v.gsub(/\s+/,'').gsub(',',', ').gsub(/(\d+)\-(\d+)/){|f|
-        a,b=$1.to_i,$2.to_i
-        if a == b
-          a.to_s
-        elsif b < a
-          "#{b}-#{a}"
-        else
-          f
-        end
-      }
-    end
-    def add_int_condition(field, value_str)
-      sql= []
-      params= []
-      value_str.split(', ').each{|v|
-        case v
-        when /^\d+$/
-          sql<< "#{field} = ?"
-          params<< v
-        when /^(\d+)\-(\d+)$/
-          sql<< "#{field} between ? and ?"
-          params<< $1
-          params<< $2
-        when /^\-(\d+)$/, /^\<\=(\d+)$/, /^\=\<(\d+)$/
-          sql<< "#{field} <= ?"
-          params<< $1
-        when /^(\d+)\+$/, /^(\d+)\>\=$/, /^(\d+)\=\>$/
-          sql<< "#{field} >= ?"
-          params<< $1
-        when /^\<(\d+)$/
-          sql<< "#{field} < ?"
-          params<< $1
-        when /^(\d+)\>$/
-          sql<< "#{field} > ?"
-          params<< $1
-        else
-          raise "Cannot process integer field: #{v.inspect}"
-        end
-      }
-      add_conditions "(#{sql.join ' OR '})", *params
-    end
-
   # ============================== Constants ==============================
 
   private
   def self.create_method_map(prefix)
     SearchQuery.instance_methods.select{|m| m.starts_with?(prefix)} \
-      .inject({}){|h,m| h[m[prefix.length..-1].to_sym]= m; h}.freeze
+      .inject({}){|h,m| h[m[prefix.length..-1].to_sym]= m; h}
   end
 
   public
   unless const_defined?(:PARAM_PROCESSOR_MAP)
-    PARAM_PROCESSOR_MAP= create_method_map('process_param_')
-    PARAM_PREPROCESSOR_MAP= create_method_map('preprocess_param_')
+    PARAM_PROCESSOR_MAP= create_method_map('process_param_').freeze
+    PARAM_PREPROCESSOR_MAP= create_method_map('preprocess_param_').freeze
     VALID_PARAMS= PARAM_PROCESSOR_MAP.keys.freeze
   end
 
@@ -158,6 +179,7 @@ class SearchQuery < ActiveRecord::Base
       end
     end
 
+    # Adds to a find :conditions array.
     def add_query_conditions!(hash, sql, *params)
       if hash[:conditions]
         hash[:conditions][0]+= " AND #{sql}"
