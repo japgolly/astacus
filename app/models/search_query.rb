@@ -1,3 +1,4 @@
+# TODO Doc how to add new params
 class SearchQuery < ActiveRecord::Base
   serialize :params #, Hash
   validates_presence_of :name, :params
@@ -16,20 +17,14 @@ class SearchQuery < ActiveRecord::Base
     if params
       raise "Invalid type of params object. Hash expected but was #{params.class}." unless params.is_a?(Hash)
       params= params.symbolize_keys.reject{|k,v| !VALID_PARAMS.include?(k) or v.blank?}
-      if params[:year] # TODO Hardcoded omg
-        params[:year]= params[:year].gsub(/\s+/,'').gsub(',',', ') \
-          .gsub(/(\d+)\-(\d+)/){|f|
-            a,b=$1.to_i,$2.to_i
-            if a == b
-              a.to_s
-            elsif b < a
-              "#{b}-#{a}"
-            else
-              f
-            end
-          }
-      end
+
+      # Preprocess params
+      params.keys.each{|key|
+        m= PARAM_PREPROCESSOR_MAP[key]
+        params[key]= send(m,params[key]) if m
+      }
     end
+
     write_attribute :params, params
   end
 
@@ -44,8 +39,18 @@ class SearchQuery < ActiveRecord::Base
     add_text_condition 'albums.name', v
   end
 
+  def preprocess_param_year(v)
+    preprocess_int_condition(v)
+  end
   def process_param_year(v)
     add_int_condition 'albums.year', v
+  end
+
+  def preprocess_param_discs(v)
+    preprocess_int_condition(v)
+  end
+  def process_param_discs(v)
+    add_int_condition 'albums.discs_count', v
   end
 
   def process_param_track(v)
@@ -62,6 +67,18 @@ class SearchQuery < ActiveRecord::Base
       add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
     end
 
+    def preprocess_int_condition(v)
+      v.gsub(/\s+/,'').gsub(',',', ').gsub(/(\d+)\-(\d+)/){|f|
+        a,b=$1.to_i,$2.to_i
+        if a == b
+          a.to_s
+        elsif b < a
+          "#{b}-#{a}"
+        else
+          f
+        end
+      }
+    end
     def add_int_condition(field, value_str)
       sql= []
       params= []
@@ -95,10 +112,16 @@ class SearchQuery < ActiveRecord::Base
 
   # ============================== Constants ==============================
 
+  private
+  def self.create_method_map(prefix)
+    SearchQuery.instance_methods.select{|m| m.starts_with?(prefix)} \
+      .inject({}){|h,m| h[m[prefix.length..-1].to_sym]= m; h}.freeze
+  end
+
   public
   unless const_defined?(:PARAM_PROCESSOR_MAP)
-    PARAM_PROCESSOR_MAP= SearchQuery.instance_methods.select{|m| m.starts_with?('process_param_')} \
-      .inject({}){|h,m| m =~ /^process_param_(.+)$/; h[$1.to_sym]= m; h}.freeze
+    PARAM_PROCESSOR_MAP= create_method_map('process_param_')
+    PARAM_PREPROCESSOR_MAP= create_method_map('preprocess_param_')
     VALID_PARAMS= PARAM_PROCESSOR_MAP.keys.freeze
   end
 

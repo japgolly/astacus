@@ -18,6 +18,12 @@ module SearchQueryFilterResults
 
       {:albumart => '0'} => %w[6doit still_life],
       {:albumart => '1'} => %w[ponk in_absentia],
+
+      {:discs => '1'} => %w[ponk in_absentia],
+      {:discs => '2'} => %w[6doit],
+      {:discs => '3'} => %w[still_life],
+      {:discs => ' 2+'} => %w[6doit still_life],
+      {:discs => ' 3  - 4'} => %w[still_life],
     }.freeze
   end
 end
