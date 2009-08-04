@@ -18,6 +18,8 @@
 #search_query_form .submit {text-align:center}
 #search_query_form .fields .txt {width:100%}
 
+#no_results {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}
+
 .album_obj {margin:18px}
 .album_obj .albumart {width:260px}
 .album_obj .albumart img, .album_obj .albumart .none {margin:6px 10px auto auto; border:solid 1px #1a1a1a}
