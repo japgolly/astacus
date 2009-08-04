@@ -5,8 +5,9 @@ class Image < ActiveRecord::Base
   has_many :albums, :foreign_key => 'albumart_id'
   acts_as_unique :secondary => :data
 
-  def before_validation_on_create
-    self.size= data.size if attribute_present?(:data)
+  def data=(data)
+    write_attribute :size, data ? data.size : nil
+    write_attribute :data, data
   end
 
   def file_extention
