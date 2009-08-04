@@ -19,5 +19,11 @@ class SearchController < ApplicationController
 
     # Get results
     @albums= Album.paginate(options)
+
+    # Redirect if page is out of range
+    if @albums.size == 0 and @albums.offset > 0
+      params.delete :page
+      redirect_to params
+    end
   end
 end

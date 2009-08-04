@@ -43,4 +43,11 @@ class SearchControllerTest < ActionController::TestCase
       end
     EOB
   }
+
+  context "Search with page param is out of range" do
+    setup {get :search, :artist => 'a', :page => '100'}
+    should_redirect_to('same page without the :page param') {
+      {:artist => 'a', :page => nil}
+    }
+  end
 end
