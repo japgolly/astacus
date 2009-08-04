@@ -1,1 +1,18 @@
-<%= "_search_query_form.html" %>
+<div>TODO: Add a reset button that clears the form</div>
+<br/><br/>
+
+<div class="search_query_form">
+<% form_tag search_url do %>
+  <%= sq_text_field :artist, 'Artist' %>
+  <%= sq_text_field :album, 'Album' %>
+  <%= sq_text_field :disc, 'Disc' %>
+  <%= sq_text_field :track, 'Track' %>
+
+  <%= sq_int_field :year, 'Year', 4 %>
+  <%= sq_int_field :discs, 'Discs', 1 %>
+
+  <%= sq_boolean_field :albumart, 'Albumart', 'With', 'Without' %>
+
+  <%= submit_tag 'Apply' %>
+<% end %>
+</div>

@@ -8,6 +8,8 @@ class SearchControllerTest < ActionController::TestCase
       should_respond_with :success
       should_render_template :search
       should_assign_to :albums, :class => WillPaginate::Collection
+      should_assign_to :sq, :class => SearchQuery
+      should_assign_to :page, :class => Fixnum
     EOB
   end
 
@@ -50,4 +52,21 @@ class SearchControllerTest < ActionController::TestCase
       {:artist => 'a', :page => nil}
     }
   end
+
+  context "The search query form" do
+    should "have the current boolean option selected" do
+      # No param
+      get :search
+      assert_select '.search_query_form select[name=albumart] option[selected]', 1 do
+        assert_select '[value=?]', ''
+      end
+      # With params
+      ['', '0', '1'].each{|param|
+        get :search, :albumart => param
+        assert_select '.search_query_form select[name=albumart] option[selected]', 1 do
+          assert_select '[value=?]', param
+        end
+      }
+    end
+  end # context "The search query form"
 end
