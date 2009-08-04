@@ -13,8 +13,8 @@
 .album_obj .albumart img, .album_obj .albumart .none {margin:6px 10px auto auto; border:solid 1px #161616}
 .album_obj .albumart img {height:260px; display:block}
 .album_obj .albumart .none td {
-    vertical-align:middle; text-align:center; padding:16px; background:#ddd;
-    font-style:italic; width:200px; height:210px; color:#666
+  vertical-align:middle; text-align:center; padding:16px; background:#ddd;
+  font-style:italic; width:200px; height:210px; color:#666
 }
 .album_obj .artist {font-weight:bold; font-size:24px}
 .album_obj .album {font-weight:bold; font-size:22px; color:#e82222}
