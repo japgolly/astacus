@@ -6,6 +6,6 @@
 
 <table class="pagination"><tr><td>
   <% result_row_html.call if result_row == :above %>
-  <%= will_paginate @albums %>
+  <%= will_paginate @albums, :params => @sq.params %>
   <% result_row_html.call if result_row == :below %>
 </td></tr></table>
