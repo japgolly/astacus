@@ -69,4 +69,20 @@ class SearchControllerTest < ActionController::TestCase
       }
     end
   end # context "The search query form"
+
+  context "Search with invalid params" do
+    setup {get :search, :discs => 'omg1', :year => 'omg2'}
+    should_respond_with :success
+    should_render_template :search
+    should_assign_to :sq, :class => SearchQuery
+    should "contain validation error messages" do
+      assert_select '#sq_errors' do
+        assert_select 'li', 2
+      end
+    end
+    should "still populate the search query form" do
+      assert_select '#discs[value=?]', 'omg1'
+      assert_select '#year[value=?]', 'omg2'
+    end
+  end
 end

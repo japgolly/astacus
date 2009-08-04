@@ -1,7 +1,16 @@
-<% if @albums.total_entries == 0 %>
-  <div id="no_results">
+<% if @albums.nil? %>
+  <table id="sq_errors" class="search_error"><tr><td>
+    Your search query has the following errors:
+    <ul>
+      <% @sq.errors.each_full do |m| -%><li><%=  h m -%></li><% end -%>
+    </ul>
+  </td></tr></table>
+
+<% elsif @albums.total_entries == 0 %>
+  <div id="no_results" class="search_error">
     No results found.
   </div>
+
 <% else %>
   <%= render :partial => 'pagination', :locals => {:result_row => :above} %>
   <%= render :partial => 'album', :collection => @albums %>

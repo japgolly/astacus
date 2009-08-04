@@ -13,20 +13,22 @@ class SearchController < ApplicationController
     }
 
     # Filter options
-    @sq= SearchQuery.new(:params => params)
-    options.deep_merge! @sq.to_find_options
+    @sq= SearchQuery.new(:params => params, :name => :tmp)
+    if @sq.params.empty? or @sq.valid?
+      options.deep_merge! @sq.to_find_options
 
-    # Sort options
-    SearchQuery.add_associations! options, :joins, :artist
-    options.merge! :order => 'artists.name, albums.year, albums.name'
+      # Sort options
+      SearchQuery.add_associations! options, :joins, :artist
+      options.merge! :order => 'artists.name, albums.year, albums.name'
 
-    # Get results
-    @albums= Album.paginate(options)
+      # Get results
+      @albums= Album.paginate(options)
 
-    # Redirect if page is out of range
-    if @albums.size == 0 and @albums.offset > 0
-      params.delete :page
-      redirect_to params
+      # Redirect if page is out of range
+      if @albums.size == 0 and @albums.offset > 0
+        params.delete :page
+        redirect_to params
+      end
     end
   end
 end

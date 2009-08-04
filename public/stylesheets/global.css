@@ -3,6 +3,7 @@ html, body {height:100%}
 span {font-family:inherit; font-size:inherit; color:inherit}
 table {border-collapse:collapse}
 td {vertical-align:top}
+ol,ul {padding-left:14px}
 
 /* This is the digg style taken from the will_paginate examples */
 .pagination {

@@ -1,6 +1,7 @@
 # To add a new param type:
 # Either a)
 #   * Add a process_param_xxxx() method.
+#   * Optionally add a validate_param_xxxx() method.
 #   * Optionally add a preprocess_param_xxxx() method.
 #   * Add tests to search_query_filter_results.rb
 # or b)
@@ -11,7 +12,7 @@ class SearchQuery < ActiveRecord::Base
   validates_presence_of :name, :params
   validates_uniqueness_of :name, :allow_blank => false, :allow_nil => true
 
-  # TODO Test with bad params
+
   def params=(params)
     if params
       raise "Invalid type of params object. Hash expected but was #{params.class}." unless params.is_a?(Hash)
@@ -30,9 +31,26 @@ class SearchQuery < ActiveRecord::Base
   def to_find_options
     @options= {}
     params.each{|key,value|
-      send PARAM_PROCESSOR_MAP[key], value if value
+      send PARAM_PROCESSOR_MAP[key], value
     }
     @options
+  end
+
+  protected
+  def validate
+    if params
+      if !params.is_a?(Hash)
+        errors.add :params, "is not a Hash object. (actual class = #{params.class})"
+      else
+        # Validate each param
+        params.each{|key,value|
+          if m= PARAM_VALIDATOR_MAP[key]
+            errstr= send m, value
+            errors.add key, errstr if errstr
+          end
+        }
+      end
+    end
   end
 
   # ========================= Generic Conditions =========================
@@ -46,12 +64,19 @@ class SearchQuery < ActiveRecord::Base
     body
   end
 
+  def validate_boolean_param(v)
+    return nil if %w[0 1].include?(v)
+    return "is invalid. Must be either 0 or 1."
+  end
   def add_boolean_condition(field, v)
     add_conditions "#{field} IS #{'NOT ' if v == '1'}NULL"
   end
   def self.add_boolean_param(name, sql_column, options={})
     process_body= apply_param_def_options("add_boolean_condition '#{sql_column}',v", options)
     class_eval <<-EOB
+      def validate_param_#{name}(v)
+        validate_boolean_param(v)
+      end
       def process_param_#{name}(v)
         #{process_body}
       end
@@ -73,6 +98,22 @@ class SearchQuery < ActiveRecord::Base
         f
       end
     }
+  end
+  VALID_INT_EXPRESSIONS= [
+    /^\d+$/,
+    /^(\d+)\-(\d+)$/,
+    /^\-(\d+)$/, /^\<\=(\d+)$/, /^\=\<(\d+)$/,
+    /^(\d+)\+$/, /^(\d+)\>\=$/, /^(\d+)\=\>$/,
+    /^\<(\d+)$/,
+    /^(\d+)\>$/,
+  ].freeze
+  def validate_int_param(value_str)
+    value_str.split(', ').each{|v|
+      if VALID_INT_EXPRESSIONS.map{|regex| v =~ regex}.uniq == [nil]
+        return "is invalid. Cannot process: #{v.inspect}"
+      end
+    }
+    nil
   end
   # Accepts a list of clauses, each of which must be one of the following
   # where xxxx is an integer:
@@ -118,6 +159,9 @@ class SearchQuery < ActiveRecord::Base
   def self.add_int_param(name, sql_column, options={})
     process_body= apply_param_def_options("add_int_condition '#{sql_column}',v", options)
     class_eval <<-EOB
+      def validate_param_#{name}(v)
+        validate_int_param(v)
+      end
       def preprocess_param_#{name}(v)
         preprocess_int_condition(v)
       end
@@ -164,12 +208,15 @@ class SearchQuery < ActiveRecord::Base
   unless const_defined?(:PARAM_PROCESSOR_MAP)
     PARAM_PROCESSOR_MAP= create_method_map('process_param_').freeze
     PARAM_PREPROCESSOR_MAP= create_method_map('preprocess_param_').freeze
+    PARAM_VALIDATOR_MAP= create_method_map('validate_param_').freeze
     VALID_PARAMS= PARAM_PROCESSOR_MAP.keys.freeze
   end
 
   # =========================== Utility methods ===========================
 
   class << self
+    public
+
     # Adds to a list of associations formatted for :join / :include options to find().
     def add_associations!(hash, key, value)
       case value
@@ -192,14 +239,6 @@ class SearchQuery < ActiveRecord::Base
       hash
     end
 
-    def prepare_array_based_option!(hash, key)
-      case hash[key]
-      when nil then hash[key]= []
-      when Array then ; # do nothing
-      else hash[key]= [hash[key]]
-      end
-    end
-
     # Adds to a find :conditions array.
     def add_query_conditions!(hash, sql, *params)
       if hash[:conditions]
@@ -210,8 +249,18 @@ class SearchQuery < ActiveRecord::Base
       end
       hash
     end
-  end
 
+    protected
+    def prepare_array_based_option!(hash, key)
+      case hash[key]
+      when nil then hash[key]= []
+      when Array then ; # do nothing
+      else hash[key]= [hash[key]]
+      end
+    end
+  end # class << self
+
+  protected
   def add_associations(key, value)
     self.class.add_associations!(@options, key, value)
   end

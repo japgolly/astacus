@@ -18,7 +18,9 @@
 #search_query_form .submit {text-align:center}
 #search_query_form .fields .txt {width:100%}
 
-#no_results {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}
+.search_error, .search_error * {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}
+#sq_errors ul {margin-top:12px; padding-left:26px}
+#sq_errors li {margin-top:4px; font-weight:normal; color:#111}
 
 .album_obj {margin:18px}
 .album_obj .albumart {width:260px}
