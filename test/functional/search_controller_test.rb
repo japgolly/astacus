@@ -57,13 +57,13 @@ class SearchControllerTest < ActionController::TestCase
     should "have the current boolean option selected" do
       # No param
       get :search
-      assert_select '.search_query_form select[name=albumart] option[selected]', 1 do
+      assert_select '#search_query_form select[name=albumart] option[selected]', 1 do
         assert_select '[value=?]', ''
       end
       # With params
       ['', '0', '1'].each{|param|
         get :search, :albumart => param
-        assert_select '.search_query_form select[name=albumart] option[selected]', 1 do
+        assert_select '#search_query_form select[name=albumart] option[selected]', 1 do
           assert_select '[value=?]', param
         end
       }
