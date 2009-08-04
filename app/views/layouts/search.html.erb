@@ -9,7 +9,16 @@
 </head>
 <body>
 
-<%= yield %>
+<table id="page_container"><tr>
+  <td id="left">
+    <%= render :partial => 'search_query_form' %>
+  </td>
+  <td id="body_outer">
+    <table id="body_inner_table"><tr><td id="body_inner_cell">
+    <%= yield %>
+    </td></tr></table>
+  </td>
+</tr></table>
 
 </body>
 </html>

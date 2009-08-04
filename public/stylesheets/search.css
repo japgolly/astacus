@@ -1,4 +1,14 @@
-.album_obj {margin-bottom:36px}
+#page_container {width:100%; height:100%}
+#body_inner_table {margin:0 auto auto auto}
+#left, #body_inner_cell {padding:6px}
+
+/* DEBUG PROPERTIES
+#body_inner_cell {background:#fff}
+#left {background:#ddd}
+#body_outer {background:#cfc}
+*/
+
+.album_obj {margin:18px}
 .album_obj .albumart {width:330px}
 .album_obj .albumart img, .album_obj .albumart .none {margin:6px 10px auto auto; border:solid 1px #444}
 .album_obj .albumart img {height:260px; display:block}

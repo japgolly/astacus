@@ -1,0 +1,11 @@
+<% result_row_html= lambda do %>
+  <div class="result_row">
+    Displaying results <%= @albums.offset + 1 -%>-<%= @albums.offset + @albums.size -%> of <%= @albums.total_entries -%>.
+  </div>
+<% end %>
+
+<table class="pagination"><tr><td>
+  <% result_row_html.call if result_row == :above %>
+  <%= will_paginate @albums %>
+  <% result_row_html.call if result_row == :below %>
+</td></tr></table>
