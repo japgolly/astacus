@@ -24,7 +24,7 @@ the_requiem:
   dirname: /x/music/Music Collection/Japanese/聖飢魔II/Albums/1994 - Ponk!!
   basename: 07 - The Requiem.mp3
   size: 11494512
-  location: main
+  location: c_downloads
 
 # ========== STILL LIFE ==========
 apsog_i:
@@ -75,23 +75,23 @@ blackest_eyes:
   audio_content: blackest_eyes
   basename: 01 - Blackest Eyes.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
-  location: main
+  location: d_downloads
   size: 98897
 trains:
   audio_content: trains
   basename: 02 - Trains.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
-  location: main
+  location: d_downloads
   size: 98797
 lips_of_ashes:
   audio_content: lips_of_ashes
   basename: 03 - Lips Of Ashes.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
-  location: main
+  location: d_downloads
   size: 99839
 the_sound_of_muzak:
   audio_content: the_sound_of_muzak
   basename: 04 - The Sound Of Muzak.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
-  location: main
+  location: d_downloads
   size: 101371

@@ -43,6 +43,19 @@ class SearchQueryTest < ActiveSupport::TestCase
         assert_equal after, SearchQuery.new(:params => before).params
       }
     end
+    should "clean up taglist params" do
+      {
+        'abc' => 'abc',
+        '  abc,bef ' => 'abc bef',
+        ' ! abc bef' => '! abc bef',
+        'abc,bef abc,ert' => 'abc bef ert',
+        '!abc,bef,abc ert' => '! abc bef ert',
+      }.each{|before,after|
+        before= {:location => before}
+        after= {:location => after}
+        assert_equal after, SearchQuery.new(:params => before).params
+      }
+    end
 
     should "be able to combine joins and includes" do
       j= :joins
@@ -72,6 +85,13 @@ class SearchQueryTest < ActiveSupport::TestCase
       assert_param_validation_fails({
         :on => %w[year discs],
         :with => %w[abc 1990-- 1-2-3 3>4],
+      })
+    end
+
+    should "validate the location param" do
+      assert_param_validation_fails({
+        :on => %w[location],
+        :with => %w[xxx cdownloads man],
       })
     end
   end

@@ -20,6 +20,10 @@
     <%= sq_text_field :track, 'Name' %>
   <% end %>
 
+  <% sq_field_group 'File' do %>
+    <%= sq_text_field :location, 'Location' %>
+  <% end %>
+
   <div class="submit">
       <%= submit_tag 'Apply', :disable_with => "Loading..." %>
   </div>

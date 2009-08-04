@@ -5,6 +5,7 @@ class Location < ActiveRecord::Base
   attr_readonly :dir
   validates_presence_of :dir, :label
   validates_uniqueness_of :dir
+  # TODO make sure label cant contain any !,"'\s (including spaces)
 
   def before_validation
     unless dir.blank?

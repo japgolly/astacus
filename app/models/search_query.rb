@@ -164,6 +164,32 @@ class SearchQuery < ActiveRecord::Base
     add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
   end
 
+  def preprocess_taglist_param(v)
+    found= {}
+    v= v.gsub(/[ ,]+/,' ').gsub(/^ +| +$/,'').sub(/^! */,'! ') \
+      .split(' ').reject{|el| r= found[el]; found[el]= true; r}.join(' ')
+  end
+  def validate_taglist_param(v) nil end
+  def add_taglist_condition(field, v)
+    tags= v.split(' ')
+    unless tags[0] == '!'
+      # POSITIVE
+      if tags.size == 1
+        add_conditions "#{field} = ?", tags[0]
+      else
+        add_conditions "#{field} in (?#{',?' * (tags.size-1)})", *tags
+      end
+    else
+      # NEGATIVE
+      tags.shift
+      if tags.size == 1
+        add_conditions "#{field} != ?", tags[0]
+      else
+        add_conditions "#{field} not in (?#{',?' * (tags.size-1)})", *tags
+      end
+    end
+  end
+
   # ============================= Conditions =============================
   protected
 
@@ -174,6 +200,14 @@ class SearchQuery < ActiveRecord::Base
   add_param :discs, :int, 'albums.discs_count'
   add_param :track, :text, 'tracks.name', :joins => {:discs => :tracks}
   add_param :year, :int, 'albums.year'
+
+  add_param :location, :taglist, 'locations.label', :joins => {:discs => {:tracks => {:audio_file => :location}}}
+  def validate_param_location(v)
+    tags= v.split(' ')
+    tags.shift if tags[0] == '!'
+    missing= tags.reject{|tag| Location.find_by_label(tag)}
+    "specifies tags that dont exist: #{missing.join ', '}" unless missing.empty?
+  end
 
   # ============================== Constants ==============================
 

@@ -2,8 +2,9 @@ module SearchQueryFilterResults
   unless const_defined?(:ALBUM_FILTERS)
     ALBUM_FILTERS= {
       {:artist => 'RCupIN'} => %w[in_absentia],
+
       {:album => 'in'} => %w[6doit in_absentia],
-      {:album => 'in', :artist => 'dream'} => %w[6doit],
+
       {:track => 'y'} => %w[still_life in_absentia],
 
       {:year => '1994'} => %w[ponk],
@@ -27,6 +28,16 @@ module SearchQueryFilterResults
 
       {:disc => 'disc 2'} => %w[6doit still_life],
       {:disc => '3'} => %w[still_life],
+
+      {:location => 'main'} => %w[6doit still_life],
+      {:location => 'c_downloads'} => %w[ponk],
+      {:location => 'd_downloads'} => %w[in_absentia],
+      {:location => 'main d_downloads'} => %w[6doit still_life in_absentia],
+      {:location => '!main'} => %w[ponk in_absentia],
+      {:location => '!c_downloads,d_downloads'} => %w[6doit still_life],
+
+      # combinations
+      {:album => 'in', :artist => 'dream'} => %w[6doit],
     }.freeze
   end
 end
