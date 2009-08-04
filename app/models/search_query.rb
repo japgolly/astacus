@@ -56,14 +56,26 @@ class SearchQuery < ActiveRecord::Base
   # ========================= Generic Conditions =========================
   protected
 
-  def self.apply_param_def_options(body, options={})
-    options.assert_valid_keys(:joins)
-    if v= options[:joins]
-      body= "add_associations :joins, #{v.inspect}\n#{body}"
+  class << self
+    def apply_param_def_options(body, options={})
+      options.assert_valid_keys(:joins)
+      if v= options[:joins]
+        body= "add_associations :joins, #{v.inspect}; #{body}"
+      end
+      body
     end
-    body
+
+    def add_param(name, type, sql_column, options={})
+      process_body= apply_param_def_options("add_#{type}_condition '#{sql_column}',v", options)
+      class_eval <<-EOB
+        def preprocess_param_#{name}(v) preprocess_#{type}_param(v) end
+        def validate_param_#{name}(v) validate_#{type}_param(v) end
+        def process_param_#{name}(v) #{process_body} end
+      EOB
+    end
   end
 
+  def preprocess_boolean_param(v) v end
   def validate_boolean_param(v)
     return nil if %w[0 1].include?(v)
     return "is invalid. Must be either 0 or 1."
@@ -71,23 +83,12 @@ class SearchQuery < ActiveRecord::Base
   def add_boolean_condition(field, v)
     add_conditions "#{field} IS #{'NOT ' if v == '1'}NULL"
   end
-  def self.add_boolean_param(name, sql_column, options={})
-    process_body= apply_param_def_options("add_boolean_condition '#{sql_column}',v", options)
-    class_eval <<-EOB
-      def validate_param_#{name}(v)
-        validate_boolean_param(v)
-      end
-      def process_param_#{name}(v)
-        #{process_body}
-      end
-    EOB
-  end
 
   # Removes whitespace.
   # Adds a single space after commas
   # Changes bbb-aaa to aaa-bbb
   # Changes aaa-aaa to aaa
-  def preprocess_int_condition(v)
+  def preprocess_int_param(v)
     v.gsub(/\s+/,'').gsub(',',', ').gsub(/(\d+)\-(\d+)/){|f|
       a,b=$1.to_i,$2.to_i
       if a == b
@@ -156,45 +157,23 @@ class SearchQuery < ActiveRecord::Base
     }
     add_conditions "(#{sql.join ' OR '})", *params
   end
-  def self.add_int_param(name, sql_column, options={})
-    process_body= apply_param_def_options("add_int_condition '#{sql_column}',v", options)
-    class_eval <<-EOB
-      def validate_param_#{name}(v)
-        validate_int_param(v)
-      end
-      def preprocess_param_#{name}(v)
-        preprocess_int_condition(v)
-      end
-      def process_param_#{name}(v)
-        #{process_body}
-      end
-    EOB
-  end
 
+  def preprocess_text_param(v) v end
+  def validate_text_param(v) nil end
   def add_text_condition(field, v)
     add_conditions "upper(#{field}) LIKE upper(?)", "%#{v}%"
-  end
-  def self.add_text_param(name, sql_column, options={})
-    process_body= apply_param_def_options("add_text_condition '#{sql_column}',v", options)
-    class_eval <<-EOB
-      def process_param_#{name}(v)
-        #{process_body}
-      end
-    EOB
   end
 
   # ============================= Conditions =============================
   protected
 
-  add_boolean_param :albumart, 'albums.albumart_id'
-
-  add_int_param :discs, 'albums.discs_count'
-  add_int_param :year, 'albums.year'
-
-  add_text_param :album, 'albums.name'
-  add_text_param :artist, 'artists.name', :joins => :artist
-  add_text_param :disc, 'discs.name', :joins => :discs
-  add_text_param :track, 'tracks.name', :joins => {:discs => :tracks}
+  add_param :album, :text, 'albums.name'
+  add_param :albumart, :boolean, 'albums.albumart_id'
+  add_param :artist, :text, 'artists.name', :joins => :artist
+  add_param :disc, :text, 'discs.name', :joins => :discs
+  add_param :discs, :int, 'albums.discs_count'
+  add_param :track, :text, 'tracks.name', :joins => {:discs => :tracks}
+  add_param :year, :int, 'albums.year'
 
   # ============================== Constants ==============================
 
