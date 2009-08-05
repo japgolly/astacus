@@ -1,13 +1,34 @@
 #!/bin/bash
 
+[ $# -gt 1 ] && echo "$(basename $0) <init>" && exit 1
+if [ $# -eq 1 ]; then
+    [ "$1" != "init" ] && echo "$(basename $0) <init>" && exit 1
+    INIT=1
+fi
+
 echo "Preparing to start..."
 script/backgroundrb status > /dev/null && script/backgroundrb stop
 rake tmp:clear log:clear || exit 1
 echo
 
+if [ -n "$INIT" ]; then
+    echo "Recreating table structure..."
+    rake db:migrate:reset
+    echo
+fi
+
 echo "Starting BackgrounDRb..."
 script/backgroundrb start || exit 1
 echo; echo
+
+if [ -n "$INIT" ]; then
+    echo "Performing initialisation tasks..."
+    script/runner '
+      Location.create(:label => "jap", :dir => "D:/music/Japanese").scan_async
+      Location.create(:label => "eng", :dir => "D:/music/English").scan_async
+    ' || exit 1
+    echo
+fi
 
 echo "Starting server..."
 script/server > /dev/null
