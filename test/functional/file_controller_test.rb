@@ -1,11 +1,11 @@
 require 'test_helper'
 
-class ImageControllerTest < ActionController::TestCase
+class FileControllerTest < ActionController::TestCase
 
   context "When sending a JPEG" do
     setup do
       @img= images(:in_absentia)
-      get :view, :id => @img.id
+      get :image, :id => @img.id
     end
     should_respond_with :success
     should "send the pic" do
@@ -23,7 +23,7 @@ class ImageControllerTest < ActionController::TestCase
   context "When sending a PNG" do
     setup do
       @img= images(:ponk)
-      get :view, :id => @img.id
+      get :image, :id => @img.id
     end
     should_respond_with :success
     should "send the pic" do
@@ -40,7 +40,7 @@ class ImageControllerTest < ActionController::TestCase
 
   context "When trying to send a non-existant file" do
     setup do
-      get :view, :id => -1
+      get :image, :id => -1
     end
     should_respond_with :not_found
   end

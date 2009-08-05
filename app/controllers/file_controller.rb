@@ -1,7 +1,7 @@
-class ImageController < ApplicationController
-  caches_page :view
+class FileController < ApplicationController
+  caches_page :image
 
-  def view
+  def image
     id= params[:id]
     img= Image.find(id) rescue nil if id
     if img
