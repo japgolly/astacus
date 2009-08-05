@@ -1,3 +1,7 @@
+Env prep:
+* [cygwin] Get the utf8-modified cygwin.dll if running on cygwin.
+* [mysql] Increase max_allowed_packet to 16M or so.
+
 To start:
 * Start BackgrounDRb
   script/backgroundrb start
