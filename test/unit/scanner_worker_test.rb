@@ -306,16 +306,11 @@ class ScannerWorkerTest < ActiveSupport::TestCase
     end # context: when there are dead files
 
     context "when scanning VA albums" do
+      setup do
+        remove_devdas_test_fixture
+      end
+
       should "use the album artist as the main artist and add the other artists to tracks" do
-        %w[
-          va
-          kavita_subramaniam_k.k.
-          pt.birju_maharaj_kavita_subramaniam_madhuri_dixit
-          shreya_ghosal
-          udit_narayan_shreya_ghosal
-        ].each_with_index{|a,i|
-          Artist.update artists(a).id, :name => "blah#{i}"
-        }
         assert_difference 'Artist.count', 2 do
           assert_difference 'Track.count' do
             @scanner.scan_file! DEVDAS_1
@@ -342,7 +337,19 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         disc= Disc.last
         assert disc.va?
       end
-    end
+    end # context: when scanning VA albums
 
   end # context: The scanner
+
+  def remove_devdas_test_fixture
+    d= discs(:devdas)
+    d.tracks.each{|t| t.delete}
+    d.delete
+    %w[
+      va
+      kavita_subramaniam_k.k.
+      pt.birju_maharaj_kavita_subramaniam_madhuri_dixit
+      shreya_ghosal
+    ].each{|a| artists(a).delete}
+  end
 end
