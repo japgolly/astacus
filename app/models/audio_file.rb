@@ -12,6 +12,16 @@ class AudioFile < ActiveRecord::Base
     File.expand_path File.join(dirname,basename)
   end
 
+  def file_ext
+    basename =~ /^.+\.([^\.\\\/]*)$/ ? $1 : nil
+  end
+
+  def mimetype
+    ext= file_ext
+    return 'audio/mpeg' if ext =~ /^mp(?:[23]|ga)$/
+    "audio/#{ext}"
+  end
+
   def exists?
     File.exists? filename
   end

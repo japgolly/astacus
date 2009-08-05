@@ -1,5 +1,17 @@
 class FileController < ApplicationController
-  caches_page :image
+  # caches_page :image # doesn't seem to respect mimetype, will test later
+
+  def audio
+    id= params[:id]
+    af= AudioFile.find(id) rescue nil if id
+    if af.nil?
+      render :nothing => true, :status => 404
+    elsif !af.exists?
+      render :text => "#{af.filename} doesn't exist.", :status => 417
+    else
+      send_file af.filename, :type => af.mimetype
+    end
+  end
 
   def image
     id= params[:id]

@@ -12,6 +12,15 @@ class AudioFileTest < ActiveSupport::TestCase
   should_not_allow_values_for :basename, '2006 - パレード/06 - 雪が降らない街.mp3'#, :message => 'must be greater than or equal to 0'
 
   context "An audio file" do
+    should "return its file extention" do
+      assert_equal 'mp3', AudioFile.new(:basename => 'as.mp3').file_ext
+      assert_equal 'flac', AudioFile.new(:basename => 'asasd asd.asdad qwe.mp3.flac').file_ext
+    end
+
+    should "return its mimetype" do
+      assert_equal 'audio/mpeg', AudioFile.new(:basename => 'as.mp3').mimetype
+      assert_equal 'audio/flac', AudioFile.new(:basename => 'asasd asd.asdad qwe.mp3.flac').mimetype
+    end
 
     should "provide a helper that returns the full path" do
       f= AudioFile.new(:dirname => mock_data_dir, :basename => 'asd').filename

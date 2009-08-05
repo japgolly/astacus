@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   # This route can be invoked with purchase_url(:id => product.id)
   map.search 'search', :controller => 'search', :action => 'search'
   map.image 'file/image/:id', :controller => 'file', :action => 'image'
+  map.audio_file 'file/audio/:id', :controller => 'file', :action => 'audio'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   map.resources :products
