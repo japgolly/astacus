@@ -6,7 +6,6 @@ should generate thumbnails for large images
 what about when ape/id3 tags differ - should create 2 tracks with same AF
 Fix: large insert SQLs going into log files
 Fix: backgroundrb spams logs. Can we shut it up?
-Handle VA albums
 BUG: Lamb of God had bad pic, autotagged, re-ran scanner, now double the tracks and bad image
 Locations should not have labels but should have multiple tags
 The SQ.taglist should handle this: "jap, !staged"
