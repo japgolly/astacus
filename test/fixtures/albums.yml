@@ -23,3 +23,10 @@ still_life:
   name: Still Life
   year: 1998
   discs_count: 3
+
+devdas:
+  albumart: devdas
+  artist: va
+  discs_count: 1
+  name: Devdas (देवदास)
+  year: 2003

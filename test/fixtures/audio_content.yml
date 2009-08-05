@@ -173,3 +173,53 @@ the_sound_of_muzak:
       9gvOHRhQ0C2efh+eYM+qctQMiw==
   size: 75615
   vbr: true
+
+# ========== DEVDAS ==========
+silsila_ye_chaahat_ka:
+  bitrate: 287
+  format: mp3
+  length: 324.885
+  md5: !binary |
+      cLDPAaz8pcdeDq1PiLhFUw==
+  samplerate: 44100
+  sha2: !binary |
+      SLBENimhOhH8G78s/0VW2/Z8stu6rrv1K4i7i3AAfkWopy3s2GMWBOK7nXqf
+      /iSTJpIUENmknTThWoeboxdo4w==
+  size: 11973499
+  vbr: true
+maar_daala:
+  bitrate: 271
+  format: mp3
+  length: 278.256
+  md5: !binary |
+      CuKQ2aawI6j1zTSPGvj2Og==
+  samplerate: 44100
+  sha2: !binary |
+      2AEvgRudfL62CizIc3Q5ykeyVOZzKYKRHsE4SOwmjK0ilCCzyf8dQ2SZKaaq
+      yosIeUB3jg14PDQVEnVEA5ifCw==
+  size: 9678158
+  vbr: true
+bairi_piya:
+  bitrate: 272
+  format: mp3
+  length: 321.907
+  md5: !binary |
+      /+769Z5A1K4+MQf1oYmvCQ==
+  samplerate: 44100
+  sha2: !binary |
+      HDRyvrkPZLyy6n3/3DjT+Dv+A/Kl8u5tvHGl2+LUcYynI/TUm6Rii6X+Luol
+      AqlrMV7gZr2KTZPsLJ+4PURCgQ==
+  size: 11237030
+  vbr: true
+kaahe_chhed_mohe:
+  bitrate: 277
+  format: mp3
+  length: 322.403
+  md5: !binary |
+      qTPJQtuIgt53tFziiG/JKw==
+  samplerate: 44100
+  sha2: !binary |
+      3UHyVhO+vQruL46rcEJdoyhjBWUgdasFepsnUVdGrx6AyZjkdfmaNjQtJLy3
+      fxowO6M7hgFfjmn40ycMTzLRwA==
+  size: 11454472
+  vbr: true

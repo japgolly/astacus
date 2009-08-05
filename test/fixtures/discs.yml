@@ -30,3 +30,8 @@ still_life_3:
 in_absentia:
   album: in_absentia
   order_id: 0
+
+devdas:
+  album: devdas
+  order_id: 0
+  va: true

@@ -95,3 +95,29 @@ the_sound_of_muzak:
   dirname: /c/fake_music_dir/2002 - In Absentia
   location: d_downloads
   size: 101371
+
+# ========== DEVDAS ==========
+silsila_ye_chaahat_ka:
+  audio_content: silsila_ye_chaahat_ka
+  basename: 01 - Silsila ye Chaahat ka.mp3
+  dirname: /c/fake_music_dir/devdas
+  location: c_downloads
+  size: 12056494
+maar_daala:
+  audio_content: maar_daala
+  basename: 02 - Maar Daala.mp3
+  dirname: /c/fake_music_dir/devdas
+  location: c_downloads
+  size: 9761101
+bairi_piya:
+  audio_content: bairi_piya
+  basename: 03 - Bairi Piya.mp3
+  dirname: /c/fake_music_dir/devdas
+  location: c_downloads
+  size: 11319985
+kaahe_chhed_mohe:
+  audio_content: kaahe_chhed_mohe
+  basename: 04 - Kaahe Chhed Mohe.mp3
+  dirname: /c/fake_music_dir/devdas
+  location: c_downloads
+  size: 11537513

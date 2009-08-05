@@ -307,6 +307,15 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
     context "when scanning VA albums" do
       should "use the album artist as the main artist and add the other artists to tracks" do
+        %w[
+          va
+          kavita_subramaniam_k.k.
+          pt.birju_maharaj_kavita_subramaniam_madhuri_dixit
+          shreya_ghosal
+          udit_narayan_shreya_ghosal
+        ].each_with_index{|a,i|
+          Artist.update artists(a).id, :name => "blah#{i}"
+        }
         assert_difference 'Artist.count', 2 do
           assert_difference 'Track.count' do
             @scanner.scan_file! DEVDAS_1

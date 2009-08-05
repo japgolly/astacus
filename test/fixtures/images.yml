@@ -502,3 +502,8 @@ in_absentia:
       6LE7qQ6dDtkbzJcqeOn+FVbi1jSUqpfH1rxKuZ4mo7uR7lHLKFGNoxR//9k=
   mimetype: image/jpeg
   size: 22274
+
+devdas:
+  data: <%= 'x' * 200 %>
+  mimetype: image/jpeg
+  size: 200

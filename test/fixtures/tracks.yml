@@ -113,3 +113,41 @@ the_sound_of_muzak:
   disc: in_absentia
   name: The Sound Of Muzak
   tn: 4
+
+# ========== DEVDAS ==========
+silsila_ye_chaahat_ka:
+  audio_file: silsila_ye_chaahat_ka
+  audio_tags:
+    - silsila_ye_chaahat_ka_id3
+    - silsila_ye_chaahat_ka_ape
+  disc: devdas
+  name: Silsila ye Chaahat ka (सिलसिला ये चाहत का)
+  tn: 1
+  track_artist: shreya_ghosal
+maar_daala:
+  audio_file: maar_daala
+  audio_tags:
+    - maar_daala_id3
+    - maar_daala_ape
+  disc: devdas
+  name: Maar Daala (मार डाला)
+  tn: 2
+  track_artist: kavita_subramaniam_k.k.
+bairi_piya:
+  audio_file: bairi_piya
+  audio_tags:
+    - bairi_piya_id3
+    - bairi_piya_ape
+  disc: devdas
+  name: Bairi Piya (बैरी पिया)
+  tn: 3
+  track_artist: udit_narayan_shreya_ghosal
+kaahe_chhed_mohe:
+  audio_file: kaahe_chhed_mohe
+  audio_tags:
+    - kaahe_chhed_mohe_id3
+    - kaahe_chhed_mohe_ape
+  disc: devdas
+  name: Kaahe Chhed Mohe (काहे छेड़ मोहे)
+  tn: 4
+  track_artist: pt.birju_maharaj_kavita_subramaniam_madhuri_dixit
