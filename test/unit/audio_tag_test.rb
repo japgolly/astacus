@@ -9,58 +9,70 @@ class AudioTagTest < ActiveSupport::TestCase
   }
   should_validate_positive_numericality_of :offset
 
-  context "AudioTags based on APE tags" do
-    setup do
-      file= SEIKIMA_CD2_08
-      @at= AudioTag.new({
-          :format => 'ape',
-          :version => '2',
-          :data => ApeTag.new(file).raw
-        })
-    end
-
-    should "provide basic tag attributes" do
-      assert_equal '聖飢魔II', @at.artist
-      assert_equal '愛と虐殺の日々', @at.album
-      assert_equal '赤い玉の伝説', @at.track
-      assert_equal 1991, @at.year
-    end
-
-    should "understand consolidated tn fields" do
-      assert_equal 8, @at.tn
-    end
-
-    should "understand consolidated disc fields" do
-      assert_equal 2, @at.disc
-    end
+  def create_ape_audio_tag_from_file(file)
+    AudioTag.new({
+      :format => 'ape',
+      :version => '2',
+      :data => ApeTag.new(file).raw
+    })
   end
 
-  context "AudioTags based on ID3v2 tags" do
-    setup do
-      file= SEIKIMA_CD2_08
+  def create_id3_audio_tag_from_file(file)
+      at= nil
       Mp3Info.open(file){|mp3|
         start,len= mp3.audio_content
-        @at= AudioTag.new({
+        at= AudioTag.new({
             :format => 'id3',
             :version => mp3.tag2.version,
             :data => File.read(file)[0..start-1],
         })
       }
-    end
+      at
+  end
 
-    should "provide basic tag attributes" do
-      assert_equal '聖飢魔II', @at.artist
-      assert_equal '愛と虐殺の日々', @at.album
-      assert_equal '赤い玉の伝説', @at.track
-      assert_equal 1991, @at.year
-    end
+  context "AudioTags based on APE tags" do
+    context "from non-VA albums" do
+      setup do
+        @at= create_ape_audio_tag_from_file SEIKIMA_CD2_08
+      end
 
-    should "understand consolidated tn fields" do
-      assert_equal 8, @at.tn
-    end
+      should "provide basic tag attributes" do
+        assert_equal '聖飢魔II', @at.artist
+        assert_equal '愛と虐殺の日々', @at.album
+        assert_equal '赤い玉の伝説', @at.track
+        assert_equal 1991, @at.year
+      end
 
-    should "understand consolidated disc fields" do
-      assert_equal 2, @at.disc
+      should "understand consolidated tn fields" do
+        assert_equal 8, @at.tn
+      end
+
+      should "understand consolidated disc fields" do
+        assert_equal 2, @at.disc
+      end
+    end
+  end
+
+  context "AudioTags based on ID3v2 tags" do
+    context "from non-VA albums" do
+      setup do
+        @at= create_id3_audio_tag_from_file SEIKIMA_CD2_08
+      end
+
+      should "provide basic tag attributes" do
+        assert_equal '聖飢魔II', @at.artist
+        assert_equal '愛と虐殺の日々', @at.album
+        assert_equal '赤い玉の伝説', @at.track
+        assert_equal 1991, @at.year
+      end
+
+      should "understand consolidated tn fields" do
+        assert_equal 8, @at.tn
+      end
+
+      should "understand consolidated disc fields" do
+        assert_equal 2, @at.disc
+      end
     end
   end
 
