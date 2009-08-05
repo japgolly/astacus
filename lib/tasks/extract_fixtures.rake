@@ -8,6 +8,16 @@ require 'lib/rails_reflection'
 class FixtureExtractor
   include RailsReflection
   OUTPUT_DIR= "#{RAILS_ROOT}/test/fixtures/extracted"
+  def ordering(model)
+    {
+      AudioFile => 'dirname, basename',
+      AudioTag => 'audio_file_id, format',
+      Artist => 'name',
+      Album => 'artist_id, name',
+      Disc => 'album_id, order_id',
+      Track => 'disc_id, tn, name',
+    }[model]
+  end
 
   # This is the entry point
   def do_it!
@@ -26,7 +36,6 @@ class FixtureExtractor
     tables.each_with_index do |table_name, table_index|
       puts "[#{table_index+1}/#{tables.size}] #{table_name}"
       model= @table_map[table_name]
-      fixture= {}
 
       # Analyse associations
       cols_to_ignore= %[created_at updated_at id]
@@ -43,7 +52,9 @@ class FixtureExtractor
       }
 
       # Start extraction...
-      objs= model.find(:all, :order => :id)
+      fixture= {}
+      fixture_order= []
+      objs= model.find(:all, :order => (ordering(model) || :id))
       objs.each{|obj|
         rec= {}
         # Set simple attributes
@@ -65,9 +76,10 @@ class FixtureExtractor
         # Save row
         row_name= name_fixture_row(obj)
         fixture[row_name]= rec
+        fixture_order<< row_name
       }
       # Create fixture file
-      yml= fixture.ya2yaml.sub(/\A---\s+/m,'')
+      yml= fixture_order.map{|n| {n => fixture[n]}.ya2yaml.sub(/\A---\s+/m,'')}.join("\n")
       yml= yml.split(/[\r\n]+/).reject{|l| l =~ /^\s*$/}.join("\n")+"\n"
       File.open("#{OUTPUT_DIR}/#{table_name}.yml", 'w') do |file|
         file.write yml
@@ -118,7 +130,7 @@ class FixtureExtractor
 
   # Takes a string and modifies it so that it's more appropriate as a fixture row name
   def normalise_for_name(str)
-    str.to_s.gsub(/\s|:/,'_').underscore
+    str.to_s.gsub(/\s|[:,\.]/,'_').underscore.gsub(/_{2,}/,'_')
   end
 end
 
