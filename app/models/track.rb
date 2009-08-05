@@ -1,6 +1,7 @@
 class Track < ActiveRecord::Base
   belongs_to :disc
   belongs_to :audio_file
+  belongs_to :track_artist, :class_name => 'Artist'
   has_and_belongs_to_many :audio_tags, :uniq => true
 
   validates_presence_of :disc, :audio_file, :name

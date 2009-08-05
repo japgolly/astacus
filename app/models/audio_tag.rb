@@ -40,6 +40,7 @@ class AudioTag < ActiveRecord::Base
         @ta[:tn]= @ta[:tracknum]
         @ta[:disc]= @ta[:TPOS] # TODO Test this with id3 tag < 2.3
         @ta[:year]||= @ta[:TDRC]
+        @ta[:album_artist]= @ta['TXXX'].map{|v| v =~ /^ALBUM ARTIST\000(.+)$/i; $1}.reject(&:nil?)[0]
         if @ta['APIC']
           if @ta['APIC'] =~ /^([\000\003](.*?)\000[\x00-\x14](.*?)\000)/m or @ta['APIC'] =~ /^([\001\002](.*?)\000[\x00-\x14](.*?)\000\000)/m
             @ta[:albumart_mimetype]= $2
@@ -50,6 +51,7 @@ class AudioTag < ActiveRecord::Base
         end
       when 'ape'
         @ta[:tn]= @ta[:track]
+        @ta[:album_artist]= @ta['Album artist']
       end
     end
     @ta
@@ -57,7 +59,7 @@ class AudioTag < ActiveRecord::Base
   alias_method :ta, :tag_attributes
 
   # Raw string fields
-  %w[artist album albumart_mimetype albumart_raw].each{|m|
+  %w[artist album album_artist albumart_mimetype albumart_raw].each{|m|
     class_eval "def #{m}; ta[:#{m}] end"
   }
   # Integer fields

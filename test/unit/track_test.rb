@@ -3,6 +3,7 @@ require 'test_helper'
 class TrackTest < ActiveSupport::TestCase
   should_belong_to :disc
   should_belong_to :audio_file
+  should_belong_to :track_artist
   should_have_and_belong_to_many :audio_tags
   %w[disc audio_file name].each{|attr|
     should_validate_presence_of attr

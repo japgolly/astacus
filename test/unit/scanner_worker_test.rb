@@ -73,21 +73,21 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
       should "store the id3 tag" do
         assert_equal @at_count+2, AudioTag.count
-        t1= @f.audio_tags.select{|t| t.offset == 0}[0]
-        assert_equal 'id3', t1.format
-        assert_equal '2.4.0', t1.version
-        assert_equal 0, t1.offset
-        assert_equal 9088, t1.data.size
-        assert_equal 1, t1.tracks.size
+        t= @f.audio_tags.select{|t| t.offset == 0}[0]
+        assert_equal 'id3', t.format
+        assert_equal '2.4.0', t.version
+        assert_equal 0, t.offset
+        assert_equal 9088, t.data.size
+        assert_equal 1, t.tracks.size
       end
 
       should "store the ape tag" do
-        t2= @f.audio_tags.select{|t| t.offset > 0}[0]
-        assert_equal 'ape', t2.format
-        assert_equal '2', t2.version
-        assert_equal 68177-359, t2.offset
-        assert_equal 359, t2.data.size
-        assert_equal 1, t2.tracks.size
+        t= @f.audio_tags.select{|t| t.offset > 0}[0]
+        assert_equal 'ape', t.format
+        assert_equal '2', t.version
+        assert_equal 68177-359, t.offset
+        assert_equal 359, t.data.size
+        assert_equal 1, t.tracks.size
       end
 
       should "create a new track" do
@@ -101,6 +101,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         assert_equal 2.93615, t.length
         assert_equal @f, t.audio_file
         assert_nil t.disc.name
+        assert !t.disc.va?
         assert_equal 0, t.disc.order_id
         assert_equal 'メフィストフェレスの肖像', t.disc.album.name
         assert_equal 1996, t.disc.album.year
@@ -295,6 +296,41 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         @scanner.scan @location
         assert_equal ALL_MOCK_DATA_FILES.size, @location.audio_files(true).size
         assert !@location.audio_files.map(&:basename).include?('bullshit')
+      end
+
+      should "clear the VA flag on a disc when necessary" do
+        # TODO should clear the VA flag on a disc when necessary
+        # only when the disc is already VA, has > 1 track and none of those are VA
+      end
+    end # context: when there are dead files
+
+    context "when scanning VA albums" do
+      should "use the album artist as the main artist and add the other artists to tracks" do
+        assert_difference 'Artist.count', 2 do
+          assert_difference 'Track.count' do
+            @scanner.scan_file! DEVDAS_1
+          end
+        end
+        t= Track.last
+        assert_not_nil t.track_artist
+        assert_equal 'Shreya Ghosal', t.track_artist.name
+        assert_equal 'Various Artists', t.disc.album.artist.name
+
+        assert_difference %w[Track.count Artist.count] do
+          @scanner.scan_file! DEVDAS_2
+        end
+        t= Track.last
+        assert_not_nil t.track_artist
+        assert_equal 'Kavita Subramaniam, K.K.', t.track_artist.name
+        assert_equal 'Various Artists', t.disc.album.artist.name
+      end
+
+      should "set the VA flag on the disc" do
+        assert_difference 'Disc.count' do
+          @scanner.scan_file! DEVDAS_1
+        end
+        disc= Disc.last
+        assert disc.va?
       end
     end
 

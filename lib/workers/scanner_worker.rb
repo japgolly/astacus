@@ -184,6 +184,11 @@ class ScannerWorker < BackgrounDRb::MetaWorker
 
     # Create artist/album/disc/track
     artist= Artist.find_identical_or_create! :name => tag.artist
+    track_artist= nil
+    if tag.album_artist
+      track_artist= artist
+      artist= Artist.find_identical_or_create! :name => tag.album_artist
+    end
     album= Album.find_identical_or_create!({
       :artist => artist,
       :name => tag.album,
@@ -196,11 +201,16 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       else raise "Unsupported disc type: #{tag.disc.inspect}"
       end
     disc= Disc.find_identical_or_create!({:album => album}.merge disc_attr)
+    if !disc.va? and track_artist
+      disc.va= true
+      disc.save!
+    end
     track= Track.find_identical_or_create!({
       :disc => disc,
       :name => tag.track,
       :tn => tag.tn,
       :audio_file => audio_file,
+      :track_artist => track_artist,
     })
     tag.tracks<< track
   end

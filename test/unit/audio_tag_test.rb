@@ -39,6 +39,7 @@ class AudioTagTest < ActiveSupport::TestCase
       should "provide basic tag attributes" do
         assert_equal '聖飢魔II', @at.artist
         assert_equal '愛と虐殺の日々', @at.album
+        assert_nil @at.album_artist
         assert_equal '赤い玉の伝説', @at.track
         assert_equal 1991, @at.year
       end
@@ -49,6 +50,20 @@ class AudioTagTest < ActiveSupport::TestCase
 
       should "understand consolidated disc fields" do
         assert_equal 2, @at.disc
+      end
+    end
+
+    context "from VA albums" do
+      setup do
+        @at= create_ape_audio_tag_from_file DEVDAS_2
+      end
+
+      should "provide basic tag attributes" do
+        assert_equal 'Kavita Subramaniam, K.K.', @at.artist
+        assert_equal 'Devdas (देवदास)', @at.album
+        assert_equal 'Various Artists', @at.album_artist
+        assert_equal 'Maar Daala (मार डाला)', @at.track
+        assert_equal 2002, @at.year
       end
     end
   end
@@ -62,6 +77,7 @@ class AudioTagTest < ActiveSupport::TestCase
       should "provide basic tag attributes" do
         assert_equal '聖飢魔II', @at.artist
         assert_equal '愛と虐殺の日々', @at.album
+        assert_nil @at.album_artist
         assert_equal '赤い玉の伝説', @at.track
         assert_equal 1991, @at.year
       end
@@ -72,6 +88,20 @@ class AudioTagTest < ActiveSupport::TestCase
 
       should "understand consolidated disc fields" do
         assert_equal 2, @at.disc
+      end
+    end
+
+    context "from VA albums" do
+      setup do
+        @at= create_id3_audio_tag_from_file DEVDAS_2
+      end
+
+      should "provide basic tag attributes" do
+        assert_equal 'Kavita Subramaniam, K.K.', @at.artist
+        assert_equal 'Devdas (देवदास)', @at.album
+        assert_equal 'Various Artists', @at.album_artist
+        assert_equal 'Maar Daala (मार डाला)', @at.track
+        assert_equal 2002, @at.year
       end
     end
   end

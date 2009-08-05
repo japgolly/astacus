@@ -107,6 +107,7 @@ CREATE TABLE `discs` (
   `order_id` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `va` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `index_discs_on_album_id_and_order_id` (`album_id`,`order_id`),
   KEY `index_discs_on_album_type_id` (`album_type_id`)
@@ -177,8 +178,10 @@ CREATE TABLE `tracks` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `audio_file_id` int(11) NOT NULL,
+  `track_artist_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_tracks_on_audio_file_id` (`audio_file_id`)
+  KEY `index_tracks_on_audio_file_id` (`audio_file_id`),
+  KEY `index_tracks_on_track_artist_id` (`track_artist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO schema_migrations (version) VALUES ('20090608100525');
@@ -218,3 +221,5 @@ INSERT INTO schema_migrations (version) VALUES ('20090802102256');
 INSERT INTO schema_migrations (version) VALUES ('20090802153304');
 
 INSERT INTO schema_migrations (version) VALUES ('20090803084224');
+
+INSERT INTO schema_migrations (version) VALUES ('20090805004326');

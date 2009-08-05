@@ -6,7 +6,7 @@ class Disc < ActiveRecord::Base
   validates_presence_of :album, :order_id
   validates_numericality_of :order_id, :only_integer => true, :allow_nil => true
 
-  acts_as_unique
+  acts_as_unique :except => :va
 
   after_destroy do |r|
     album= r.album(true)
