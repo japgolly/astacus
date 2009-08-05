@@ -48,5 +48,19 @@ class TrackTest < ActiveSupport::TestCase
         tracks(:the_requiem).destroy
       end
     end
+
+    should "remove track artist if it's no longer referenced" do
+      t= tracks(:kaahe_chhed_mohe)
+      assert_difference 'Artist.count', -1 do
+        t.destroy
+      end
+      assert !Artist.exists?(t.track_artist_id)
+    end
+
+    should "not remove track artist it's still being referenced" do
+      assert_difference 'Artist.count', 0 do
+        tracks(:bairi_piya).destroy
+      end
+    end
   end
 end

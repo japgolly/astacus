@@ -21,13 +21,25 @@ class ArtistTest < ActiveSupport::TestCase
       assert_equal new_artist_name, a.name
     end
 
-    should "be reuse existing if already exists" do
+    should "reuse existing if already exists" do
       a= nil
       assert_difference 'Artist.count', 0 do
         a= Artist.find_identical_or_create!(:name => 'Dream Theater')
       end
       assert !a.new_record?
       assert_equal 'Dream Theater', a.name
+    end
+
+    should "reference their va tracks" do
+      assert_equal [], artists(:seikima2).va_tracks
+      assert_same_elements [tracks(:maar_daala)], artists('kavita_subramaniam_k.k.').va_tracks
+      assert_same_elements [tracks(:silsila_ye_chaahat_ka),tracks(:bairi_piya)], artists(:shreya_ghosal).va_tracks
+    end
+
+    should "be considered in use if referenced by either track or album" do
+      assert artists(:seikima2).in_use?
+      assert artists(:shreya_ghosal).in_use?
+      assert_equal false, Artist.create(:name=>'ssh').in_use?
     end
   end
 end

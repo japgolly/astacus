@@ -11,8 +11,10 @@ class Track < ActiveRecord::Base
 
   after_destroy do |r|
     disc= r.disc
+    track_artist= r.track_artist
     log_vars 'Track.after_destroy', 'TRACK' => r.inspect, 'DISC' => disc.inspect, 'DISC TRACKS' => (disc && disc.tracks.inspect) if logger.debug?
     disc.destroy if disc and disc.tracks.empty?
+    track_artist.destroy if track_artist and !track_artist.in_use?
   end
 
   def bitrate
