@@ -2,6 +2,7 @@ require 'bdrb_test_helper'
 require 'scanner_worker'
 
 class ScannerWorkerTest < ActiveSupport::TestCase
+  ScannerWorker.log_scanner_errors_to_stderr= false
 
   context "The Scanner" do
     setup do
