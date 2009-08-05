@@ -11,7 +11,11 @@ class Disc < ActiveRecord::Base
   after_destroy do |r|
     album= r.album(true)
     log_vars 'Disc.after_destroy', 'DISC' => r.inspect, 'ALBUM' => album.inspect, 'ALBUM DISCS' => (album && album.discs.inspect) if logger.debug?
-    album.destroy if album and album.discs_count == 0
+    album.destroy if album and not album.in_use?
+  end
+
+  def in_use?
+    !tracks.empty?
   end
 
   def length

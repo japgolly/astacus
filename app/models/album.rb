@@ -13,6 +13,10 @@ class Album < ActiveRecord::Base
     r.artist.destroy unless r.artist.in_use?
   end
 
+  def in_use?
+    discs_count != 0
+  end
+
   # Updates the albumart for this album based on the albumart in the tags in the
   # album's tracks.
   def update_albumart!
