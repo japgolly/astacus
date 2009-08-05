@@ -48,4 +48,6 @@
 .discs .track td {padding:1px}
 .discs .tracks .tn {width:16px}
 .discs .tracks .len {text-align:right; padding-left:10px}
+.discs .tracks .dl {padding-left:4px}
+.discs .tracks .dl a {color:#00b; font-size:10px}
 .discs .summary {text-align:right; font-style:italic; border-top:solid 1px #222}

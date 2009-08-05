@@ -81,8 +81,8 @@ class FileControllerTest < ActionController::TestCase
       end
       should_respond_with 417
       should "tell the user the file doesnt exist" do
+        assert_template 'audio_file_not_found'
         assert_response_includes @af.filename
-        assert_response_includes " doesn"
       end
     end
 

@@ -4,6 +4,7 @@ span {font-family:inherit; font-size:inherit; color:inherit}
 table {border-collapse:collapse}
 td {vertical-align:top}
 ol,ul {padding-left:14px}
+a {color:#00d}
 
 /* This is the digg style taken from the will_paginate examples */
 .pagination {
