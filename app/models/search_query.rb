@@ -75,13 +75,22 @@ class SearchQuery < ActiveRecord::Base
     end
   end
 
-  def preprocess_boolean_param(v) v end
-  def validate_boolean_param(v)
+  def preprocess_boolean_isnull_param(v) v end
+  def validate_boolean_isnull_param(v)
     return nil if %w[0 1].include?(v)
     return "is invalid. Must be either 0 or 1."
   end
-  def add_boolean_condition(field, v)
+  def add_boolean_isnull_condition(field, v)
     add_conditions "#{field} IS #{'NOT ' if v == '1'}NULL"
+  end
+
+  def preprocess_boolean_01_param(v) v end
+  def validate_boolean_01_param(v)
+    return nil if %w[0 1].include?(v)
+    return "is invalid. Must be either 0 or 1."
+  end
+  def add_boolean_01_condition(field, v)
+    add_conditions "#{field} = #{v}"
   end
 
   # Removes whitespace.
@@ -194,11 +203,12 @@ class SearchQuery < ActiveRecord::Base
   protected
 
   add_param :album, :text, 'albums.name'
-  add_param :albumart, :boolean, 'albums.albumart_id'
+  add_param :albumart, :boolean_isnull, 'albums.albumart_id'
   add_param :artist, :text, 'artists.name', :joins => :artist
   add_param :disc, :text, 'discs.name', :joins => :discs
   add_param :discs, :int, 'albums.discs_count'
   add_param :track, :text, 'tracks.name', :joins => {:discs => :tracks}
+  add_param :va, :boolean_01, 'discs.va', :joins => :discs
   add_param :year, :int, 'albums.year'
 
   add_param :location, :taglist, 'locations.label', :joins => {:discs => {:tracks => {:audio_file => :location}}}

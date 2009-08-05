@@ -21,7 +21,7 @@ module SearchHelper
     %!<tr><td class="l">#{label_tag}</td><td class="f">#{input_tag}</td></tr>!
   end
 
-  def sq_boolean_field(key, label_text, yes_label, no_label, yes_before_no= true)
+  def sq_boolean_field(key, label_text, yes_label='Yes', no_label='No', yes_before_no= true)
     nada= ['', nil]
     yes= [yes_label, '1']
     no= [no_label, '0']

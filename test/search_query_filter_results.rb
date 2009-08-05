@@ -36,6 +36,9 @@ module SearchQueryFilterResults
       {:location => '!main'} => %w[ponk in_absentia devdas],
       {:location => '!c_downloads,d_downloads'} => %w[6doit still_life],
 
+      {:va => '0'} => %w[ponk 6doit in_absentia still_life],
+      {:va => '1'} => %w[devdas],
+
       # combinations
       {:album => 'in', :artist => 'dream'} => %w[6doit],
       {:year => '2000+', :albumart => '1'} => %w[in_absentia devdas],
