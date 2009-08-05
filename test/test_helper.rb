@@ -4,8 +4,8 @@ require 'test_help'
 
 module FixtureAndTestHelpers
   MOCK_DATA_DIR= File.expand_path(File.dirname(__FILE__) + "/mock_data")
-  def mock_data_dir
-    MOCK_DATA_DIR
+  def mock_data_dir(suffix=nil)
+    suffix ? File.join(MOCK_DATA_DIR,suffix) : MOCK_DATA_DIR
   end
 end
 

@@ -11,4 +11,4 @@ d_downloads:
   dir: /d/stuff/downloads/music
 mock_data_dir:
   label: mock_data_dir
-  dir: <%= File.expand_path mock_data_dir %>
+  dir: <%= mock_data_dir %>

@@ -254,6 +254,12 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
     context "when there are dead files" do
       setup do
+        # There are audio file text fixtures set to the mock_data_dir location
+        # for other tests. They are outside the scope of these scanner dead-file
+        # tests so this update is to make sure they don't poulte our results.
+        AudioFile.update_all "location_id = #{locations(:main).id}",
+          "location_id = #{locations(:mock_data_dir).id}"
+
         assert_equal 0, @location.audio_files.size
         assert_difference 'AudioFile.count' do
           @scanner.scan_file! FROZEN_CITY_TAGGED

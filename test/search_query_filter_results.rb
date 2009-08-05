@@ -30,11 +30,11 @@ module SearchQueryFilterResults
       {:disc => '3'} => %w[still_life],
 
       {:location => 'main'} => %w[6doit still_life],
-      {:location => 'c_downloads'} => %w[ponk devdas],
+      {:location => 'c_downloads'} => %w[ponk],
       {:location => 'd_downloads'} => %w[in_absentia],
       {:location => 'main d_downloads'} => %w[6doit still_life in_absentia],
       {:location => '!main'} => %w[ponk in_absentia devdas],
-      {:location => '!c_downloads,d_downloads'} => %w[6doit still_life],
+      {:location => '!c_downloads,d_downloads'} => %w[6doit still_life devdas],
 
       {:va => '0'} => %w[ponk 6doit in_absentia still_life],
       {:va => '1'} => %w[devdas],
