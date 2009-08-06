@@ -1,18 +1,29 @@
 <h1>Stats#index</h1>
 
+<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Overall</div>
 <table>
   <%= stat_row 'Files', format(@stats[:files]) %>
-  <%= stat_row 'Size', format_bytes(@stats[:filesize]) %>
-  <%= stat_row 'Songs', format(@stats[:songs]) %>
+  <%= stat_row 'Total Size', format_bytes(@stats[:filesize]) %>
+  <%= stat_row 'Total Length', @stats[:length] %>
+</table>
+<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Artist</div>
+<table>
   <%= stat_row 'Artists', format(@stats[:artists]) %>
+  <%= stat_row 'Non-V/A Artists', format(@stats[:non_va_artists]) %>
+</table>
+<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Album/Disc</div>
+<table>
   <%= stat_row 'Albums', format(@stats[:albums]) %>
-  <%= stat_row 'CDs', format(@stats[:cds]) %>
+  <%= stat_row 'Multi-disc Albums', "#{format @stats[:multiple_disc_albums]} (#{(@stats[:multiple_disc_albums]*100.0/@stats[:albums]).round 1}%)" %>
+  <%= stat_row 'Discs', format(@stats[:discs]) %>
+  <%= stat_row 'Average Albums per Artist', @stats[:avg_albums_p_artist].round(1) %>
+</table>
+<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Track</div>
+<table>
   <%= stat_row 'Tracks', format(@stats[:tracks]) %>
-  <%= stat_row 'Length', @stats[:length] %>
-  <%= stat_row 'Average Length', @stats[:avg_length] %>
-  <%= stat_row 'Average File Size', @stats[:avg_filesize] %>
+  <%= stat_row 'Average Length', format_mmss(@stats[:avg_length]) %>
   <%= stat_row 'Average Bitrate', @stats[:avg_bitrate].to_i %>
-  <%= stat_row 'Average Albums per Artist', @stats[:avg_albums_p_artist] %>
-  <%= stat_row 'Average Tracks per Artist', @stats[:avg_tracks_p_artist] %>
-  <%= stat_row 'Average Tracks per CD', @stats[:avg_tracks_p_cd] %>
+  <%= stat_row 'Average Tracks per Artist', @stats[:avg_tracks_p_artist].round(1) %>
+  <%= stat_row 'Average Tracks per Disc', @stats[:avg_tracks_p_disc].round(1) %>
+  <%= stat_row 'Average File Size', format_bytes(@stats[:avg_filesize].to_i) %>
 </table>
