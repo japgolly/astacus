@@ -1,4 +1,5 @@
 class StatsController < ApplicationController
+
   def index
     @sq= SearchQuery.tmp(params)
     if @sq.params.empty?
@@ -16,7 +17,13 @@ class StatsController < ApplicationController
         :albums_without_albumart  => Album.count(:conditions => "albumart_id is null"),
       }
     elsif @sq.valid?
-      # TODO Filtered stats be faster with a temp table
+      # Use the sq to create a table table of album ids
+      conn= Album.connection
+      conn.execute "DROP TEMPORARY TABLE IF EXISTS #{TMP_TABLE_NAME};"
+      sql= Album.get_raw_sql @sq.to_find_options.merge(:select => 'albums.id')
+      conn.execute "CREATE TEMPORARY TABLE #{TMP_TABLE_NAME}(UNIQUE(id)) ENGINE MEMORY IGNORE AS #{sql}"
+
+      # Get stats using temp table
       @stats= {
         :files                    => filtered_album_stat(:count, :joins => {:discs => {:tracks => :audio_file}}),
         :filesize                 => filtered_album_stat(:sum, 'audio_files.size', :joins => {:discs => {:tracks => :audio_file}}).to_i,
@@ -30,6 +37,7 @@ class StatsController < ApplicationController
         :avg_bitrate              => filtered_album_stat(:average, 'audio_content.bitrate', :joins => {:discs => {:tracks => {:audio_file => :audio_content}}}).to_f,
         :albums_without_albumart  => filtered_album_stat(:count, :conditions => "albumart_id is null"),
       }
+      conn.execute "DROP TEMPORARY TABLE #{TMP_TABLE_NAME};"
     else
       raise # TODO invalid sq in stats/index
     end
@@ -44,6 +52,9 @@ class StatsController < ApplicationController
   end
 
   private
+    TMP_TABLE_NAME= "tmp_album_ids".freeze
+    TMP_TABLE_JOIN_SQL= "INNER JOIN #{TMP_TABLE_NAME} ON #{TMP_TABLE_NAME}.id = albums.id".freeze
+
     def safe_avg(total,count)
       count= @stats[count] if count.is_a?(Symbol)
       return 0 if count == 0
@@ -60,11 +71,12 @@ class StatsController < ApplicationController
       options||= {}
 
       # Apply filters
-      joins= options.delete :joins
-      conditions= options.delete :conditions
-      options.reverse_merge! @sq.to_find_options
-      SearchQuery.add_associations! options, :joins, joins if joins
-      SearchQuery.add_query_conditions! options, *conditions if conditions
+      options[:joins]= if options[:joins]
+        jsql= Album.get_raw_sql(:joins => options[:joins]).sub(/^.+?(?=INNER JOIN)/,'')
+        "#{TMP_TABLE_JOIN_SQL} #{jsql}"
+      else
+        TMP_TABLE_JOIN_SQL
+      end
 
       # Get stat
       args= field ? [field] : []
