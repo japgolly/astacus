@@ -47,9 +47,9 @@ class ApplicationHelperTest < ActionView::TestCase
 
   def test_to_percentage
     {
-      [0,0] => '0',
-      [0,5] => '0',
-      [0,5,1] => '0',
+      [0,0] => '',
+      [0,5] => '',
+      [0,5,1] => '',
       [5,5] => '100',
       [5,5,1] => '100',
       [4,5] => '80',
@@ -60,7 +60,11 @@ class ApplicationHelperTest < ActionView::TestCase
       [2,3,3] => '66.667',
     }.each{|args,expected|
       assert_equal expected, to_percentage(*args), "to_percentage(#{args.join ','}) failed."
-      assert_equal "a #{expected} b", to_percentage(*args){|x| "a #{x} b"}, "to_percentage(#{args.join ','}) with a block failed."
+      if expected == ''
+        assert_equal '', to_percentage(*args){|x| "a #{x} b"}, "to_percentage(#{args.join ','}) with a block failed."
+      else
+        assert_equal "a #{expected} b", to_percentage(*args){|x| "a #{x} b"}, "to_percentage(#{args.join ','}) with a block failed."
+      end
     }
   end
 end

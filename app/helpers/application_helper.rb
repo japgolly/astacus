@@ -54,20 +54,13 @@ module ApplicationHelper
   end
 
   def to_percentage(a, b, decimal_places=0)
-    p= if b == 0
-      '0'
-    elsif a == 0
-      '0'
-    elsif a == b
+    return '' if a == 0 or b == 0
+    p= if a == b
       '100'
     else
       p= a.to_f * 100.0 / b
       p= (decimal_places == 0 ? p.round(0).to_i : p.round(decimal_places)).to_s
     end
-    if block_given?
-      yield p
-    else
-      p
-    end
+    block_given? ? yield(p) : p
   end
 end

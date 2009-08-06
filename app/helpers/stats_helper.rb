@@ -4,8 +4,7 @@ module StatsHelper
   end
 
   def stat_row_percentage(key, a, b, decimal_places=0)
-    v= format(a)
-    v+= " (#{to_percentage a,b,decimal_places}%)" unless b == 0
+    v= format(a) + to_percentage(a,b,decimal_places){|p| " (#{p}%)"}
     stat_row key, v
   end
 end
