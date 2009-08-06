@@ -12,6 +12,10 @@ class SearchQuery < ActiveRecord::Base
   validates_presence_of :name, :params
   validates_uniqueness_of :name, :allow_blank => false, :allow_nil => true
 
+  # Returns a new instance that is meant to be used temporarily and not saved.
+  def self.tmp(params)
+    SearchQuery.new(:params => params, :name => :tmp)
+  end
 
   def params=(params)
     if params

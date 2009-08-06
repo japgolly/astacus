@@ -13,7 +13,7 @@ class SearchController < ApplicationController
     }
 
     # Filter options
-    @sq= SearchQuery.new(:params => params, :name => :tmp)
+    @sq= SearchQuery.tmp(params)
     if @sq.params.empty? or @sq.valid?
       options.deep_merge! @sq.to_find_options
 
