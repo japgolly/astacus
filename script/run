@@ -13,7 +13,7 @@ echo
 
 if [ -n "$INIT" ]; then
     echo "Recreating table structure..."
-    rake db:migrate:reset
+    rake db:migrate:reset log:clear
     echo
 fi
 
