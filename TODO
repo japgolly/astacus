@@ -62,6 +62,8 @@ LOCATIONS
 STATS
 =====
 * Make it pretty.
+* Year age buckets (5 year buckets)
+* Graph by year
 * Should be able to apply search queries to the stats.
 
 WARNINGS
