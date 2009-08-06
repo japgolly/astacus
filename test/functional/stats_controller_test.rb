@@ -56,24 +56,27 @@ class StatsControllerTest < ActionController::TestCase
         @stats= assigns(:stats)
       end
       should_respond_with :success
+      should_render_template 'index'
       should "calculate the stats correctly" do
         ac_count= AudioContent.count
         assert_equal files=19, @stats[:files]
         assert_equal TOTAL_FILESIZE, @stats[:filesize]
-        assert_equal 8, @stats[:artists]
-        assert_equal nva_artists=4, @stats[:non_va_artists]
-        assert_equal 5, @stats[:albums]
-        assert_equal nva_albums=4, @stats[:non_va_albums]
+        assert_equal artists=5, @stats[:artists]
+        assert_equal albums=5, @stats[:albums]
+        assert_equal 1, @stats[:va_albums]
         assert_equal 2, @stats[:multiple_disc_albums]
         assert_equal discs=8, @stats[:discs]
         assert_equal tracks=19, @stats[:tracks]
         assert_in_delta TOTAL_LENGTH, @stats[:length], 0.01
-        assert_in_delta nva_albums.to_f / nva_artists.to_f, @stats[:avg_albums_p_artist], 0.01
-#      :avg_tracks_p_artist      => conn.select_value('select avg(c) from (select count(*) c from tracks t inner join discs on discs.id=disc_id inner join albums al on al.id=album_id group by artist_id) a;').to_f,
-        assert_in_delta tracks.to_f / discs.to_f, @stats[:avg_tracks_p_disc], 0.01
-        assert_in_delta TOTAL_LENGTH / tracks, @stats[:avg_length], 0.01
-        assert_in_delta TOTAL_FILESIZE.to_f / files, @stats[:avg_filesize], 0.1
         assert_in_delta (1234 + 10*(ac_count-1)).to_f / ac_count, @stats[:avg_bitrate], 0.1
+        assert_equal albums_waa=2, @stats[:albums_without_albumart]
+
+        assert_in_delta TOTAL_LENGTH / tracks, @stats[:avg_length], 0.001
+        assert_in_delta TOTAL_FILESIZE.to_f / files, @stats[:avg_filesize], 0.001
+        assert_in_delta albums.to_f / artists.to_f, @stats[:avg_albums_p_artist], 0.001
+        assert_in_delta tracks.to_f / artists.to_f, @stats[:avg_tracks_p_artist], 0.001
+        assert_in_delta tracks.to_f / discs.to_f, @stats[:avg_tracks_p_disc], 0.001
+        assert_equal albums-albums_waa, @stats[:albums_with_albumart]
       end
     end # Context: with no params
   end # Context: stats/index

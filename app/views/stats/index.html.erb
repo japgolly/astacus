@@ -9,12 +9,14 @@
 <div style="font-weight:bold; text-decoration:underline; margin-top:12px">Artist</div>
 <table>
   <%= stat_row 'Artists', format(@stats[:artists]) %>
-  <%= stat_row 'Non-V/A Artists', format(@stats[:non_va_artists]) %>
 </table>
 <div style="font-weight:bold; text-decoration:underline; margin-top:12px">Album/Disc</div>
 <table>
   <%= stat_row 'Albums', format(@stats[:albums]) %>
-  <%= stat_row 'Multi-disc Albums', "#{format @stats[:multiple_disc_albums]} (#{(@stats[:multiple_disc_albums]*100.0/@stats[:albums]).round 1}%)" %>
+  <%= stat_row 'Albums with albumart', format(@stats[:albums_with_albumart]) + to_percentage(@stats[:albums_with_albumart], @stats[:albums]){|p| " (#{p}%)"} %>
+  <%= stat_row 'Albums without albumart', format(@stats[:albums_without_albumart]) + to_percentage(@stats[:albums_without_albumart], @stats[:albums]){|p| " (#{p}%)"} %>
+  <%= stat_row 'V/A Albums', format(@stats[:va_albums]) + to_percentage(@stats[:va_albums], @stats[:albums], 1){|p| " (#{p}%)"} %>
+  <%= stat_row 'Multi-disc Albums', format(@stats[:multiple_disc_albums]) + to_percentage(@stats[:multiple_disc_albums], @stats[:albums], 1){|p| " (#{p}%)"} %>
   <%= stat_row 'Discs', format(@stats[:discs]) %>
   <%= stat_row 'Average Albums per Artist', @stats[:avg_albums_p_artist].round(1) %>
 </table>

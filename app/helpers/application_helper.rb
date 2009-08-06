@@ -52,4 +52,22 @@ module ApplicationHelper
   def format_mmss(length)
     "%d:%02d" % [length / 60, length % 60]
   end
+
+  def to_percentage(a, b, decimal_places=0)
+    p= if b == 0
+      '0'
+    elsif a == 0
+      '0'
+    elsif a == b
+      '100'
+    else
+      p= a.to_f * 100.0 / b
+      p= (decimal_places == 0 ? p.round(0).to_i : p.round(decimal_places)).to_s
+    end
+    if block_given?
+      yield p
+    else
+      p
+    end
+  end
 end
