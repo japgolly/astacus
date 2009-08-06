@@ -9,6 +9,15 @@ BROWSING
 * Save searches
 * Display searches from main page
 * Add remaining filter criteria
+  - album type
+  - track.format
+  - track.length
+  - track.bitrate
+  - file.size
+  - file.dirname
+  - file.basename
+  - other.age
+  - results/page
 * Add a reset button
 * Change sort order
 
@@ -67,23 +76,30 @@ STATS
 
 WARNINGS
 ========
-* Images over 1 meg
-* Images with bad mimetypes
-* Audio tags with apic tags but no albumart
-* Albums where albumart is inconsistant between tracks (i.e. missing from some, diff pic on some)
-* Audio files with multiple tracks (i.e. mismatch between tag metadata)
-* Audio files with no tracks
-* Albums with a single non-0 cd
-* Albums with 0 and non-0 cds
-* Duplicates
-* replaygain missing
-* album replaygain different between cd tracks
-* Missing tracks (eg. 1,2,6,7,8)
-* Albums without albums art
-* Dirs with multiple artist tags
-* Discs split across multiple dirs (disc:dir should be 1:1)
-* Make sure that max tracks/discs is correct
-* Check replaygain
+* Should be able to apply search queries to the filters.
+* Display different types of warnings.
+* Display a graph of warnings over time.
+* Display history/timeline of warnings both added and resolved.
+* Show a list of albums missing album art
+* Warnings have their own priority (modifiable at runtime).
+* Warning types:
+  - Images over 1 meg
+  - Images with bad mimetypes
+  - Audio tags with apic tags but no albumart
+  - Albums where albumart is inconsistant between tracks (i.e. missing from some, diff pic on some)
+  - Audio files with multiple tracks (i.e. mismatch between tag metadata)
+  - Audio files with no tracks
+  - Albums with a single non-0 cd
+  - Albums with 0 and non-0 cds
+  - Duplicates
+  - replaygain missing
+  - album replaygain different between cd tracks
+  - Missing tracks (eg. 1,2,6,7,8)
+  - Albums without albums art
+  - Dirs with multiple artist tags
+  - Discs split across multiple dirs (disc:dir should be 1:1)
+  - Make sure that max tracks/discs is correct
+  - Check replaygain
 
 FUTURE FEATURES
 ===============
