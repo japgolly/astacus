@@ -30,7 +30,7 @@ module ApplicationHelper
 
   # Returns human-friendly string representation of a number of bytes.
   # Eg. "24.7 MB"
-  def format_bytes(v, display_exact_also= true)
+  def format_bytes(v, display_exact_also= :txt)
     raise if v < 0
     res= if v >= 1.terabytes
       "%.3f TB" % [v.to_f / 1.terabytes]
@@ -43,7 +43,12 @@ module ApplicationHelper
     else
       "#{v} bytes"
     end
-    res= "#{res} (#{format v} bytes)" if display_exact_also and v >= 1.kilobytes
+
+    res= case display_exact_also
+      when :txt then "#{res} (#{format v} bytes)"
+      when :div then %!#{res}<div class="exact_bytes">(#{format v} bytes)</div>!
+      else raise "Unsupported value for display_exact_also: #{display_exact_also.inspect}"
+      end if display_exact_also and v >= 1.kilobytes
     res
   end
 

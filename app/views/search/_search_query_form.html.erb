@@ -2,7 +2,7 @@
 <br/><br/>
 
 <div id="search_query_form">
-<% form_tag search_url do %>
+<% form_tag @search_query_form_url || search_url do %>
 
   <% sq_field_group 'Artist' do %>
     <%= sq_text_field :artist, 'Name' %>

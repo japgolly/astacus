@@ -51,3 +51,18 @@
 .discs .tracks .dl {padding-left:4px}
 .discs .tracks .dl a {color:#00b; font-size:10px}
 .discs .summary {text-align:right; font-style:italic; border-top:solid 1px #222}
+
+#stats {margin-top:14px}
+#stats .sep th {height:24px}
+#stats .section th {text-align:left; font-size:14px; padding:4px; background:#69b10a; color:#fff; letter-spacing:1px}
+#stats td {padding:2px 4px 2px 4px; vertical-align:top}
+#stats .k {font-weight:bold}
+#stats .v {text-align:right; padding-left:8px}
+#stats .exact_bytes {font-style:italic}
+#stats .alt1 * {background:#e8e8fa; color:#000060}
+
+#stats .section th {border:solid 1px #333}
+#stats .k {border-left:solid 1px #333}
+#stats .v {border-right:solid 1px #333}
+#stats .sep {border-top:solid 1px #333}
+#stats {border-bottom:solid 1px #333}

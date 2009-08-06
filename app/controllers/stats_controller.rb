@@ -1,6 +1,8 @@
 class StatsController < ApplicationController
+  layout 'search'
 
   def index
+    @search_query_form_url= stats_url
     @sq= SearchQuery.tmp(params)
     if @sq.params.empty?
       @stats= {
@@ -41,6 +43,7 @@ class StatsController < ApplicationController
     else
       raise # TODO invalid sq in stats/index
     end
+    # TODO test stats/index with no results
 
     # Calculate other stats based on data already loaded
     @stats[:avg_filesize]= safe_avg(:filesize,:files)

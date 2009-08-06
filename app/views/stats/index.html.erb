@@ -1,31 +1,32 @@
-<h1>Stats#index</h1>
+<table id="stats">
 
-<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Overall</div>
-<table>
-  <%= stat_row 'Files', format(@stats[:files]) %>
-  <%= stat_row 'Total Size', format_bytes(@stats[:filesize]) %>
-  <%= stat_row 'Total Length', @stats[:length] %>
-</table>
-<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Artist</div>
-<table>
-  <%= stat_row 'Artists', format(@stats[:artists]) %>
-</table>
-<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Album/Disc</div>
-<table>
-  <%= stat_row 'Albums', format(@stats[:albums]) %>
-  <%= stat_row_percentage 'Albums with albumart', @stats[:albums_with_albumart], @stats[:albums] %>
-  <%= stat_row_percentage 'Albums without albumart', @stats[:albums_without_albumart], @stats[:albums] %>
-  <%= stat_row_percentage 'V/A Albums', @stats[:va_albums], @stats[:albums], 1 %>
-  <%= stat_row_percentage 'Multi-disc Albums', @stats[:multiple_disc_albums], @stats[:albums], 1 %>
-  <%= stat_row 'Discs', format(@stats[:discs]) %>
-  <%= stat_row 'Average Albums per Artist', @stats[:avg_albums_p_artist].round(1) %>
-</table>
-<div style="font-weight:bold; text-decoration:underline; margin-top:12px">Track</div>
-<table>
-  <%= stat_row 'Tracks', format(@stats[:tracks]) %>
-  <%= stat_row 'Average Length', format_mmss(@stats[:avg_length]) %>
-  <%= stat_row 'Average Bitrate', @stats[:avg_bitrate].to_i %>
-  <%= stat_row 'Average Tracks per Artist', @stats[:avg_tracks_p_artist].round(1) %>
-  <%= stat_row 'Average Tracks per Disc', @stats[:avg_tracks_p_disc].round(1) %>
-  <%= stat_row 'Average File Size', format_bytes(@stats[:avg_filesize].to_i) %>
+<% stats_section 'Overall' do %>
+  <%= stats_row 'Files', format(@stats[:files]) %>
+  <%= stats_row 'Total Size', format_bytes(@stats[:filesize], :div) %>
+  <%= stats_row 'Total Length', @stats[:length] %>
+<% end %>
+
+<% stats_section 'Artist' do %>
+  <%= stats_row 'Artists', format(@stats[:artists]) %>
+<% end %>
+
+<% stats_section 'Album / Disc' do %>
+  <%= stats_row 'Albums', format(@stats[:albums]) %>
+  <%= stats_row_percentage 'V/A Albums', @stats[:va_albums], @stats[:albums], 1 %>
+  <%= stats_row_percentage 'Multi-disc Albums', @stats[:multiple_disc_albums], @stats[:albums], 1 %>
+  <%= stats_row 'Discs', format(@stats[:discs]) %>
+  <%= stats_row_percentage 'Albums with Album-Art', @stats[:albums_with_albumart], @stats[:albums] %>
+  <%= stats_row_percentage 'Albums without Album-Art', @stats[:albums_without_albumart], @stats[:albums] %>
+  <%= stats_row 'Average Albums per Artist', @stats[:avg_albums_p_artist].round(1) %>
+<% end %>
+
+<% stats_section 'Track' do %>
+  <%= stats_row 'Tracks', format(@stats[:tracks]) %>
+  <%= stats_row 'Average File Size', format_bytes(@stats[:avg_filesize].to_i, :div) %>
+  <%= stats_row 'Average Length', format_mmss(@stats[:avg_length]) %>
+  <%= stats_row 'Average Bitrate', @stats[:avg_bitrate].to_i.to_s + ' kbps' %>
+  <%= stats_row 'Average Tracks per Artist', @stats[:avg_tracks_p_artist].round(1) %>
+  <%= stats_row 'Average Tracks per Disc', @stats[:avg_tracks_p_disc].round(1) %>
+<% end %>
+
 </table>

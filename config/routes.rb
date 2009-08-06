@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)
   map.search 'search', :controller => 'search', :action => 'search'
+  map.stats 'stats', :controller => 'stats', :action => 'index'
   map.image 'file/image/:id', :controller => 'file', :action => 'image'
   map.audio_file 'file/audio/:id', :controller => 'file', :action => 'audio'
 
