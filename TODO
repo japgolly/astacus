@@ -1,6 +1,10 @@
 Fix: large insert SQLs going into log files
 Fix: backgroundrb spams logs. Can we shut it up?
 
+Add a home page.
+Add links on the stats/search pages to switch back and forth.
+Add a little nav bar to the global template.
+
 BROWSING
 ========
 * Flat/Table album view
@@ -57,21 +61,7 @@ LOCATIONS
 
 STATS
 =====
-* Show the following fields:
-  - files
-  - filesize
-  - songs
-  - artists
-  - albums
-  - discs
-  - tracks
-  - length
-  - avg_albums_p_artist
-  - avg_tracks_p_artist
-  - avg_tracks_p_disc
-  - avg_length
-  - avg_filesize
-  - avg_bitrate
+* Make it pretty.
 * Should be able to apply search queries to the stats.
 
 WARNINGS
