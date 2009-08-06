@@ -1,4 +1,3 @@
-Fix: large insert SQLs going into log files
 Fix: backgroundrb spams logs. Can we shut it up?
 
 Add a home page.
