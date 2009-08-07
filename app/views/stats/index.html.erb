@@ -34,7 +34,8 @@
 </td><td>
   <% @first_section= nil -%>
 
-  <%= stats_graph('albums_by_decade', 'Albums by Decade', @stats[:albums_by_decade]) {|i,step| i ? "#{i} - #{i+step-1}" : 'Unknown'} %>
-  <%= stats_graph('albums_by_year', 'Albums by Year', @stats[:albums_by_year]) {|i,step| i ? "#{i} - #{i+step-1}" : 'Unknown'} %>
+  <%= stats_graph :albums_by_decade, 'Albums by Decade' %>
+  <%#= stats_graph 'albums_by_year', 'Albums by Year' %>
+  <%= stats_graph :tracks_by_bitrate, 'Tracks By Bitrate' %>
 
 </td></tr></table>

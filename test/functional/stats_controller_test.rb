@@ -65,8 +65,8 @@ class StatsControllerTest < ActionController::TestCase
   context "stats/index" do
     context "with no params" do
       setup do
-        AudioContent.update_all 'bitrate=10'
-        AudioContent.update audio_content(:glass_prison).id, :bitrate => 1234
+        AudioContent.update_all 'bitrate=100'
+        AudioContent.update audio_content(:glass_prison).id, :bitrate => 320
         get :index
         @stats= assigns(:stats)
       end
@@ -83,7 +83,7 @@ class StatsControllerTest < ActionController::TestCase
         assert_equal discs=10, @stats[:discs]
         assert_equal tracks=21, @stats[:tracks]
         assert_in_delta TOTAL_LENGTH, @stats[:length], 0.01
-        assert_in_delta (1234 + 10*(ac_count-1)).to_f / ac_count, @stats[:avg_bitrate], 0.1
+        assert_in_delta (320 + 100*(ac_count-1)).to_f / ac_count, @stats[:avg_bitrate], 0.1
         assert_equal albums_waa=4, @stats[:albums_without_albumart]
 
         assert_in_delta TOTAL_LENGTH / tracks, @stats[:avg_length], 0.001
@@ -101,6 +101,20 @@ class StatsControllerTest < ActionController::TestCase
             ['1980 - 1989', 0],
             ['1990 - 1999', 2],
             ['2000 - 2009', 3],
+          ]
+      end
+      should "graph tracks by bitrate" do
+        assert_graph 'tracks_by_bitrate', [
+            ['1 - 32',    0],
+            ['33 - 64',   0],
+            ['65 - 96',   0],
+            ['97 - 128',  AudioContent.count-1],
+            ['129 - 160', 0],
+            ['161 - 192', 0],
+            ['193 - 224', 0],
+            ['225 - 256', 0],
+            ['257 - 288', 0],
+            ['289 - 320', 1],
           ]
       end
     end # Context: with no params
@@ -132,7 +146,7 @@ class StatsControllerTest < ActionController::TestCase
         assert_equal discs=2, @stats[:discs]
         assert_equal tracks, @stats[:tracks]
         assert_in_delta total_length, @stats[:length], 0.01
-        assert_in_delta (247 + 264+260+246+260).to_f / 5.0, @stats[:avg_bitrate], 0.1
+        assert_in_delta (247 + 264+260+246+160).to_f / 5.0, @stats[:avg_bitrate], 0.1
         assert_equal albums_waa=0, @stats[:albums_without_albumart]
 
         assert_in_delta total_length / tracks, @stats[:avg_length], 0.001
@@ -149,6 +163,22 @@ class StatsControllerTest < ActionController::TestCase
             ['2000 - 2009', 1],
           ]
       end
+      should "graph tracks by bitrate" do
+        # ponk: 247
+        # in absentia: 264 260 246 192
+        assert_graph 'tracks_by_bitrate', [
+            ['1 - 32',    0],
+            ['33 - 64',   0],
+            ['65 - 96',   0],
+            ['97 - 128',  0],
+            ['129 - 160', 1],
+            ['161 - 192', 0],
+            ['193 - 224', 0],
+            ['225 - 256', 2],
+            ['257 - 288', 2],
+            ['289 - 320', 0],
+          ]
+      end
     end # Context: with va and disc filter
 
   end # Context: stats/index
@@ -160,11 +190,26 @@ class StatsControllerTest < ActionController::TestCase
 
       # Check data rows
       max_value= data.map{|a| a[1]}.max
-      assert_select 'tr[class~=?]', /alt[01]/, data.size do |rows|
-        assert_equal data.size, rows.size
-        rows.each_with_index {|row,i|
+      assert_select 'tr[class~=?]', /alt[01]/ do |rows|
 
-          # Check each individual data row
+        # Check row count
+        failmsg= if rows.size != data.size
+          i= 0
+          row_txt= rows.map{|r|
+            row_html= r.to_s
+            txt= if row_html =~ %r!"k">(.*?)</td>.*width\s*?:\s*?(\d+?%).*?"v2">(.*?)</td>!
+              "| #{$1} | #{$2} | #{$3} |"
+            else
+              row_html
+            end
+            "    Row \##{i+=1}: #{txt}"
+          }.join("\n")
+          "Graph body has an incorrect number of rows.\n  Expected: #{data.size}\n  Actual: #{rows.size}\n#{row_txt}\n"
+        end
+        assert_equal rows.size, data.size, failmsg
+
+        # Check each individual data row
+        rows.each_with_index {|row,i|
           k,v = data[i]
           assert_select row, 'td.k', k.to_s
           assert_select row, 'td.v2', v.to_s

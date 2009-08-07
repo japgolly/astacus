@@ -21,7 +21,9 @@ module StatsHelper
     stats_row key, v
   end
 
-  def stats_graph(id, title, data, &block)
+  def stats_graph(id, title, &block)
+    data= @stats[id.to_sym]
+    block||= method(:default_stats_label_gen).to_proc
     x= %!<table class="graph" id="#{id}">!
     x+= capture do
       stats_section(title, 3) do
@@ -47,5 +49,15 @@ module StatsHelper
     p= value == 0 ? 0 : to_percentage(value,max,0)
     div_class= %!class="#{div_class}"! if div_class
     stats_row(title, %!<div #{div_class} style="width:#{p}%">&nbsp;</div>!, value) + "\n"
+  end
+
+  def default_stats_label_gen(i, step)
+    if i.nil?
+      'Unknown'
+    elsif step == 1
+      i
+    else
+      "#{i} - #{i+step-1}"
+    end
   end
 end

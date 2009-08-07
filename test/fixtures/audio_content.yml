@@ -162,7 +162,7 @@ lips_of_ashes:
   size: 74849
   vbr: true
 the_sound_of_muzak:
-  bitrate: 260
+  bitrate: 160
   format: mp3
   length: 299.154
   md5: !binary |
