@@ -72,3 +72,4 @@
 #stats .graph .v div {background:#e00; height:10px; margin:auto 0 auto 0}
 #stats .graph .v div.nil {background:#6a6a6a}
 #stats .graph .v2 {text-align:right}
+#stats .graph .m_top td {border-top:dashed 1px #aab}
