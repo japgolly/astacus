@@ -185,51 +185,55 @@ class StatsControllerTest < ActionController::TestCase
 
   def assert_graph(id, data)
     # Check container and header
-    assert_select 'table[id~=?]', id, 1 do
-      assert_select 'tr.section', 1
+    assert_select 'div#?', id, 1 do
+      assert_select 'table.graph_header', 1 do
+        assert_select 'tr.section', 1
+      end
 
       # Check data rows
       max_value= data.map{|a| a[1]}.max
-      assert_select 'tr[class~=?]', /alt[01]/ do |rows|
+      assert_select 'table.graph_body', 1 do
+        assert_select 'tr[class~=?]', /alt[01]/ do |rows|
 
-        # Check row count
-        failmsg= if rows.size != data.size
-          i= 0
-          row_txt= rows.map{|r|
-            row_html= r.to_s
-            txt= if row_html =~ %r!"k">(.*?)</td>.*width\s*?:\s*?(\d+?%).*?"v2">(.*?)</td>!
-              "| #{$1} | #{$2} | #{$3} |"
-            else
-              row_html
-            end
-            "    Row \##{i+=1}: #{txt}"
-          }.join("\n")
-          "Graph body has an incorrect number of rows.\n  Expected: #{data.size}\n  Actual: #{rows.size}\n#{row_txt}\n"
-        end
-        assert_equal rows.size, data.size, failmsg
-
-        # Check each individual data row
-        rows.each_with_index {|row,i|
-          k,v = data[i]
-          assert_select row, 'td.k', k.to_s
-          assert_select row, 'td.v2', v.to_s
-          assert_select row, 'td.v div', 1 do |div|
-            div= div[0]
-            style= div.attributes['style']
-            assert style =~ /^width:(\d+)%$/
-            actual_width= $1.to_i
-            if v == 0
-              assert_equal 0, actual_width
-            elsif v == max_value
-              assert_equal 100, actual_width
-            else
-              expected= (v.to_f * 100.0 / max_value.to_f).round.to_i
-              assert_in_delta expected, actual_width, 1
-            end
+          # Check row count
+          failmsg= if rows.size != data.size
+            i= 0
+            row_txt= rows.map{|r|
+              row_html= r.to_s
+              txt= if row_html =~ %r!"k">(.*?)</td>.*width\s*?:\s*?(\d+?%).*?"v2">(.*?)</td>!
+                "| #{$1} | #{$2} | #{$3} |"
+              else
+                row_html
+              end
+              "    Row \##{i+=1}: #{txt}"
+            }.join("\n")
+            "Graph body has an incorrect number of rows.\n  Expected: #{data.size}\n  Actual: #{rows.size}\n#{row_txt}\n"
           end
+          assert_equal rows.size, data.size, failmsg
 
-        }
-      end
-    end
-  end
+          # Check each individual data row
+          rows.each_with_index {|row,i|
+            k,v = data[i]
+            assert_select row, 'td.k', k.to_s
+            assert_select row, 'td.v2', v.to_s
+            assert_select row, 'td.v div', 1 do |div|
+              div= div[0]
+              style= div.attributes['style']
+              assert style =~ /^width:(\d+)%$/
+              actual_width= $1.to_i
+              if v == 0
+                assert_equal 0, actual_width
+              elsif v == max_value
+                assert_equal 100, actual_width
+              else
+                expected= (v.to_f * 100.0 / max_value.to_f).round.to_i
+                assert_in_delta expected, actual_width, 1
+              end
+            end
+          }
+
+        end # each row
+      end # table.graph_body
+    end # div?#
+  end # assert_graph()
 end

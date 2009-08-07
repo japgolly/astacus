@@ -1,14 +1,19 @@
 module StatsHelper
   def stats_section(title, colspan=2, &block)
-    if @first_section.nil?
-      @first_section= false
-    else
-      concat %!<tr class="sep"><th colspan="#{colspan}">&nbsp;</th></tr>!
-    end
-    @alt= 1
+    concat pre_section(colspan)
     content= capture(&block)
     concat %!<tr class="section"><th colspan="#{colspan}">#{h title}</th></tr>!
     concat(content)
+  end
+
+  def pre_section(colspan)
+    @alt= 1
+    if @first_section.nil?
+      @first_section= false
+      ''
+    else
+      %!<tr class="sep"><th colspan="#{colspan}">&nbsp;</th></tr>!
+    end
   end
 
   def stats_row(key, value, value2=nil, options={})
@@ -26,13 +31,29 @@ module StatsHelper
   def stats_graph(id, title, options={}, &block)
     data= @stats[id.to_sym]
     block||= method(:default_stats_label_gen).to_proc
-    x= %!<table class="graph" id="#{id}">!
-    x+= capture do
-      stats_section(title, 3) do
-        stats_graph_body(data, options, &block)
-      end
-    end
-    x+= '</table>'
+
+    # Graph header
+    x= %!<div class="graph" id="#{id}">!
+    x+= %!<table class="graph_header">!
+    x+= pre_section(2)
+    x+= %!<tr class="section"><th class="title">#{h title}</th>!
+
+    # Render the Show/Hide button
+    hidden= options[:hide]
+    hide_lnk_txt,show_lnk_txt = 'Hide','Show'
+    body_id= "#{id}_body"
+    hide_id= "#{id}_hide"
+    hide_lnk= link_to_function hidden ? show_lnk_txt : hide_lnk_txt, %!
+        var body = $('#{body_id}');
+        Element.update('#{hide_id}', body.visible() ? '#{show_lnk_txt}' : '#{hide_lnk_txt}');
+        body.toggle();
+      !.gsub(/^\s+/,'').gsub(/[\r\n]+/,''), :id => hide_id
+    x+= %!<th class="showhide">#{hide_lnk}</th></tr></table>!
+
+    # Graph body
+    x+= %!<table id="#{body_id}" class="graph_body" #{'style="display:none"' if hidden}>!
+    x+= stats_graph_body(data, options, &block)
+    x+= '</table></div>'
   end
 
   def stats_graph_body(data, options, &block)
