@@ -13,6 +13,17 @@ class Album < ActiveRecord::Base
     r.artist.destroy unless r.artist.in_use?
   end
 
+  module Joins
+    JOIN_TO_AR= :artist
+    JOIN_TO_DISCS= :discs
+    JOIN_TO_TRACKS= {:discs => :tracks}
+    JOIN_TO_AF= {:discs => {:tracks => :audio_file}}
+    JOIN_TO_AC= {:discs => {:tracks => {:audio_file => :audio_content}}}
+    JOIN_TO_LOC= {:discs => {:tracks => {:audio_file => :location}}}
+  end
+  extend Joins
+  include Joins
+
   def in_use?
     discs_count != 0
   end

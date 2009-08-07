@@ -208,14 +208,14 @@ class SearchQuery < ActiveRecord::Base
 
   add_param :album, :text, 'albums.name'
   add_param :albumart, :boolean_isnull, 'albums.albumart_id'
-  add_param :artist, :text, 'artists.name', :joins => :artist
-  add_param :disc, :text, 'discs.name', :joins => :discs
+  add_param :artist, :text, 'artists.name', :joins => Album::JOIN_TO_AR
+  add_param :disc, :text, 'discs.name', :joins => Album::JOIN_TO_DISCS
   add_param :discs, :int, 'albums.discs_count'
-  add_param :track, :text, 'tracks.name', :joins => {:discs => :tracks}
-  add_param :va, :boolean_01, 'discs.va', :joins => :discs
+  add_param :track, :text, 'tracks.name', :joins => Album::JOIN_TO_TRACKS
+  add_param :va, :boolean_01, 'discs.va', :joins => Album::JOIN_TO_DISCS
   add_param :year, :int, 'albums.year'
 
-  add_param :location, :taglist, 'locations.label', :joins => {:discs => {:tracks => {:audio_file => :location}}}
+  add_param :location, :taglist, 'locations.label', :joins => Album::JOIN_TO_LOC
   def validate_param_location(v)
     tags= v.split(' ')
     tags.shift if tags[0] == '!'

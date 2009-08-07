@@ -1,5 +1,6 @@
 class StatsController < ApplicationController
   layout 'search'
+  include Album::Joins
 
   def index
     @search_query_form_url= stats_url
@@ -12,7 +13,7 @@ class StatsController < ApplicationController
         :filesize                 => AudioFile.sum(:size),
         :artists                  => Album.count(:select => 'distinct artist_id'),
         :albums                   => Album.count,
-        :va_albums                => Album.count(:select => 'distinct albums.id', :joins => :discs, :conditions => 'discs.va=1'),
+        :va_albums                => Album.count(:select => 'distinct albums.id', :joins => JOIN_TO_DISCS, :conditions => 'discs.va=1'),
         :multiple_disc_albums     => Album.count(:conditions => "discs_count>1"),
         :discs                    => Disc.count,
         :tracks                   => Track.count,
@@ -31,23 +32,21 @@ class StatsController < ApplicationController
       conn.execute "CREATE TEMPORARY TABLE #{TMP_TABLE_NAME}(UNIQUE(id)) ENGINE MEMORY IGNORE AS #{sql}"
 
       # Get stats using temp table
-      # TODO move this join stuff to album
-      join_to_ac= {:discs => {:tracks => {:audio_file => :audio_content}}}
       @stats= {
-        :files                    => filtered_album_stat(:count, :joins => {:discs => {:tracks => :audio_file}}),
-        :filesize                 => filtered_album_stat(:sum, 'audio_files.size', :joins => {:discs => {:tracks => :audio_file}}).to_i,
+        :files                    => filtered_album_stat(:count, :joins => JOIN_TO_AF),
+        :filesize                 => filtered_album_stat(:sum, 'audio_files.size', :joins => JOIN_TO_AF).to_i,
         :artists                  => filtered_album_stat(:count, :select => 'distinct artist_id'),
         :albums                   => filtered_album_stat(:count),
-        :va_albums                => filtered_album_stat(:count, :select => 'distinct albums.id', :joins => :discs, :conditions => 'discs.va=1'),
+        :va_albums                => filtered_album_stat(:count, :select => 'distinct albums.id', :joins => JOIN_TO_DISCS, :conditions => 'discs.va=1'),
         :multiple_disc_albums     => filtered_album_stat(:count, :conditions => "discs_count>1"),
-        :discs                    => filtered_album_stat(:count, :joins => :discs),
-        :tracks                   => filtered_album_stat(:count, :joins => {:discs => :tracks}),
-        :length                   => filtered_album_stat(:sum, 'audio_content.length', :joins => join_to_ac).to_f,
-        :avg_bitrate              => filtered_album_stat(:average, 'audio_content.bitrate', :joins => join_to_ac).to_f,
+        :discs                    => filtered_album_stat(:count, :joins => JOIN_TO_DISCS),
+        :tracks                   => filtered_album_stat(:count, :joins => JOIN_TO_TRACKS),
+        :length                   => filtered_album_stat(:sum, 'audio_content.length', :joins => JOIN_TO_AC).to_f,
+        :avg_bitrate              => filtered_album_stat(:average, 'audio_content.bitrate', :joins => JOIN_TO_AC).to_f,
         :albums_without_albumart  => filtered_album_stat(:count, :conditions => "albumart_id is null"),
         :albums_by_year           => filtered_album_stat(:count, :group => :year),
         :albums_by_decade         => filtered_album_stat(:count, :group => "year-year%10"),
-        :tracks_by_bitrate        => filtered_album_stat(:count, :joins => join_to_ac, :group => "bitrate-(bitrate-1)%#{tracks_by_bitrate_psize}"),
+        :tracks_by_bitrate        => filtered_album_stat(:count, :joins => JOIN_TO_AC, :group => "bitrate-(bitrate-1)%#{tracks_by_bitrate_psize}"),
       }
       conn.execute "DROP TEMPORARY TABLE #{TMP_TABLE_NAME};"
     else

@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+
   def search
     @page= params[:page].to_i rescue 0
     @page= 1 unless @page > 0
@@ -8,7 +9,7 @@ class SearchController < ApplicationController
       :page => @page,
       :per_page => 10,
       :select => 'distinct albums.*',
-      :include => [:artist, {:discs => {:tracks => {:audio_file => :audio_content}}}],
+      :include => [Album::JOIN_TO_AR, Album::JOIN_TO_AC],
       :readonly => true,
     }
 
