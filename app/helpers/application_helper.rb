@@ -68,4 +68,30 @@ module ApplicationHelper
     end
     block_given? ? yield(p) : p
   end
+
+  def format_duration(d)
+    sec= d % 60
+    min= d % 3600 / 60
+    hr= d % 1.day / 3600
+    if d >= 1.day
+      days= d % 1.week / 1.day
+      weeks= d % 4.weeks / 1.week
+      months= d % 52.weeks / 4.weeks
+      years= d / 52.weeks
+      sprintf "#{fd_pluralize 'year',years}#{fd_pluralize 'month',months}#{fd_pluralize 'week',weeks}#{fd_pluralize 'day',days}%d:%02d:%02d", hr, min, sec
+    elsif hr != 0
+      sprintf '%d:%02d:%02d', hr, min, sec
+    elsif min != 0
+      sprintf '%d:%02d', min, sec
+    else
+      sprintf '0:%02d', sec
+    end
+  end
+
+  private
+    def fd_pluralize(name,value)
+      value= value.to_i
+      return '' if value == 0
+      "#{pluralize value, name}, "
+    end
 end

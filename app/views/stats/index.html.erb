@@ -4,7 +4,7 @@
   <% stats_section 'Overall' do %>
     <%= stats_row 'Files', format(@stats[:files]) %>
     <%= stats_row 'Total Size', format_bytes(@stats[:filesize], :div) %>
-    <%= stats_row 'Total Length', @stats[:length] %>
+    <%= stats_row 'Total Length', format_duration(@stats[:length]) %>
   <% end %>
 
   <% stats_section 'Artist' do %>

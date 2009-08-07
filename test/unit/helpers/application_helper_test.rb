@@ -67,4 +67,25 @@ class ApplicationHelperTest < ActionView::TestCase
       end
     }
   end
+
+  def test_format_duration
+    assert_equal '0:01', format_duration(1)
+    assert_equal '1:03', format_duration(63)
+    assert_equal '10:03', format_duration(603)
+    assert_equal '59:58', format_duration(59 * 60 + 58)
+    assert_equal '1:00:01', format_duration(3601)
+    assert_equal '1:01:03', format_duration(3600 + 63)
+    assert_equal '1:10:03', format_duration(3600 + 603)
+    assert_equal '1:59:58', format_duration(3600 + 59 * 60 + 58)
+    assert_equal '23:59:58', format_duration(23 * 3600 + 59 * 60 + 58)
+
+    hms= 23 * 3600 + 59 * 60 + 58
+    assert_equal '1 day, 0:00:01', format_duration(1.day.to_i + 1)
+    assert_equal '1 day, 23:59:58', format_duration(1.day + hms)
+    assert_equal '2 days, 23:59:58', format_duration(2.day + hms)
+    assert_equal '1 week, 23:59:58', format_duration(1.week + hms)
+    assert_equal '2 weeks, 3 days, 23:59:58', format_duration(2.weeks + 3.days + hms)
+    assert_equal '4 months, 23:59:58', format_duration(4 * 4.weeks + hms)
+    assert_equal '2 years, 3 weeks, 23:59:58', format_duration(2 * 52.weeks + 3.weeks + hms)
+  end
 end
