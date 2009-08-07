@@ -35,3 +35,10 @@ devdas:
   album: devdas
   order_id: 0
   va: true
+
+close_to_the_edge:
+  album: close_to_the_edge
+  order_id: 0
+time_and_a_word:
+  album: time_and_a_word
+  order_id: 0

@@ -4323,3 +4323,17 @@ kaahe_chhed_mohe_id3:
   format: id3
   offset: 0
   version: 2.4.0
+
+# ========== YES ==========
+close_to_the_edge_id3:
+  audio_file: close_to_the_edge
+  format: id3
+  version: 2.4.0
+  offset: 0
+  data: xxxxxxxxxx
+time_and_a_word_id3:
+  audio_file: time_and_a_word
+  format: id3
+  version: 2.4.0
+  offset: 0
+  data: xxxxxxxxxx

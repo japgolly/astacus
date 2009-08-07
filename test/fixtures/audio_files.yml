@@ -123,3 +123,17 @@ kaahe_chhed_mohe:
   basename: 04 - Kaahe Chhed Mohe.mp3
   dirname: /c/fake_music_dir/devdas
   size: 11537513
+
+# ========== YES ==========
+close_to_the_edge:
+  audio_content: close_to_the_edge
+  dirname: /c/omg/yes
+  basename: close_to_the_edge.mp3
+  size: 33956044
+  location: c_downloads
+time_and_a_word:
+  audio_content: time_and_a_word
+  dirname: /c/omg/yes
+  basename: time_and_a_word.mp3
+  size: 8526359
+  location: d_downloads

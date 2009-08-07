@@ -151,3 +151,17 @@ kaahe_chhed_mohe:
   name: Kaahe Chhed Mohe (काहे छेड़ मोहे)
   tn: 4
   track_artist: pt.birju_maharaj_kavita_subramaniam_madhuri_dixit
+
+# ========== YES ==========
+close_to_the_edge:
+  disc: close_to_the_edge
+  audio_file: close_to_the_edge
+  tn: 1
+  name: Close To The Edge
+  audio_tags: close_to_the_edge_id3
+time_and_a_word:
+  disc: time_and_a_word
+  audio_file: time_and_a_word
+  tn: 8
+  name: Time And A Word
+  audio_tags: time_and_a_word_id3

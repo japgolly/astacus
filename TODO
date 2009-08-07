@@ -1,4 +1,5 @@
 Fix: backgroundrb spams logs. Can we shut it up?
+Fix: cant filter by year=NULL
 
 Add a home page.
 Add links on the stats/search pages to switch back and forth.
@@ -6,6 +7,7 @@ Add a little nav bar to the global template.
 
 BROWSING
 ========
+* Click on a track shows/hides track details
 * Flat/Table album view
 * Flat/Table file view
 * Flat/Table track view
@@ -60,10 +62,8 @@ LOCATIONS
 
 STATS
 =====
-* Make it pretty.
-* Year age buckets (5 year buckets)
-* Graph by year
-* Should be able to apply search queries to the stats.
+* Provide links in graphs to a search with that filter applied
+* Save SQ etc
 
 WARNINGS
 ========

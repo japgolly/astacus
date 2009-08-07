@@ -223,3 +223,23 @@ kaahe_chhed_mohe:
       fxowO6M7hgFfjmn40ycMTzLRwA==
   size: 11454472
   vbr: true
+
+# ========== YES ==========
+close_to_the_edge:
+  size: 33900000
+  md5: <%= 'y' * 16 %>
+  sha2: <%= 'Y' * 64 %>
+  format: mp3
+  bitrate: 241
+  vbr: true
+  samplerate: 44100
+  length: <%= 18*60 + 46 %>
+time_and_a_word:
+  size: 8500000
+  md5: <%= 'y' * 16 %>
+  sha2: <%= 'Y' * 64 %>
+  format: mp3
+  bitrate: 257
+  vbr: true
+  samplerate: 44100
+  length: <%= 4*60 + 22 %>

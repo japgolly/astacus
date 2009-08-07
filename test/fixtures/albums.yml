@@ -30,3 +30,13 @@ devdas:
   discs_count: 1
   name: Devdas (देवदास)
   year: 2003
+
+close_to_the_edge:
+  artist: yes
+  name: Close To The Edge
+  year: 1972
+  discs_count: 1
+time_and_a_word:
+  artist: yes
+  name: Time And A Word
+  discs_count: 1

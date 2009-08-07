@@ -3,6 +3,8 @@ class StatsController < ApplicationController
 
   def index
     @search_query_form_url= stats_url
+    albums_by_year_partition_size= 2
+
     @sq= SearchQuery.tmp(params)
     if @sq.params.empty?
       @stats= {
@@ -17,6 +19,8 @@ class StatsController < ApplicationController
         :length                   => AudioContent.sum(:length),
         :avg_bitrate              => AudioContent.average(:bitrate),
         :albums_without_albumart  => Album.count(:conditions => "albumart_id is null"),
+        :albums_by_year           => Album.count(:group => "year-year%#{albums_by_year_partition_size}"),
+        :albums_by_decade         => Album.count(:group => "year-year%10"),
       }
     elsif @sq.valid?
       # Use the sq to create a table table of album ids
@@ -38,6 +42,8 @@ class StatsController < ApplicationController
         :length                   => filtered_album_stat(:sum, 'audio_content.length', :joins => {:discs => {:tracks => {:audio_file => :audio_content}}}).to_f,
         :avg_bitrate              => filtered_album_stat(:average, 'audio_content.bitrate', :joins => {:discs => {:tracks => {:audio_file => :audio_content}}}).to_f,
         :albums_without_albumart  => filtered_album_stat(:count, :conditions => "albumart_id is null"),
+        :albums_by_year           => filtered_album_stat(:count, :group => "year-year%#{albums_by_year_partition_size}"),
+        :albums_by_decade         => filtered_album_stat(:count, :group => "year-year%10"),
       }
       conn.execute "DROP TEMPORARY TABLE #{TMP_TABLE_NAME};"
     else
@@ -52,6 +58,10 @@ class StatsController < ApplicationController
     @stats[:avg_tracks_p_disc]= safe_avg(:tracks,:discs)
     @stats[:avg_tracks_p_artist]= safe_avg(:tracks,:artists)
     @stats[:albums_with_albumart]= @stats[:albums] - @stats[:albums_without_albumart]
+
+    # Process graph stats
+    process_graph_stat! :albums_by_year, albums_by_year_partition_size
+    process_graph_stat! :albums_by_decade, 10
   end
 
   private
@@ -85,5 +95,18 @@ class StatsController < ApplicationController
       args= field ? [field] : []
       args<< options
       Album.send method, *args
+    end
+
+    # Data returned by a count(:group=>x) needs a small amount of preprocessing
+    # before it is ready for rendering.
+    def process_graph_stat!(key, step)
+      o= {}
+      @stats[key].each{|k,v| o[k ? k.to_i : k]= v}
+      keys= o.keys.reject(&:nil?)
+      o[:max_value]= o.values.max
+      o[:min]= keys.min
+      o[:max]= keys.max
+      o[:step]= step
+      @stats[key]= o
     end
 end

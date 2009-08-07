@@ -27,6 +27,8 @@ class StatsControllerTest < ActionController::TestCase
     9761101 + # maar_daala
     11319985 + # bairi_piya
     11537513 + # kaahe_chhed_mohe
+    33956044 + # close_to_the_edge
+    8526359 + # time_and_a_word
   0#end TOTAL_FILESIZE
 
   # ------------- Length -------------
@@ -54,6 +56,8 @@ class StatsControllerTest < ActionController::TestCase
     278.256 + # maar_daala
     321.907 + # bairi_piya
     322.403 + # kaahe_chhed_mohe
+    18*60+46 + # close_to_the_edge
+    4*60+22 + # time_and_a_word
   0#end TOTAL_LENGTH
 
   #=============================================================================
@@ -70,17 +74,17 @@ class StatsControllerTest < ActionController::TestCase
       should_render_template 'index'
       should "calculate the stats correctly" do
         ac_count= AudioContent.count
-        assert_equal files=19, @stats[:files]
+        assert_equal files=21, @stats[:files]
         assert_equal TOTAL_FILESIZE, @stats[:filesize]
-        assert_equal artists=5, @stats[:artists]
-        assert_equal albums=5, @stats[:albums]
+        assert_equal artists=6, @stats[:artists]
+        assert_equal albums=7, @stats[:albums]
         assert_equal 1, @stats[:va_albums]
         assert_equal 2, @stats[:multiple_disc_albums]
-        assert_equal discs=8, @stats[:discs]
-        assert_equal tracks=19, @stats[:tracks]
+        assert_equal discs=10, @stats[:discs]
+        assert_equal tracks=21, @stats[:tracks]
         assert_in_delta TOTAL_LENGTH, @stats[:length], 0.01
         assert_in_delta (1234 + 10*(ac_count-1)).to_f / ac_count, @stats[:avg_bitrate], 0.1
-        assert_equal albums_waa=2, @stats[:albums_without_albumart]
+        assert_equal albums_waa=4, @stats[:albums_without_albumart]
 
         assert_in_delta TOTAL_LENGTH / tracks, @stats[:avg_length], 0.001
         assert_in_delta TOTAL_FILESIZE.to_f / files, @stats[:avg_filesize], 0.001
@@ -89,16 +93,27 @@ class StatsControllerTest < ActionController::TestCase
         assert_in_delta tracks.to_f / discs.to_f, @stats[:avg_tracks_p_disc], 0.001
         assert_equal albums-albums_waa, @stats[:albums_with_albumart]
       end
+      should "graph albums by decade" do
+        # NULL, 1972, 1994, 1998, 2002, 2002, 2003
+        assert_graph 'albums_by_decade', [
+            ['Unknown',     1],
+            ['1970 - 1979', 1],
+            ['1980 - 1989', 0],
+            ['1990 - 1999', 2],
+            ['2000 - 2009', 3],
+          ]
+      end
     end # Context: with no params
 
     # test with
-    #  {:discs => '1'} => %w[ponk in_absentia devdas],
-    #  {:va => '0'} => %w[ponk 6doit in_absentia still_life],
+    #  {:discs => '1'} => %w[ponk in_absentia devdas close_to_the_edge time_and_a_word],
+    #  {:va => '0'} => %w[ponk 6doit in_absentia still_life close_to_the_edge time_and_a_word],
+    #  {:albumart => '1'} => %w[ponk in_absentia devdas],
     # returns
     #   ponk in_absentia
-    context "with va and disc filter" do
+    context "with filter" do
       setup do
-        get :index, :va => '0', :discs => '1'
+        get :index, :va => '0', :discs => '1', :albumart => '1'
         @stats= assigns(:stats)
       end
       should_respond_with :success
@@ -127,7 +142,49 @@ class StatsControllerTest < ActionController::TestCase
         assert_in_delta tracks.to_f / discs.to_f, @stats[:avg_tracks_p_disc], 0.001
         assert_equal albums-albums_waa, @stats[:albums_with_albumart]
       end
+      should "graph albums by decade" do
+        # 1994, 2002
+        assert_graph 'albums_by_decade', [
+            ['1990 - 1999', 1],
+            ['2000 - 2009', 1],
+          ]
+      end
     end # Context: with va and disc filter
 
   end # Context: stats/index
+
+  def assert_graph(id, data)
+    # Check container and header
+    assert_select 'table[id~=?]', id, 1 do
+      assert_select 'tr.section', 1
+
+      # Check data rows
+      max_value= data.map{|a| a[1]}.max
+      assert_select 'tr[class~=?]', /alt[01]/, data.size do |rows|
+        assert_equal data.size, rows.size
+        rows.each_with_index {|row,i|
+
+          # Check each individual data row
+          k,v = data[i]
+          assert_select row, 'td.k', k.to_s
+          assert_select row, 'td.v2', v.to_s
+          assert_select row, 'td.v div', 1 do |div|
+            div= div[0]
+            style= div.attributes['style']
+            assert style =~ /^width:(\d+)%$/
+            actual_width= $1.to_i
+            if v == 0
+              assert_equal 0, actual_width
+            elsif v == max_value
+              assert_equal 100, actual_width
+            else
+              expected= (v.to_f * 100.0 / max_value.to_f).round.to_i
+              assert_in_delta expected, actual_width, 1
+            end
+          end
+
+        }
+      end
+    end
+  end
 end
