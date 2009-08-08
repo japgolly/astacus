@@ -32,6 +32,8 @@ class ActiveSupport::TestCase
   DEVDAS_2= "#{MOCK_DATA_DIR}/Devdas/02 - Maar Daala.mp3"
   TAGCHANGE_ALBUMART_BEFORE= "#{MOCK_DATA_DIR}/tag_changes/albumart-before.mp3"
   TAGCHANGE_ALBUMART_AFTER= "#{MOCK_DATA_DIR}/tag_changes/albumart-after.mp3"
+  TAGCHANGE_TRACK_BEFORE= "#{MOCK_DATA_DIR}/tag_changes/track-before.mp3"
+  TAGCHANGE_TRACK_AFTER= "#{MOCK_DATA_DIR}/tag_changes/track-after.mp3"
 
   ALL_MOCK_DATA_FILES= [
     FROZEN_CITY_TAGGED,
@@ -41,6 +43,7 @@ class ActiveSupport::TestCase
     GOGO7188,
     DEVDAS_1, DEVDAS_2,
     TAGCHANGE_ALBUMART_BEFORE, TAGCHANGE_ALBUMART_AFTER,
+    TAGCHANGE_TRACK_BEFORE, TAGCHANGE_TRACK_AFTER,
   ].freeze
 
   def self.should_validate_positive_numericality_of(attr)

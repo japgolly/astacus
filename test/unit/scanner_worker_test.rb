@@ -224,18 +224,9 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       context "an albumart change" do
         should "update the existing rows and replace the image" do
           # Scan the first file
-          assert_difference 'AudioFile.count' do
-            @scanner.scan_file! TAGCHANGE_ALBUMART_BEFORE
-          end
+          prepare_tag_change_test TAGCHANGE_ALBUMART_BEFORE, TAGCHANGE_ALBUMART_AFTER
 
-          # Now hack so that it has the same filename as the second
-          @af= AudioFile.last
-          @af.basename= File.basename(TAGCHANGE_ALBUMART_AFTER)
-          @af.save!
-          assert_equal File.basename(TAGCHANGE_ALBUMART_AFTER), AudioFile.find(@af.id).basename
-
-          # Scan the second, remove dead files
-          @scanner.init @location.reload
+          # Scan the second
           assert_difference %w[AudioFile.count Album.count Disc.count Track.count Image.count], 0 do
             @scanner.scan_file! TAGCHANGE_ALBUMART_AFTER
           end
@@ -246,8 +237,16 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
       context "a track name change" do
         should "update the existing rows and replace the track" do
-          # TODO
-          flunk 'pending'
+          # Scan the first file
+          prepare_tag_change_test TAGCHANGE_TRACK_BEFORE, TAGCHANGE_TRACK_AFTER
+          assert_equal 'maggic', Track.last.name
+
+          # Scan the second
+          assert_difference %w[AudioFile.count Album.count Disc.count Track.count Image.count], 0 do
+            @scanner.scan_file! TAGCHANGE_TRACK_AFTER
+          end
+          assert_equal 213741, AudioFile.last.size
+          assert_equal 'Magic', Track.last.name
         end
       end # Context: with a track name change
 
@@ -391,5 +390,20 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       pt.birju_maharaj_kavita_subramaniam_madhuri_dixit
       shreya_ghosal
     ].each{|a| artists(a).delete}
+  end
+
+  def prepare_tag_change_test(before_file, after_file)
+    # Scan the first file
+    assert_difference 'AudioFile.count' do
+      @scanner.scan_file! before_file
+    end
+
+    # Now hack so that it has the same filename as the second
+    @af= AudioFile.last
+    @af.basename= File.basename(after_file)
+    @af.save!
+    assert_equal File.basename(after_file), AudioFile.find(@af.id).basename
+
+    @scanner.init @location.reload
   end
 end
