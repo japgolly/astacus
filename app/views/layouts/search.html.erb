@@ -11,6 +11,15 @@
 
 <table id="page_container"><tr>
   <td id="left">
+  <div><%= link_to 'HOME', root_url -%></div>
+  <% unless params[:controller] == 'search' %>
+    <div><%= link_to 'SEARCH', search_url(@sq.params) %></div>
+  <% end -%>
+  <% unless params[:controller] == 'stats' %>
+    <div><%= link_to 'STATS', stats_url(@sq.params) %></div>
+  <% end -%>
+  <br/><br/>
+
     <%= render :partial => 'search/search_query_form' %>
   </td>
   <td id="body_outer">

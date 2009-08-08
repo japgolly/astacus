@@ -1,11 +1,4 @@
 <div>TODO: Add a reset button that clears the form</div>
-<% unless params[:controller] == 'search' %>
-  <div><%= link_to 'SEARCH', search_url(@sq.params) %></div>
-<% end -%>
-<% unless params[:controller] == 'stats' %>
-  <div><%= link_to 'STATS', stats_url(@sq.params) %></div>
-<% end -%>
-<br/><br/>
 
 <div id="search_query_form">
 <% form_tag @search_query_form_url || search_url do %>
