@@ -225,19 +225,19 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         should "update the existing rows and replace the image" do
           # Scan the first file
           assert_difference 'AudioFile.count' do
-            @scanner.scan_file! FUTASHIKA_BEFORE
+            @scanner.scan_file! TAGCHANGE_ALBUMART_BEFORE
           end
 
           # Now hack so that it has the same filename as the second
           @af= AudioFile.last
-          @af.basename= File.basename(FUTASHIKA_AFTER)
+          @af.basename= File.basename(TAGCHANGE_ALBUMART_AFTER)
           @af.save!
-          assert_equal File.basename(FUTASHIKA_AFTER), AudioFile.find(@af.id).basename
+          assert_equal File.basename(TAGCHANGE_ALBUMART_AFTER), AudioFile.find(@af.id).basename
 
           # Scan the second, remove dead files
           @scanner.init @location.reload
           assert_difference %w[AudioFile.count Album.count Disc.count Track.count Image.count], 0 do
-            @scanner.scan_file! FUTASHIKA_AFTER
+            @scanner.scan_file! TAGCHANGE_ALBUMART_AFTER
           end
           assert_equal 213779, AudioFile.last.size
           assert_equal 80644, Image.last.size
