@@ -6,6 +6,8 @@ class AudioTag < ActiveRecord::Base
   validates_numericality_of :offset, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
 
   before_destroy do |r|
+    img= r.albumart
+    img.destroy if img and img.audio_tags.size == 1
     r.tracks.each {|t| t.destroy if t.audio_tags.size == 1 }
   end
 

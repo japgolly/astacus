@@ -30,9 +30,10 @@ class Album < ActiveRecord::Base
 
   # Updates the albumart for this album based on the albumart in the tags in the
   # album's tracks.
-  def update_albumart!
+  def update_albumart!(illegal_albumart_id= nil)
     all= discs.map{|d| d.tracks.map{|t| t.audio_file.audio_tags.map(&:albumart)}}.flatten
     all.delete nil
+    all.delete illegal_albumart_id if illegal_albumart_id
     all= all.inject({}){|h,a| h[a]||=0; h[a]+= 1; h}
     max= all.values.max
     img= all.select{|img,score| score == max}.map{|e| e[0]}.first

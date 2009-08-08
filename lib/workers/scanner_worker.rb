@@ -163,7 +163,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       }
       f.audio_tags.delete *tags_to_delete unless tags_to_delete.empty?
 
-      # Albumart on albums
+      # Update albumart on albums
       tags.each{|t|
         if albumart_raw= t.ta[:albumart]
           img= Image.find_identical_or_create! :data => albumart_raw, :size => albumart_raw.size
@@ -171,6 +171,10 @@ class ScannerWorker < BackgrounDRb::MetaWorker
         end
       }
       albums.uniq.each{|album| album.update_albumart!}
+
+      # Remove old versions of the same audio file
+      old_afs= AudioFile.find :all, :conditions => ['dirname=? AND basename=? AND id!=?',f.dirname, f.basename, f.id]
+      old_afs.each(&:destroy)
     end
 
     # Remove any errors for this file

@@ -30,6 +30,8 @@ class ActiveSupport::TestCase
   GOGO7188= "#{MOCK_DATA_DIR}/GO!GO!7188/Albums/2006 - パレード/06 - 雪が降らない街.mp3"
   DEVDAS_1= "#{MOCK_DATA_DIR}/Devdas/01 - Silsila ye Chaahat ka.mp3"
   DEVDAS_2= "#{MOCK_DATA_DIR}/Devdas/02 - Maar Daala.mp3"
+  FUTASHIKA_BEFORE= "#{MOCK_DATA_DIR}/GO!GO!7188/before.mp3"
+  FUTASHIKA_AFTER= "#{MOCK_DATA_DIR}/GO!GO!7188/after.mp3"
 
   ALL_MOCK_DATA_FILES= [
     FROZEN_CITY_TAGGED,
@@ -38,6 +40,7 @@ class ActiveSupport::TestCase
     SEIKIMA_CD1_06, SEIKIMA_CD1_13, SEIKIMA_CD2_08,
     GOGO7188,
     DEVDAS_1, DEVDAS_2,
+    FUTASHIKA_BEFORE, FUTASHIKA_AFTER,
   ].freeze
 
   def self.should_validate_positive_numericality_of(attr)

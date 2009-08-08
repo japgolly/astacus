@@ -198,26 +198,60 @@ class ScannerWorkerTest < ActiveSupport::TestCase
     end
 
     context "when scanning the same file" do
-      setup do
-        @file= FROZEN_CITY_TAGGED
-        assert File.exists?(@file)
-        @scanner.scan_file! @file
-        @prev_counts= table_counts
-      end
 
-      should "not recreate any existing rows" do
-        @scanner.scan_file! @file
-        assert_equal @prev_counts, table_counts
-      end
+      context "without changes" do
+        setup do
+          @file= FROZEN_CITY_TAGGED
+          assert File.exists?(@file)
+          @scanner.scan_file! @file
+          @prev_counts= table_counts
+        end
 
-      should "replace incorrect tracks" do
-        t= Track.last; t.tn= 99; t.save!
-        AudioTag.update_all 'data="qwe"'
-        @scanner.scan_file! @file
-        assert_equal 2, Track.last.tn
-        assert_equal @prev_counts, table_counts
-      end
-    end # context
+        should "not recreate any existing rows" do
+          @scanner.scan_file! @file
+          assert_equal @prev_counts, table_counts
+        end
+
+        should "replace incorrect tracks" do
+          t= Track.last; t.tn= 99; t.save!
+          AudioTag.update_all 'data="qwe"'
+          @scanner.scan_file! @file
+          assert_equal 2, Track.last.tn
+          assert_equal @prev_counts, table_counts
+        end
+      end # Context: without changes
+
+      context "an albumart change" do
+        should "update the existing rows and replace the image" do
+          # Scan the first file
+          assert_difference 'AudioFile.count' do
+            @scanner.scan_file! FUTASHIKA_BEFORE
+          end
+
+          # Now hack so that it has the same filename as the second
+          @af= AudioFile.last
+          @af.basename= File.basename(FUTASHIKA_AFTER)
+          @af.save!
+          assert_equal File.basename(FUTASHIKA_AFTER), AudioFile.find(@af.id).basename
+
+          # Scan the second, remove dead files
+          @scanner.init @location.reload
+          assert_difference %w[AudioFile.count Album.count Disc.count Track.count Image.count], 0 do
+            @scanner.scan_file! FUTASHIKA_AFTER
+          end
+          assert_equal 213779, AudioFile.last.size
+          assert_equal 80644, Image.last.size
+        end
+      end # Context: with an albumart change
+
+      context "a track name change" do
+        should "update the existing rows and replace the track" do
+          # TODO
+          flunk 'pending'
+        end
+      end # Context: with a track name change
+
+    end # Context: when scanning the same file
 
     context "when scanning files with discs" do
       should "create a disc row if a new disc" do
