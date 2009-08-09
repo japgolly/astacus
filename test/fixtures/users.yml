@@ -1,0 +1,9 @@
+admin:
+  username: admin
+  password: omg
+  admin: true
+
+pleb:
+  username: pleb
+  password: awww
+  admin: false

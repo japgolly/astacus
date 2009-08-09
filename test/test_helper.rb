@@ -21,6 +21,8 @@ class ActiveSupport::TestCase
   include RailsReflection
   setup :log_test_name
 
+  USER_ID_SESSION_KEY= :user_id
+
   FROZEN_CITY_TAGGED= "#{MOCK_DATA_DIR}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
   FROZEN_CITY_NOTAGS= "#{MOCK_DATA_DIR}/frozen city (no tags).mp3"
   BOUM_BOUM_YULA= "#{MOCK_DATA_DIR}/01. Boum Boum Yüla.mp3"
@@ -91,5 +93,19 @@ class ActionController::TestCase
   end
   def assert_response_doesnt_include(str)
     assert !response.body.include?(str), "Response shouldn't include #{str.inspect}"
+  end
+
+  def ajax_get(*args)
+    xml_http_request :get, *args
+  end
+  def ajax_post(*args)
+    xml_http_request :post, *args
+  end
+
+  def cur_user_id
+    session[USER_ID_SESSION_KEY]
+  end
+  def cur_user
+    User.find(cur_user_id) if cur_user_id
   end
 end
