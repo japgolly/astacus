@@ -44,6 +44,7 @@ SCANNING
 * Record last mod date on audio files.
 * When scanning have an option to only scan new files and files updated since last scan.
 * AC/DC Black Ice length and bitrate is way off (210:16, 90.8 MB, MP3, 59 kbps)
+* Make scanning use backgroundrb's thread-pool features
 
 TAGS
 ====
