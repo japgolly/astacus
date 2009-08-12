@@ -24,8 +24,9 @@ echo; echo
 if [ -n "$INIT" ]; then
     echo "Performing initialisation tasks..."
     script/runner '
-      Location.create(:label => "jap", :dir => "D:/music/Japanese").scan_async
-      Location.create(:label => "eng", :dir => "D:/music/English").scan_async
+      Location.create(:label => "hnd", :dir => "X:/music/Music Collection/Hindi").scan_async
+      Location.create(:label => "ger", :dir => "X:/music/Music Collection/German").scan_async
+      Location.create(:label => "jap", :dir => "X:/music/Music Collection/Japanese").scan_async
     ' || exit 1
     echo
 fi
