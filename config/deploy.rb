@@ -39,7 +39,12 @@ namespace :backgroundrb do
   desc "Stop the backgroundrb server"
   task :stop, :roles => :app do
     run "cd #{current_path} && ruby script/backgroundrb stop -e production"
- end
+  end
+
+  desc "Check the status of the backgroundrb server"
+  task :status, :roles => :app do
+    run "cd #{current_path} && ruby script/backgroundrb status -e production"
+  end
 
   desc "Start the backgroundrb server"
   task :restart, :roles => :app do
