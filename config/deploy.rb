@@ -14,10 +14,12 @@ role :web, domain
 role :db,  domain, :primary => true
 
 namespace :deploy do
+  desc "Start Application"
   task :start, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
 
+  desc "Stop Application (not supported by Passenger)"
   task :stop, :roles => :app do
     # Do nothing.
   end
@@ -26,10 +28,23 @@ namespace :deploy do
   task :restart, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
+end
 
-  # For deploying a database.yml file.
-  #task :after_update_code, :roles => :app do
-  #  run "ln -nfs #{deploy_to}/shared/system/database.yml #{release_path}/config/database.yml"
-  #end
+namespace :backgroundrb do
+  desc "Start the backgroundrb server"
+  task :start, :roles => :app do
+    run "cd #{current_path} && nohup ruby script/backgroundrb start -e production > /dev/null 2>&1"
+  end
+
+  desc "Stop the backgroundrb server"
+  task :stop, :roles => :app do
+    run "cd #{current_path} && ruby script/backgroundrb stop -e production"
+ end
+
+  desc "Start the backgroundrb server"
+  task :restart, :roles => :app do
+    stop
+    start
+  end
 end
 
