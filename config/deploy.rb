@@ -1,9 +1,11 @@
 set :application, "astacus"
+set :user,        "astacus"
 set :domain,      "vm-appserver"
-set :repository,  "ssh://#{domain}/mnt/hgfs/x/Dropbox/My Dropbox/projects/#{application}.git"
+set :repository,  "ssh://#{domain}/mnt/dropbox/projects/#{application}.git"
 set :use_sudo,    false
 set :deploy_to,   "/srv/#{application}"
 set :scm,         "git"
+set :branch,      "master"
 
 # server "vm-appserver", :app, :web, :db, :primary => true
 role :app, domain
