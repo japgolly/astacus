@@ -93,7 +93,7 @@ namespace :deploy do
        " cap deploy:without_tests or cap -S run_tests=0 deploy" 
   task :run_tests do
    unless fetch(:run_tests, "1") == "0"     
-     run "cd #{release_path} && nice -n 10 rake RAILS_ENV=production db:test:prepare test" 
+     run "cd #{release_path} && nice -n 10 rake RAILS_ENV=production db:test:prepare test TESTOPTS=--verbose=s" 
    end
   end
 
