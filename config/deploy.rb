@@ -33,5 +33,5 @@ namespace :deploy do
   #end
 end
 
-after :deploy, "passenger:restart"
+after :deploy, "deploy:restart"
 
