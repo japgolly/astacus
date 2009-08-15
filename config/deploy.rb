@@ -1,5 +1,6 @@
 set :application, "astacus"
 set :user,        "astacus"
+set :password,    "astacus"
 set :domain,      "vm-appserver"
 set :repository,  "ssh://#{domain}/mnt/dropbox/projects/#{application}.git"
 set :use_sudo,    false
