@@ -64,7 +64,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
   end
 
   def files_in(dir)
-    Dir[File.join dir, '**', '*.mp3']
+    Dir[File.join(dir, '**', '*.mp3')]
   end
 
   # Processes an audio file and creates/updates a record in the DB.
@@ -208,7 +208,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
       when Fixnum then {:order_id => tag.disc, :name => "Disc #{tag.disc}"}
       else raise "Unsupported disc type: #{tag.disc.inspect}"
       end
-    disc= Disc.find_identical_or_create!({:album => album}.merge disc_attr)
+    disc= Disc.find_identical_or_create!({:album => album}.merge(disc_attr))
     if !disc.va? and track_artist
       disc.va= true
       disc.save!

@@ -27,8 +27,8 @@ class ImageTest < ActiveSupport::TestCase
     common= {:size => 4, :mimetype => 'x'}
     i1= Image.create common.merge(:data => 'aaaa')
     i2= Image.create common.merge(:data => 'bbbb')
-    assert_equal i1, Image.find_identical(Image.new common.merge(:data => 'aaaa'))
-    assert_equal i2, Image.find_identical(Image.new common.merge(:data => 'bbbb'))
-    assert_nil Image.find_identical(Image.new common.merge(:data => 'cccc'))
+    assert_equal i1, Image.find_identical(Image.new(common.merge(:data => 'aaaa')))
+    assert_equal i2, Image.find_identical(Image.new(common.merge(:data => 'bbbb')))
+    assert_nil Image.find_identical(Image.new(common.merge(:data => 'cccc')))
   end
 end
