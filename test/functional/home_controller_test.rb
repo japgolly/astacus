@@ -2,7 +2,8 @@ require 'test_helper'
 
 class HomeControllerTest < ActionController::TestCase
 
-  content "GET /" do
+  context "GET /" do
+    setup { get :index }
     should_respond_with :success
   end
 
