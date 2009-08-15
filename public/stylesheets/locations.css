@@ -1,3 +1,6 @@
+#home {margin-bottom:24px}
+#home a {color:blue}
+
 #new {margin-bottom: 32px}
 #locations .loc {border: solid 1px black; padding: 4px; margin: 16px}
 #locations .doesnt_exist {color: red}
