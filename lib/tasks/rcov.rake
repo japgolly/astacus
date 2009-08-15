@@ -1,3 +1,5 @@
+begin
+
 require 'rcov/rcovtask'
 
 Rcov::RcovTask.new do |t|
@@ -8,4 +10,7 @@ Rcov::RcovTask.new do |t|
   t.output_dir = 'doc/coverage'
   t.libs << "test"
   t.verbose = true
+end
+
+rescue LoadError
 end
