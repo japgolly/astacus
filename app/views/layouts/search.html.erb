@@ -19,6 +19,8 @@
     <div><%= link_to 'STATS', stats_url(@sq.params) %></div>
   <% end -%>
   <br/><br/>
+  <%= render :partial => 'home/login_or_logout' %>
+  <br/><br/>
 
     <%= render :partial => 'search/search_query_form' %>
   </td>
