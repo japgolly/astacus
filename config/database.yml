@@ -17,7 +17,10 @@ test:
   password: astacus_test
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: mysql
+  encoding: utf8
+  host: 127.0.0.1
+  port: 3306
+  database: astacus
+  username: astacus
+  password: astacus
