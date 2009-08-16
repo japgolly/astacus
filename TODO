@@ -62,6 +62,7 @@ LOCATIONS
 
 STATS
 =====
+* Handle no results.
 * Provide links in graphs to a search with that filter applied
 * Save SQ etc
 
