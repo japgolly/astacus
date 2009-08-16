@@ -20,6 +20,6 @@ class HomeController < ApplicationController
 
   private
     def set_cur_user(id)
-      session[ApplicationHelper::USER_ID_SESSION_KEY]= id
+      session[USER_ID_SESSION_KEY]= id
     end
 end

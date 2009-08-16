@@ -114,4 +114,13 @@ class ActionController::TestCase
   def cur_user
     User.find(cur_user_id) if cur_user_id
   end
+  def login(id_or_model=nil)
+    if id_or_model == false
+      session[USER_ID_SESSION_KEY]= nil
+    else
+      id_or_model||= User.first
+      id= id_or_model.is_a?(User) ? id_or_model.id : id_or_model
+      session[USER_ID_SESSION_KEY]= id
+    end
+  end
 end

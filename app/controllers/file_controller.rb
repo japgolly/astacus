@@ -3,6 +3,7 @@ class FileController < ApplicationController
   # caches_page :image # doesn't seem to respect mimetype, will test later
 
   def audio
+    return render(:status => :forbidden, :text => 'Login required.') unless logged_in?
     id= params[:id]
     @af= AudioFile.find(id) rescue nil if id
     if @af.nil?

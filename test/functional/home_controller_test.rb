@@ -42,6 +42,8 @@ class HomeControllerTest < ActionController::TestCase
   end # Context: login
 
   context "logout" do
+    setup {login}
+
     context "with ajax" do
       setup { ajax_get :logout }
       should_respond_with :success

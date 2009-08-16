@@ -26,7 +26,9 @@
           <td class="tn"><%= "%02d" % [track.tn] -%>.</td>
           <td class="name"><%= h track.name -%></td>
           <td class="len"><%= format_mmss track.length -%></td>
-          <td class="dl"><%= link_to "d/l", audio_file_url(:id => track.audio_file_id) -%></td>
+          <% if logged_in? -%>
+            <td class="dl"><%= link_to "d/l", audio_file_url(:id => track.audio_file_id) -%></td>
+          <% end -%>
         </tr>
         <% end -%>
       </table>

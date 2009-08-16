@@ -50,6 +50,16 @@ class FileControllerTest < ActionController::TestCase
   end # Context: file/image
 
   context "file/audio" do
+    setup {login}
+
+    context "when user not logged in" do
+      setup do
+        login false
+        get :audio, :id => audio_files(:silsila_ye_chaahat_ka).id
+      end
+      should_respond_with :forbidden
+    end
+
     context "when sending a valid file" do
       setup do
         @af= audio_files(:silsila_ye_chaahat_ka)

@@ -1,18 +1,5 @@
 module ApplicationHelper
 
-  # User login related
-  USER_ID_SESSION_KEY= :user_id
-  def cur_user_id
-    session[USER_ID_SESSION_KEY]
-  end
-  def cur_user
-    return nil unless cur_user_id
-    @cur_user||= (User.find(cur_user_id) rescue nil)
-  end
-  def logged_in?
-    !cur_user_id.nil?
-  end
-
   # Takes all validation errors on a model and turns it into a single sentence.
   def model_errors_to_single_string(model)
     model.errors.map{|a| "#{a[0].capitalize} #{a[1]}."}.join("\n\n")
