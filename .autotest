@@ -10,6 +10,6 @@ Autotest.add_hook :initialize do |at|
   end
 
   at.add_mapping %r!^test/search_query_filter_results\.rb$! do
-    ["test/unit/search_query_test.rb", "test/functional/search_controller_test.rb"]
+    ["test/unit/search_query_test.rb", "test/functional/search_controller_sq_test.rb"]
   end
 end

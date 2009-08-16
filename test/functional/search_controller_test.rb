@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'search_query_filter_results'
 
 class SearchControllerTest < ActionController::TestCase
 
@@ -32,19 +31,6 @@ class SearchControllerTest < ActionController::TestCase
       assert_response_includes '4:59' # length of The Sound Of Muzak
     end
   end
-
-  include SearchQueryFilterResults
-  ALBUM_FILTERS.each{|params,albums|
-    class_eval <<-EOB
-      context "Search filtered by #{params.map{|k,v|"#{k} #{v}"}.sort.join ' and '}" do
-        setup {get :search, #{params.inspect}}
-        should_pass_common_assertions
-        should "filter its results appropriately" do
-          assert_same_named_elements [#{albums.map{|a| "albums('#{a}')"}.join(',')}], assigns(:albums)
-        end
-      end
-    EOB
-  }
 
   context "Search with page param is out of range" do
     setup {get :search, :artist => 'a', :page => '100'}
