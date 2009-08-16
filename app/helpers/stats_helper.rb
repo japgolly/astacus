@@ -61,12 +61,12 @@ module StatsHelper
     m_lines= options[:m_lines]
     x= ''
     if data[nil]
-      x+= stats_graph_row block.call(nil,step), data[nil], data[:max_value],
+      x+= stats_graph_row get_stats_label(block,nil,step,options), data[nil], data[:max_value],
         :div_class => 'nil', :tr_class => 'nil'
     end
     i= data[:min]
     while i<= data[:max]
-      x+= stats_graph_row block.call(i,step), data[i] || 0, data[:max_value],
+      x+= stats_graph_row get_stats_label(block,i,step,options), data[i] || 0, data[:max_value],
         :tr_class => (m_lines and i % m_lines ==0) ? 'm_top' : nil
       i+= step
     end
@@ -77,6 +77,14 @@ module StatsHelper
     p= value == 0 ? 0 : to_percentage(value,max,0)
     div_class= %! class="#{options[:div_class]}"! if options[:div_class]
     stats_row(title, %!<div#{div_class} style="width:#{p}%">&nbsp;</div>!, value, options) + "\n"
+  end
+
+  def get_stats_label(gen_proc, i, step, options)
+    if ex= options[:exceptions]
+      label= ex[i] || ex[i.to_s]
+      return label if label
+    end
+    gen_proc.call i, step
   end
 
   def default_stats_label_gen(i, step)

@@ -5,6 +5,7 @@ class StatsController < ApplicationController
   def index
     @search_query_form_url= stats_url
     tracks_by_bitrate_psize=32
+    albums_by_decade_group_sql= "case when year < 1900 then 1890 else year-year%10 end"
 
     @sq= SearchQuery.tmp(params)
     if @sq.params.empty?
@@ -21,7 +22,7 @@ class StatsController < ApplicationController
         :avg_bitrate              => AudioContent.average(:bitrate),
         :albums_without_albumart  => Album.count(:conditions => "albumart_id is null"),
         :albums_by_year           => Album.count(:group => :year),
-        :albums_by_decade         => Album.count(:group => "year-year%10"),
+        :albums_by_decade         => Album.count(:group => albums_by_decade_group_sql),
         :tracks_by_bitrate        => AudioContent.count(:group => "bitrate-(bitrate-1)%#{tracks_by_bitrate_psize}"),
       }
     elsif @sq.valid?
@@ -45,7 +46,7 @@ class StatsController < ApplicationController
         :avg_bitrate              => filtered_album_stat(:average, 'audio_content.bitrate', :joins => JOIN_TO_AC).to_f,
         :albums_without_albumart  => filtered_album_stat(:count, :conditions => "albumart_id is null"),
         :albums_by_year           => filtered_album_stat(:count, :group => :year),
-        :albums_by_decade         => filtered_album_stat(:count, :group => "year-year%10"),
+        :albums_by_decade         => filtered_album_stat(:count, :group => albums_by_decade_group_sql),
         :tracks_by_bitrate        => filtered_album_stat(:count, :joins => JOIN_TO_AC, :group => "bitrate-(bitrate-1)%#{tracks_by_bitrate_psize}"),
       }
       conn.execute "DROP TEMPORARY TABLE #{TMP_TABLE_NAME};"

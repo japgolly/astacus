@@ -117,6 +117,32 @@ class StatsControllerTest < ActionController::TestCase
             ['289 - 320', 1],
           ]
       end
+
+      context "when albums with years less than 1900" do
+        setup do
+          Album.update albums(:in_absentia).id, :year => 0
+          get :index
+          @stats= assigns(:stats)
+        end
+        should "group them all together in the decade graph" do
+          # NULL, 1972, 1994, 1998, 2002, 0, 2003
+          assert_graph 'albums_by_decade', [
+              ['Unknown',     1],
+              ['< 1900',      1],
+              ['1900 - 1909', 0],
+              ['1910 - 1919', 0],
+              ['1920 - 1929', 0],
+              ['1930 - 1939', 0],
+              ['1940 - 1949', 0],
+              ['1950 - 1959', 0],
+              ['1960 - 1969', 0],
+              ['1970 - 1979', 1],
+              ['1980 - 1989', 0],
+              ['1990 - 1999', 2],
+              ['2000 - 2009', 2],
+            ]
+          end
+      end
     end # Context: with no params
 
     # test with
