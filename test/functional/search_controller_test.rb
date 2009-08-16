@@ -12,6 +12,20 @@ class SearchControllerTest < ActionController::TestCase
     EOB
   end
 
+  context "Search when not logged in" do
+    setup {get :search}
+    should "not provide download links" do
+      assert_select '.discs a[href^=?]', audio_file_url, 0
+    end
+  end
+
+  context "Search when logged in" do
+    setup {login; get :search}
+    should "provide download links" do
+      assert_select '.discs a[href^=?]', audio_file_url
+    end
+  end
+
   context "Search without any params" do
     setup {get :search}
     should_pass_common_assertions

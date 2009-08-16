@@ -21,6 +21,8 @@ class ActiveSupport::TestCase
   include RailsReflection
   setup :log_test_name
 
+  USER_ID_SESSION_KEY= :user_id
+
   FROZEN_CITY_TAGGED= "#{MOCK_DATA_DIR}/聖飢魔II/Albums/1996 - メフィストフェレスの肖像/02 - Frozen City.mp3"
   FROZEN_CITY_NOTAGS= "#{MOCK_DATA_DIR}/frozen city (no tags).mp3"
   BOUM_BOUM_YULA= "#{MOCK_DATA_DIR}/01. Boum Boum Yüla.mp3"
@@ -86,10 +88,39 @@ class ActionController::TestCase
   def assert_response_doesnt_match(regex)
     assert response.body !~ regex, "Response shouldn't match #{regex.inspect}"
   end
-  def assert_response_includes(str)
-    assert response.body.include?(str), "Response should include #{str.inspect}"
+
+  # Checks that a certain string exists in the response.
+  def assert_response_includes(str, expected= true)
+    if expected
+      assert response.body.include?(str), "Response should include #{str.inspect}"
+    else
+      assert_response_doesnt_include str
+    end
   end
   def assert_response_doesnt_include(str)
     assert !response.body.include?(str), "Response shouldn't include #{str.inspect}"
+  end
+
+  def ajax_get(*args)
+    xml_http_request :get, *args
+  end
+  def ajax_post(*args)
+    xml_http_request :post, *args
+  end
+
+  def cur_user_id
+    session[USER_ID_SESSION_KEY]
+  end
+  def cur_user
+    User.find(cur_user_id) if cur_user_id
+  end
+  def login(id_or_model=nil)
+    if id_or_model == false
+      session[USER_ID_SESSION_KEY]= nil
+    else
+      id_or_model||= User.first
+      id= id_or_model.is_a?(User) ? id_or_model.id : id_or_model
+      session[USER_ID_SESSION_KEY]= id
+    end
   end
 end

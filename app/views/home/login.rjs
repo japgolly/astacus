@@ -1,0 +1,5 @@
+if @user
+  page.reload
+else
+  page.alert 'Invalid login.'
+end
