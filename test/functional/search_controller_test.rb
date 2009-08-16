@@ -48,9 +48,11 @@ class SearchControllerTest < ActionController::TestCase
 
   context "Search with page param is out of range" do
     setup {get :search, :artist => 'a', :page => '100'}
-    should_redirect_to('same page without the :page param') {
-      {:artist => 'a', :page => nil}
-    }
+    should "redirect to the same page without the :page param" do
+      expected= HashWithIndifferentAccess.new({:controller => 'search', :action => 'search', :artist => 'a'})
+      actual= HashWithIndifferentAccess.new(response.redirected_to)
+      assert_equal expected, actual
+    end
   end
 
   context "The search query form" do
