@@ -49,6 +49,9 @@ Rails::Initializer.run do |config|
 
   # Until Rails v2.3.4 when index lengths are supported.
   config.active_record.schema_format = :sql
+
+  # Middlewares
+  config.middleware.use "ResponseTimer"
 end
 
 require 'digest/md5'
