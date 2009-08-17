@@ -1,2 +1,17 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
+/**
+ * Completely clears a form.
+ */
+function clear_form(form) {
+    form.getElements().each(function(el) {
+        switch (el.type) {
+            // Text fields
+            case 'text':
+                el.value= '';
+                break;
+            // Select dropdowns
+            case 'select-one':
+                el.options[0].selected= true;
+                break;
+        }
+    });
+}

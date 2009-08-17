@@ -11,12 +11,13 @@
 */
 
 #left {background:#e0e0e0; border-right:solid 1px #777; width:240px}
-#search_query_form {width:230px; margin:0 auto 0 auto}
+#search_query_form {width:230px; margin:0 auto 24px auto}
 #search_query_form .fields {margin-bottom: 10px; width:100%}
 #search_query_form .fields th {text-align:left; text-decoration:underline}
 #search_query_form .fields .l {padding-right:6px}
 #search_query_form .submit {text-align:center}
 #search_query_form .fields .txt {width:100%}
+#search_query_form .reset_button {margin-left:22px}
 
 .search_error, .search_error * {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}
 #sq_errors ul {margin-top:12px; padding-left:26px}
