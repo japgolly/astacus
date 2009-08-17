@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  layout 'sidebar'
 
   def search
     @page= params[:page].to_i rescue 0

@@ -1,5 +1,5 @@
 class StatsController < ApplicationController
-  layout 'search'
+  layout 'sidebar'
   include Album::Joins
 
   def index
