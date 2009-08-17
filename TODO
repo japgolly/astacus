@@ -29,7 +29,6 @@ BROWSING
 DOWNLOADS
 =========
 * Add download links (full album)
-* Create users and only provide download links if the user is logged in
 * Log ALL downloads (user, time, filesize, ip, etc)
 * Have a cart, add files and albums to it then it zips it all up and sends
 
