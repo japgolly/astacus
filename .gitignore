@@ -4,4 +4,5 @@ tmp/**/*
 public/cache/**/*
 nbproject
 db/*.sqlite3
+test/reports/*
 
