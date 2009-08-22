@@ -205,7 +205,17 @@ class StatsControllerTest < ActionController::TestCase
             ['289 - 320', 0],
           ]
       end
-    end # Context: with va and disc filter
+    end # Context: with filter
+
+    context "with no results" do
+      setup {get :index, :year => '2030', :va => '1'}
+      should_respond_with :success
+      should_render_template 'index'
+      should "say no results instead of displaying stats" do
+        assert_select '#no_results'
+        assert_select '#stats', 0
+      end
+    end  # Context: with no results
 
   end # Context: stats/index
 

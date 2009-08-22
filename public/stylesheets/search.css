@@ -77,3 +77,5 @@
 #stats .graph .v div.nil {background:#6a6a6a}
 #stats .graph .v2 {text-align:right}
 #stats .graph .m_top td {border-top:dashed 1px #aab}
+
+#no_results {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}

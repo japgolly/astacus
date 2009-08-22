@@ -53,7 +53,6 @@ class StatsController < ApplicationController
     else
       raise # TODO invalid sq in stats/index
     end
-    # TODO test stats/index with no results
 
     # Calculate other stats based on data already loaded
     @stats[:avg_filesize]= safe_avg(:filesize,:files)
@@ -105,6 +104,7 @@ class StatsController < ApplicationController
     # Data returned by a count(:group=>x) needs a small amount of preprocessing
     # before it is ready for rendering.
     def process_graph_stat!(key, step, options= {})
+      return if @stats[key].empty?
       n= {}
       @stats[key].each{|k,v| n[k ? k.to_i : k]= v}
       keys= n.keys.reject(&:nil?)
