@@ -1,0 +1,20 @@
+#page_container {width:100%; height:100%}
+#body_inner_table {margin:0 auto auto auto}
+#left, #body_inner_cell {padding:6px}
+
+/* DEBUG PROPERTIES
+#body_inner_cell {background:#fff}
+#left {background:#ddd}
+#body_outer {background:#cfc}
+#search_query_form {background:#ffb}
+#search_query_form .fields {background:#8af}
+*/
+
+#left {background:#e0e0e0; border-right:solid 1px #777; width:240px}
+#search_query_form {width:230px; margin:0 auto 24px auto}
+#search_query_form .fields {margin-bottom: 10px; width:100%}
+#search_query_form .fields th {text-align:left; text-decoration:underline}
+#search_query_form .fields .l {padding-right:6px}
+#search_query_form .submit {text-align:center}
+#search_query_form .fields .txt {width:100%}
+#search_query_form .reset_button {margin-left:22px}

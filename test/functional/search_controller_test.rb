@@ -17,6 +17,9 @@ class SearchControllerTest < ActionController::TestCase
     should "not provide download links" do
       assert_select '.discs a[href^=?]', audio_file_url, 0
     end
+    should "include the search css" do
+      assert_response_includes 'search.css'
+    end
   end
 
   context "Search when logged in" do

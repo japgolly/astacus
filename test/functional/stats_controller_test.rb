@@ -72,6 +72,9 @@ class StatsControllerTest < ActionController::TestCase
       end
       should_respond_with :success
       should_render_template 'index'
+      should "include the stats css" do
+        assert_response_includes 'stats.css'
+      end
       should "calculate the stats correctly" do
         ac_count= AudioContent.count
         assert_equal files=21, @stats[:files]

@@ -1,24 +1,3 @@
-#page_container {width:100%; height:100%}
-#body_inner_table {margin:0 auto auto auto}
-#left, #body_inner_cell {padding:6px}
-
-/* DEBUG PROPERTIES
-#body_inner_cell {background:#fff}
-#left {background:#ddd}
-#body_outer {background:#cfc}
-#search_query_form {background:#ffb}
-#search_query_form .fields {background:#8af}
-*/
-
-#left {background:#e0e0e0; border-right:solid 1px #777; width:240px}
-#search_query_form {width:230px; margin:0 auto 24px auto}
-#search_query_form .fields {margin-bottom: 10px; width:100%}
-#search_query_form .fields th {text-align:left; text-decoration:underline}
-#search_query_form .fields .l {padding-right:6px}
-#search_query_form .submit {text-align:center}
-#search_query_form .fields .txt {width:100%}
-#search_query_form .reset_button {margin-left:22px}
-
 .search_error, .search_error * {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}
 #sq_errors ul {margin-top:12px; padding-left:26px}
 #sq_errors li {margin-top:4px; font-weight:normal; color:#111}
@@ -52,30 +31,3 @@
 .discs .tracks .dl {padding-left:4px}
 .discs .tracks .dl a {color:#00b; font-size:10px}
 .discs .summary {text-align:right; font-style:italic; border-top:solid 1px #222}
-
-#stats {margin-top:14px}
-#stats .sep th {height:24px}
-#stats .section th {text-align:left; font-size:14px; padding:4px; background:#69b10a; color:#fff; letter-spacing:1px}
-#stats td {padding:2px 4px 2px 4px; vertical-align:top}
-#stats .k {font-weight:bold}
-#stats .v {text-align:right}
-#stats .exact_bytes {font-style:italic}
-#stats .alt1 * {background:#e8e8fa; color:#000060}
-
-#stats .section th, #stats .k {border-left:solid 1px #333}
-#stats .section th, #stats_l .v, #stats .graph .v2 {border-right:solid 1px #333}
-#stats .section th, #stats .sep {border-top:solid 1px #333}
-#stats_l, #stats .graph {border-bottom:solid 1px #333}
-
-#stats .graph {margin-left:16px}
-#stats .graph, #stats .graph_header, #stats .graph_body {width:100%}
-#stats .graph_header .title {border-right:none}
-#stats .graph_header .showhide {border-left:none; text-align:right; vertical-align:bottom; padding:0 2px 0 0}
-#stats .graph_header .showhide a {color:#fff; font-size:10px; text-decoration:none}
-#stats .graph .v {width:160px; padding:0 6px 0 2px; vertical-align:middle}
-#stats .graph .v div {background:#e00; height:10px; margin:auto 0 auto 0}
-#stats .graph .v div.nil {background:#6a6a6a}
-#stats .graph .v2 {text-align:right}
-#stats .graph .m_top td {border-top:dashed 1px #aab}
-
-#no_results {font-weight:bold; font-size: 14px; margin-top: 36px; color:#e00}
