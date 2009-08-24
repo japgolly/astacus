@@ -5,12 +5,6 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
 
-  # Set content type
-  before_filter :set_content_type
-  def set_content_type
-    headers["Content-Type"]= "text/html; charset=UTF-8"
-  end
-
   # User login related
   helper_method :cur_user, :cur_user_id, :logged_in?
   USER_ID_SESSION_KEY= :user_id

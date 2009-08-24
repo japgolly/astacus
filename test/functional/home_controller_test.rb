@@ -59,6 +59,7 @@ class HomeControllerTest < ActionController::TestCase
   end # Context: logout
 
   def assert_rjs_response_action(action)
+    assert_equal 'text/javascript; charset=utf-8', controller.headers['Content-Type'].sub('UTF','utf')
     assert_response_includes 'alert', action == :alert
     assert_response_includes '.reload', action == :reload
   end
