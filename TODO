@@ -1,67 +1,10 @@
-Fix: backgroundrb spams logs. Can we shut it up?
-Fix: cant filter by year=NULL
-
 Add a home page.
 Add links on the stats/search pages to switch back and forth.
 Add a little nav bar to the global template.
 
-BROWSING
-========
-* Click on a track shows/hides track details
-* Flat/Table album view
-* Flat/Table file view
-* Flat/Table track view
-* Save searches
-* Display searches from main page
-* Add remaining filter criteria
-  - album type
-  - track.format
-  - track.length
-  - track.bitrate
-  - file.size
-  - file.dirname
-  - file.basename
-  - other.age
-  - results/page
-* Change sort order
-
-DOWNLOADS
-=========
-* Add download links (full album)
-* Log ALL downloads (user, time, filesize, ip, etc)
-* Have a cart, add files and albums to it then it zips it all up and sends
-
 SCANNING
 ========
-* Handle cds like 'Disc A - Paris 1937'
-* Handle case where we have two cds: 'CD 1 - Paris 1937', 'CD 1 - Germany'
-* understand album types
-* add support for flac, ape, m4a (mp4?), wma (maybe)
-* should generate thumbnails for large images
 * what about when ape/id3 tags differ - should create 2 tracks with same AF
-* Record last mod date on audio files.
-* When scanning have an option to only scan new files and files updated since last scan.
-* AC/DC Black Ice length and bitrate is way off (210:16, 90.8 MB, MP3, 59 kbps)
-* Make scanning use backgroundrb's thread-pool features
-
-TAGS
-====
-* Remove labels from locations
-* Add a location/dir tag. Applies to audio_files. Filters on dirname.
-* The SQ.taglist should handle this: "jap, !staged"
-
-LOCATIONS
-=========
-(2) Rescan in background
-(2) Admin view error queue
-(2) Admin replay items on error queue
-(4) Deleting a location should delete all its audio_files but preserve its audio_contents
-    (What about tracks/albums/etc? Should keep and mark as non active? Or should all tags be on audio content?)
-
-STATS
-=====
-* Provide links in graphs to a search with that filter applied
-* Save SQ etc
 
 WARNINGS
 ========
@@ -92,5 +35,4 @@ WARNINGS
 
 FUTURE FEATURES
 ===============
-* Show stats by age buckets
 * Show stats over time (i.e. graph)
