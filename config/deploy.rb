@@ -33,7 +33,7 @@ end
 namespace :backgroundrb do
   desc "Start the backgroundrb server"
   task :start, :roles => :app do
-    run "cd #{current_path} && nohup ruby script/backgroundrb start -e production > /dev/null 2>&1"
+    run "cd #{current_path} && nohup ruby script/backgroundrb start -e production </dev/null >/dev/null 2>&1"
   end
 
   desc "Stop the backgroundrb server"
