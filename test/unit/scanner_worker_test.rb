@@ -32,6 +32,15 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       assert_equal 'Boum Boum Yüla', Track.last.name
     end
 
+    should "handle mp3s with incorrect headers" do
+      assert_difference 'AudioContent.count' do
+        @scanner.scan_file! PROCEED_WITH_CAUTION
+      end
+      ac= AudioContent.last
+      assert_equal 269, ac.bitrate
+      assert_equal 63, ac.length.round
+    end
+
     context "when scanning a new file" do
       setup do
         @file= FROZEN_CITY_TAGGED

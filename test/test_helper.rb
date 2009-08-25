@@ -37,6 +37,7 @@ class ActiveSupport::TestCase
   TAGCHANGE_TRACK_BEFORE= "#{MOCK_DATA_DIR}/tag_changes/track-before.mp3"
   TAGCHANGE_TRACK_AFTER= "#{MOCK_DATA_DIR}/tag_changes/track-after.mp3"
   DJANGO= "#{MOCK_DATA_DIR}/Rhythm_Futur.mp3"
+  PROCEED_WITH_CAUTION= "#{MOCK_DATA_DIR}/Proceed With Caution.mp3"
 
   ALL_MOCK_DATA_FILES= [
     FROZEN_CITY_TAGGED,
@@ -48,6 +49,7 @@ class ActiveSupport::TestCase
     TAGCHANGE_ALBUMART_BEFORE, TAGCHANGE_ALBUMART_AFTER,
     TAGCHANGE_TRACK_BEFORE, TAGCHANGE_TRACK_AFTER,
     DJANGO,
+    PROCEED_WITH_CAUTION,
   ].freeze
 
   # Make sure all ALL_MOCK_DATA_FILES exist

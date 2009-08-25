@@ -32,6 +32,7 @@ WARNINGS
   - Discs split across multiple dirs (disc:dir should be 1:1)
   - Make sure that max tracks/discs is correct
   - Check replaygain
+  - Bitrate/length in mp3 headers is wrong
 
 ISSUES WHEN AUDIO_CONTENT CAN HAVE MULTIPLE TRACKS
 ==================================================

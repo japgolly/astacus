@@ -19,6 +19,10 @@ class AudioContentTest < ActiveSupport::TestCase
       @ac.updated_at= @ac.created_at= nil
     end
 
+    should "round float bitrates" do
+      assert_equal 127, AudioContent.new(:bitrate => 126.9).bitrate
+    end
+
     should "not be reused when size, checksums and format differ" do
       {:size => 666, :md5 => 'c'*16, :sha2 => 'd'*64, :format => 'mp4'}.each{|k,v|
         a= @ac.clone
