@@ -206,8 +206,10 @@ class ScannerWorker < BackgrounDRb::MetaWorker
     disc_attr= case tag.disc
       when nil    then {:order_id => 0}
       when Fixnum then {:order_id => tag.disc, :name => "Disc #{tag.disc}"}
+      when String then {:order_id => tag.disc[0], :name => "Disc #{tag.disc}"}
       else raise "Unsupported disc type: #{tag.disc.inspect}"
       end
+    disc_attr[:name]+= ": #{tag.disc_subtitle}" if tag.disc_subtitle
     disc= Disc.find_identical_or_create!({:album => album}.merge(disc_attr))
     if !disc.va? and track_artist
       disc.va= true

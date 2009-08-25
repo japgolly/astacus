@@ -283,6 +283,15 @@ class ScannerWorkerTest < ActiveSupport::TestCase
           @scanner.scan_file! SEIKIMA_CD1_13
         end
       end
+
+      should "handle discs with letters and subtitles" do
+        assert_difference 'Disc.count' do
+          @scanner.scan_file! DJANGO
+        end
+        d= Disc.last
+        assert_equal 'Disc B: Paris 1939-40', d.name
+        assert_equal 66, d.order_id
+      end
     end
 
     context "when there are dead files" do
