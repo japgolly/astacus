@@ -209,6 +209,7 @@ class SearchQuery < ActiveRecord::Base
   add_param :album, :text, 'albums.name'
   add_param :albumart, :boolean_isnull, 'albums.albumart_id'
   add_param :artist, :text, 'artists.name', :joins => Album::JOIN_TO_AR
+  add_param :bitrate, :int, 'audio_content.bitrate', :joins => Album::JOIN_TO_AC
   add_param :disc, :text, 'discs.name', :joins => Album::JOIN_TO_DISCS
   add_param :discs, :int, 'albums.discs_count'
   add_param :track, :text, 'tracks.name', :joins => Album::JOIN_TO_TRACKS

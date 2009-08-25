@@ -33,6 +33,10 @@ WARNINGS
   - Make sure that max tracks/discs is correct
   - Check replaygain
 
+ISSUES WHEN AUDIO_CONTENT CAN HAVE MULTIPLE TRACKS
+==================================================
+* SQ.bitrate filter wont be using the track bitrate
+
 FUTURE FEATURES
 ===============
 * Show stats over time (i.e. graph)

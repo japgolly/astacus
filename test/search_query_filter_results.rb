@@ -40,6 +40,10 @@ module SearchQueryFilterResults
       {:va => '0'} => %w[ponk 6doit in_absentia still_life close_to_the_edge time_and_a_word],
       {:va => '1'} => %w[devdas],
 
+      {:bitrate => '192'} => %w[6doit still_life],
+      {:bitrate => '-192'} => %w[6doit still_life in_absentia],
+      {:bitrate => '271,257'} => %w[time_and_a_word devdas],
+
       # combinations
       {:album => 'in', :artist => 'dream'} => %w[6doit],
       {:year => '2000+', :albumart => '1'} => %w[in_absentia devdas],
