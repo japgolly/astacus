@@ -1,7 +1,7 @@
 class Album < ActiveRecord::Base
   belongs_to :albumart, :class_name => "Image"
   belongs_to :artist
-  has_many :discs, :order => :order_id
+  has_many :discs, :order => 'discs.order_id, discs.name'
 
   validates_presence_of :artist, :name
   validates_inclusion_of :year, :allow_nil => true, :in => 0..(Date.today.year+1)

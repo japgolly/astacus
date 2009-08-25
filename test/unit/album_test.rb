@@ -15,7 +15,7 @@ class AlbumTest < ActiveSupport::TestCase
     assert_equal [discs(:'6doit_cd1'), discs(:'6doit_cd2')], albums(:'6doit').discs
   end
 
-  test "discs ordered" do
+  test "discs ordered 1" do
     disc= discs(:'6doit_cd1')
     disc.order_id= 2
     disc.save!
@@ -23,6 +23,19 @@ class AlbumTest < ActiveSupport::TestCase
     disc.order_id= 0
     disc.save!
     assert_equal [discs(:'6doit_cd1'), discs(:'6doit_cd2')], albums(:'6doit').discs(true)
+  end
+
+  test "discs ordered 2" do
+    a= albums(:ponk)
+    d0= discs(:ponk)
+    d2b= Disc.create :album => a, :order_id => 2, :name => 'Disc 2: Yes'
+    d65c= Disc.create :album => a, :order_id => 65, :name => 'Disc A: Xyz'
+    d1= Disc.create :album => a, :order_id => 1, :name => 'Disc 1'
+    d2a= Disc.create :album => a, :order_id => 2, :name => 'Disc 2: No'
+    d65b= Disc.create :album => a, :order_id => 65, :name => 'Disc A: Mid'
+    d67= Disc.create :album => a, :order_id => 67, :name => 'Disc C'
+    d65a= Disc.create :album => a, :order_id => 65, :name => 'Disc A: Abc'
+    assert_equal [d0, d1, d2a, d2b, d65a, d65b, d65c, d67], a.discs(true)
   end
 
   test "belongs to artist" do
