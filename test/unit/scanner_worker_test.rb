@@ -35,7 +35,6 @@ class ScannerWorkerTest < ActiveSupport::TestCase
     context "when scanning a new file" do
       setup do
         @file= FROZEN_CITY_TAGGED
-        assert File.exists?(@file)
         @ac_count= AudioContent.count
         @af_count= AudioFile.count
         @at_count= AudioTag.count
@@ -202,7 +201,6 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       context "without changes" do
         setup do
           @file= FROZEN_CITY_TAGGED
-          assert File.exists?(@file)
           @scanner.scan_file! @file
           @prev_counts= table_counts
         end

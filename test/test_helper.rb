@@ -50,6 +50,11 @@ class ActiveSupport::TestCase
     DJANGO,
   ].freeze
 
+  # Make sure all ALL_MOCK_DATA_FILES exist
+  ALL_MOCK_DATA_FILES.each {|f|
+    raise "#{f} doesn't exist." unless File.exists?(f)
+  }
+
   def self.should_validate_positive_numericality_of(attr)
     should_validate_numericality_of attr
     should_not_allow_values_for attr, -1, :message => 'must be greater than or equal to 0'
