@@ -6,6 +6,8 @@ td {vertical-align:top}
 ol,ul {padding-left:14px}
 a {color:#00d}
 
+*[dir="ltr"] {direction:ltr; unicode-bidi:embed}
+
 /* This is the digg style taken from the will_paginate examples */
 .pagination {
   background: white;
