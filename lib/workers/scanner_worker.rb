@@ -39,6 +39,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
   end
 
   def scan(location, full=true)
+    return scan(*location) if location.is_a?(Array) # BackgrounDRb is fucking shit
     reset
     init(location, full)
 

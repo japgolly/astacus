@@ -26,7 +26,9 @@ class LocationsController < ApplicationController
   def start_scan
     @location= Location.find(params[:id])
     if @location.exists?
-      @location.scan_async
+      full= (params[:full] == '1')
+      @location.scan_async(full)
+      sleep 3
     end
     render :action => 'show'
   end

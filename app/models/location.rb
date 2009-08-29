@@ -22,8 +22,12 @@ class Location < ActiveRecord::Base
     File.exists?(dir) and File.directory?(dir)
   end
 
-  def scan_async
+  def last_mtime
+    AudioFile.maximum :mtime, :conditions => "location_id = #{id}" unless new_record?
+  end
+
+  def scan_async(full)
     return false unless self.exists?
-    MiddleMan.worker(:scanner_worker).async_scan(:arg => self)
+    MiddleMan.worker(:scanner_worker).async_scan(:arg => [self,full])
   end
 end

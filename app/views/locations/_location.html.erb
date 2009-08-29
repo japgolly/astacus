@@ -18,7 +18,9 @@
     </div>
   <% else %>
     LAST SCAN: <%= (sl= location.scanner_logs.last) ? "#{time_ago_in_words sl.started} ago" : 'Never.' %>
-    <br/><%= button_to_remote 'Start Scan', {:url => {:action => 'start_scan', :id => location.id}}, :disabled => !location.exists? %>
+    <br/>LAST MTIME: <%= location.last_mtime %>
+    <br/><%= button_to_remote 'Normal Scan', {:url => {:action => 'start_scan', :id => location.id}}, :disabled => !location.exists? %>
+    <br/><%= button_to_remote 'Full Scan', {:url => {:action => 'start_scan', :id => location.id, :full => '1'}}, :disabled => !location.exists? %>
   <% end %>
   <% unless location.scanner_errors.empty? %><div class="warning">HAS <%= location.scanner_errors.size -%> ERRORS.</div><% end %>
   <br/><%= button_to_remote 'Edit', :url => {:action => 'edit', :id => location.id}, :method => :get %>
