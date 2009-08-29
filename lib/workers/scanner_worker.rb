@@ -10,25 +10,37 @@ class ScannerWorker < BackgrounDRb::MetaWorker
     @location= @sl= @files= nil
   end
 
-  def init(location)
+  def init(location, full=true)
     # Start
     @location= location
+    @full= full
     logger.info "Scanning location ##{@location.id} [#{@location.dir}]"
     @sl= ScannerLog.new(:location => @location, :started => Time.now, :active => true)
     @sl.save!
     logger.info "  Created scanner log ##{@sl.id}"
 
     # Find files
-    @files= files_in(@location.dir)
+    @all_files= @files= files_in(@location.dir)
     logger.info "  Found #{@files.size} files in location."
+    if @full
+      @last_mtime= nil
+    elsif @last_mtime= @location.last_mtime
+      @files= @files.reject{|f|
+        File.mtime(f) <= @last_mtime \
+        and AudioFile.exists?(:location_id => @location.id, :basename => File.basename(f), :dirname => File.dirname(f))
+      }
+      logger.info "  Found #{@files.size} modified or created since last scan."
+    end
+
+    # Update scanner log
     @sl.files_scanned= 0
     @sl.file_count= @files.size
     @sl.save!
   end
 
-  def scan(location)
+  def scan(location, full=true)
     reset
-    init(location)
+    init(location, full)
 
     # Process files
     @files.in_groups_of(4, false) {|file_batch|
@@ -227,7 +239,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
   end
 
   def remove_dead_files!
-    dead_files= @location.audio_files.reject{|af| @files.include? af.filename}
+    dead_files= @location.audio_files.reject{|af| @all_files.include? af.filename}
     unless dead_files.empty?
       logger.info "   Removing #{dead_files.size} dead files."
       dead_files.each(&:destroy)

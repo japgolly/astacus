@@ -1,6 +1,8 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+require 'tmpdir'
+require 'fileutils'
 
 module FixtureAndTestHelpers
   MOCK_DATA_DIR= File.expand_path(File.dirname(__FILE__) + "/mock_data")
@@ -76,6 +78,21 @@ class ActiveSupport::TestCase
   def assert_same_named_elements(expected, actual)
     assert_same_elements expected.map(&:name), actual.map(&:name)
     assert_same_elements expected, actual
+  end
+
+  def tmpdir
+    @@tmpdir ||= File.join(Dir.tmpdir, "astacus_test-#{$$}").freeze
+    FileUtils.mkdir_p @@tmpdir
+    @@tmpdir
+  end
+
+  def remove_tmpdir
+    FileUtils.rm_rf tmpdir
+  end
+
+  def copy_file_to_tmpdir(src_file)
+    FileUtils.cp src_file, tmpdir
+    File.join tmpdir, File.basename(src_file)
   end
 
   private

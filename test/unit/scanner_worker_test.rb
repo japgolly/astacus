@@ -324,7 +324,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
 
         @dead.basename= 'bullshit'
         @dead.save!
-        @scanner.init @location.reload
+        @scanner.init @location.reload, false
       end
 
       should "remove them" do
@@ -395,6 +395,52 @@ class ScannerWorkerTest < ActiveSupport::TestCase
       end
     end # context: when scanning VA albums
 
+    context "when scanning in non-full mode" do
+      setup do
+        remove_tmpdir
+        @f1,@f2,@f3 = FROZEN_CITY_TAGGED,SEIKIMA_CD1_06,SEIKIMA_CD1_13
+        @mtime1,@mtime2,@mtime3 = 10.seconds.ago, 11.seconds.ago, 12.seconds.ago
+        update_file_timestamps 2.years.ago, @mtime1, copy_file_to_tmpdir(@f1)
+        update_file_timestamps 2.years.ago, @mtime2, copy_file_to_tmpdir(@f2)
+        update_file_timestamps 2.years.ago, @mtime3, copy_file_to_tmpdir(@f3)
+        @location= Location.create :label => "meg", :dir => tmpdir
+      end
+
+      teardown do
+        remove_tmpdir
+      end
+
+      should "work like full when run the first time" do
+        assert_difference 'AudioFile.count', 3 do
+          ScannerWorker.new.scan(@location, false)
+        end
+      end
+
+      should "only scan updated files" do
+        ScannerWorker.new.scan(@location, false)
+        af1= AudioFile.find :first, :conditions => {:basename => File.basename(@f1)}
+        af2= AudioFile.find :first, :conditions => {:basename => File.basename(@f2)}
+        t1,t2 = af1.tracks[0], af2.tracks[0]
+        t1.tn= 101; t1.save!
+        t2.tn= 102; t1.save!
+        update_file_timestamps 2.years.ago, 5.seconds.ago, af2.filename
+        ScannerWorker.new.scan(@location, false)
+        assert_equal 101, t1.reload.tn, "Non-modified file scanned in non-full scan."
+        assert t2.reload.tn != 102, "Modified file not scanned in non-full scan."
+      end
+
+      should "handle new files with older timestamps" do
+        ScannerWorker.new.scan(@location, false)
+        assert_difference 'AudioFile.count', -1 do
+          # delete the oldest file
+          af3= AudioFile.find :first, :conditions => {:basename => File.basename(@f3)}
+          af3.destroy
+        end
+        assert_difference 'AudioFile.count', 1 do
+          ScannerWorker.new.scan(@location, false)
+        end
+      end
+    end # context: when scanning in non-full mode
   end # context: The scanner
 
   def remove_devdas_test_fixture
@@ -422,5 +468,9 @@ class ScannerWorkerTest < ActiveSupport::TestCase
     assert_equal File.basename(after_file), AudioFile.find(@af.id).basename
 
     @scanner.init @location.reload
+  end
+
+  def update_file_timestamps(atime, mtime, file)
+    File.utime atime.utc, mtime.utc, file
   end
 end
