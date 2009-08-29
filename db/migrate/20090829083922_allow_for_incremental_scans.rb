@@ -17,11 +17,10 @@ class AllowForIncrementalScans < ActiveRecord::Migration
       say "#{total} found.", true
       unless total == 0
         i= 0
-        conn= AudioFile.connection
         audio_files.each {|f|
           begin
             mtime= File.mtime(f.filename)
-            conn.update "update audio_files set mtime='#{mtime.to_s(:db)}' where id=#{f.id}"
+            AudioFile.update f.id, :mtime => mtime
           rescue Errno::ENOENT
             # ignore missing files
           rescue => e
