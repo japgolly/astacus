@@ -6,4 +6,5 @@ audio_file_<%= i %>:
   basename: audio_file_<%= i %>.mp3
   size: <%= 10100000 + i %>
   location_id: 1
+  mtime: <%= (1.year.ago + i.minutes).to_s(:db) %>
 <% end %>

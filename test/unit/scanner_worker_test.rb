@@ -65,6 +65,7 @@ class ScannerWorkerTest < ActiveSupport::TestCase
         assert_not_nil @f.created_at
         assert_not_nil @f.updated_at
         assert_equal @location, @f.location
+        assert_equal File.mtime(@file), @f.mtime
       end
 
       should "create a new audio content row" do

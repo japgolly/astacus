@@ -144,6 +144,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
         :basename => file_basename,
         :size => filesize,
         :location => @location,
+        :mtime => File.mtime(file),
       })
 
       # Save tags

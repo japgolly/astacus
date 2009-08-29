@@ -7,18 +7,21 @@ glass_prison:
   basename: 01 - The Glass Prison.mp3
   size: 19989119
   location: main
+  mtime: 2008-05-26 00:19:03
 misunderstood:
   audio_content: misunderstood
   dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
   basename: 03 - Misunderstood.mp3
   size: 13507820
   location: main
+  mtime: 2008-05-26 00:19:03
 about_to_crash:
   audio_content: about_to_crash
   dirname: /x/music/Music Collection/English/Dream Theater/Albums/2002 - Six Degrees Of Inner Turbulence
   basename: 07 - II. About To Crash.mp3
   size: 8427118
   location: main
+  mtime: 2008-05-26 00:19:03
 
 # ========== PONK ==========
 the_requiem:
@@ -27,6 +30,7 @@ the_requiem:
   basename: 07 - The Requiem.mp3
   size: 11494512
   location: c_downloads
+  mtime: 2002-01-03 15:36:27
 
 # ========== STILL LIFE ==========
 apsog_i:
@@ -35,42 +39,49 @@ apsog_i:
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 1
   location: main
   size: 3108860
+  mtime: 2007-02-04 10:51:43
 apsog_ii:
   audio_content: apsog_ii
   basename: 02 - A Pleasant Shade Of Gray II.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 1
   location: main
   size: 5179014
+  mtime: 2007-02-04 10:51:43
 apsog_x:
   audio_content: apsog_x
   basename: 10 - A Pleasant Shade Of Gray X.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 2
   location: main
   size: 1712044
+  mtime: 2007-02-04 10:51:43
 apsog_xi:
   audio_content: apsog_xi
   basename: 11 - A Pleasant Shade Of Gray XI.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 2
   location: main
   size: 4875580
+  mtime: 2007-02-04 10:51:43
 apsog_xii:
   audio_content: apsog_xii
   basename: 12 - A Pleasant Shade of Gray XII.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 2
   location: main
   size: 10834006
+  mtime: 2007-02-04 10:51:43
 the_ivory_gate_of_dreams:
   audio_content: the_ivory_gate_of_dreams
   basename: 01 - The Ivory Gate Of Dreams.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 3
   location: main
   size: 30106094
+  mtime: 2007-02-04 10:51:43
 the_eleventh_hour:
   audio_content: the_eleventh_hour
   basename: 03 - The Eleventh Hour.mp3
   dirname: /c/fake_music_dir/Fates Warning/Live Albums/1998 - Still Life/Disc 3
   location: main
   size: 11880343
+  mtime: 2007-02-04 10:51:43
 
 # ========== IN ABSENTIA ==========
 blackest_eyes:
@@ -79,24 +90,28 @@ blackest_eyes:
   dirname: /c/fake_music_dir/2002 - In Absentia
   location: d_downloads
   size: 98897
+  mtime: 2009-01-01 01:01:01
 trains:
   audio_content: trains
   basename: 02 - Trains.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
   location: d_downloads
   size: 98797
+  mtime: 2009-01-01 01:01:01
 lips_of_ashes:
   audio_content: lips_of_ashes
   basename: 03 - Lips Of Ashes.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
   location: d_downloads
   size: 99839
+  mtime: 2009-01-01 01:01:01
 the_sound_of_muzak:
   audio_content: the_sound_of_muzak
   basename: 04 - The Sound Of Muzak.mp3
   dirname: /c/fake_music_dir/2002 - In Absentia
   location: d_downloads
   size: 101371
+  mtime: 2009-01-01 01:01:01
 
 # ========== DEVDAS ==========
 silsila_ye_chaahat_ka:
@@ -105,24 +120,28 @@ silsila_ye_chaahat_ka:
   basename: 01 - Silsila ye Chaahat ka.mp3
   dirname: <%= mock_data_dir 'Devdas' %>
   size: 215037
+  mtime: 2009-04-23 11:18:48
 maar_daala:
   location: mock_data_dir
   audio_content: maar_daala
   basename: 02 - Maar Daala.mp3
   dirname: /c/fake_music_dir/devdas
   size: 9761101
+  mtime: 2009-04-23 11:18:48
 bairi_piya:
   location: mock_data_dir
   audio_content: bairi_piya
   basename: 03 - Bairi Piya.mp3
   dirname: /c/fake_music_dir/devdas
   size: 11319985
+  mtime: 2009-04-23 11:18:48
 kaahe_chhed_mohe:
   location: mock_data_dir
   audio_content: kaahe_chhed_mohe
   basename: 04 - Kaahe Chhed Mohe.mp3
   dirname: /c/fake_music_dir/devdas
   size: 11537513
+  mtime: 2009-04-23 11:18:48
 
 # ========== YES ==========
 close_to_the_edge:
@@ -131,9 +150,11 @@ close_to_the_edge:
   basename: close_to_the_edge.mp3
   size: 33956044
   location: c_downloads
+  mtime: 2009-03-04 05:26:19
 time_and_a_word:
   audio_content: time_and_a_word
   dirname: /c/omg/yes
   basename: time_and_a_word.mp3
   size: 8526359
   location: d_downloads
+  mtime: 2009-03-04 05:26:19
