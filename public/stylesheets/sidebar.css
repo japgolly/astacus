@@ -18,3 +18,4 @@
 #search_query_form .submit {text-align:center}
 #search_query_form .fields .txt {width:100%}
 #search_query_form .reset_button {margin-left:22px}
+#search_query_form img.hint {position:relative; top:2px; left:-1px}

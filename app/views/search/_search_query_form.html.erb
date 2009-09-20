@@ -7,10 +7,10 @@
 
   <% sq_field_group 'Album/Disc' do %>
     <%= sq_text_field :album, 'Album Name' %>
-    <%= sq_int_field :year, 'Year', 4 %>
+    <%= sq_int_field :year, 'Year', 4, :hint => generic_int_hint("year",1980,1992,1998,2000,"later","earlier") %>
     <%= sq_boolean_field :albumart, 'Albumart', 'With', 'Without' %>
     <%= sq_boolean_field :va, 'V/A' %>
-    <%= sq_int_field :discs, 'Discs', 1 %>
+    <%= sq_int_field :discs, 'Discs', 1, :hint => generic_int_hint("disc",1,3,5,8,"more","less") %>
     <%= sq_text_field :disc, 'Disc Name' %>
   <% end %>
 
@@ -19,7 +19,7 @@
   <% end %>
 
   <% sq_field_group 'File' do %>
-    <%= sq_int_field :bitrate, 'Bitrate', 3 %>
+    <%= sq_int_field :bitrate, 'Bitrate', 3, :hint => generic_int_hint("bitrate",128,160,192,256,"higher","lower") %>
     <%= sq_text_field :location, 'Location' %>
   <% end %>
 
