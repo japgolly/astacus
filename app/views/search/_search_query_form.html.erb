@@ -20,7 +20,7 @@
 
   <% sq_field_group 'File' do %>
     <%= sq_int_field :bitrate, 'Bitrate', 3, :hint => generic_int_hint("bitrate",128,160,192,256,"higher","lower") %>
-    <%= sq_text_field :location, 'Location' %>
+    <%= sq_text_field :location, 'Location', :hint => "Available locations:\n#{Location.find(:all).map(&:label).sort.join ', '}" %>
   <% end %>
 
   <div class="submit">

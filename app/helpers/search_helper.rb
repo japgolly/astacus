@@ -19,10 +19,13 @@ module SearchHelper
 
   def sq_generic_field(key, label_text, input_tag, options={})
     label_tag= label_tag(key, label_text)
-    hint= if options[:hint]
-      " #{image_tag 'info.png', :alt => '', :class => 'hint', :onclick => %!alert("#{escape_javascript options[:hint]}")! }"
-    end
-    %!<tr><td class="l">#{label_tag}</td><td class="f">#{input_tag}#{hint}</td></tr>!
+    l_hint= "#{hint_tag options[:l_hint], :l_hint}" if options[:l_hint]
+    r_hint= "#{hint_tag options[:r_hint], :r_hint}" if options[:r_hint]
+    %!<tr><td class="l">#{label_tag}#{l_hint}</td><td class="f">#{input_tag}#{r_hint}</td></tr>!
+  end
+
+  def hint_tag(hint, clazz)
+    image_tag('info.png', :alt => '', :class => "hint #{clazz}", :onclick => %!alert("#{escape_javascript hint}")!)
   end
 
   def sq_boolean_field(key, label_text, yes_label='Yes', no_label='No', yes_before_no= true)
@@ -36,11 +39,13 @@ module SearchHelper
   end
 
   def sq_int_field(key, label_text, size, options={})
+    options[:r_hint]= options[:hint] if options[:hint]
     t= text_field_tag key, @sq.params[key], :size => size*2+2
     sq_generic_field key, label_text, t, options
   end
 
   def sq_text_field(key, label_text, options={})
+    options[:l_hint]= options[:hint] if options[:hint]
     t= text_field_tag key, @sq.params[key], :class => 'txt'
     sq_generic_field key, label_text, t, options
   end
