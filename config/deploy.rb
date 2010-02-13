@@ -2,7 +2,7 @@ set :application, "astacus"
 set :user,        "astacus"
 set :password,    "astacus"
 set :domain,      "vm-appserver"
-set :repository,  "ssh://#{domain}/mnt/dropbox/projects/#{application}.git"
+set :repository,  "git@github.com:japgolly/astacus.git"
 set :use_sudo,    false
 set :deploy_to,   "/srv/#{application}"
 set :scm,         "git"
