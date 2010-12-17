@@ -2,6 +2,7 @@
 # Configure your app in config/environment.rb and config/environments/*.rb
 
 RAILS_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(RAILS_ROOT)
+RAILS_GEM_VERSION = '2.3.4'
 
 module Rails
   class << self
