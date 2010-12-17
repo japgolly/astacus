@@ -9,7 +9,7 @@
     <tr class="<%= tr_class -%> <%= non_first_disc_row -%> titles">
       <% batch_of_discs.each_with_index do |disc,i| -%>
         <%= empty_cell_unless_first i, :sep %>
-        <td><%= h disc.name -%></td>
+        <td><%= disc.name -%></td>
       <% end -%>
     </tr>
   <% end -%>
@@ -24,7 +24,7 @@
         <% disc.tracks.each do |track| -%>
         <tr class="track alt<%= alt^=1 -%>">
           <td class="tn"><%= "%02d" % [track.tn] -%>.</td>
-          <td class="name"><%= h track.name -%></td>
+          <td class="name"><%= track.name -%></td>
           <td class="len"><%= format_mmss track.length -%></td>
           <% if logged_in? -%>
             <td class="dl"><%= link_to "d/l", audio_file_url(:id => track.audio_file_id) -%></td>

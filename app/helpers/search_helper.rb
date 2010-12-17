@@ -1,5 +1,6 @@
 module SearchHelper
   extend ActiveSupport::Memoizable
+  # TODO Add raw() or html_safe()
 
   # If i is non-zero, returns
   #   <td class="abc">&nbsp;</td>

@@ -4,8 +4,8 @@
 
   <% unless location.exists? %><div class="warning">DIRECTORY DOES NOT EXIST.</div><% end %>
   ID: <%= location.id %><br/>
-  LABEL: <%= h location.label %><br/>
-  DIR: <%= h location.dir %><br/>
+  LABEL: <%= location.label %><br/>
+  DIR: <%= location.dir %><br/>
   <% if asl= location.active_scanner_log %>
     <%= delayed_call_remote :url => {:action => 'show', :id => location.id}, :method => :get, :frequency => 3 %>
     <div class="active">
@@ -19,11 +19,11 @@
   <% else %>
     LAST SCAN: <%= (sl= location.scanner_logs.last) ? "#{time_ago_in_words sl.started} ago" : 'Never.' %>
     <br/>LAST MTIME: <%= location.last_mtime %>
-    <br/><%= button_to_remote 'Normal Scan', {:url => {:action => 'start_scan', :id => location.id}}, :disabled => !location.exists? %>
-    <br/><%= button_to_remote 'Full Scan', {:url => {:action => 'start_scan', :id => location.id, :full => '1'}}, :disabled => !location.exists? %>
+    <br/><%= button_to 'Normal Scan', {:url => {:action => 'start_scan', :id => location.id}}, :disabled => !location.exists?, :remote => true %>
+    <br/><%= button_to 'Full Scan', {:url => {:action => 'start_scan', :id => location.id, :full => '1'}}, :disabled => !location.exists?, :remote => true %>
   <% end %>
   <% unless location.scanner_errors.empty? %><div class="warning">HAS <%= location.scanner_errors.size -%> ERRORS.</div><% end %>
-  <br/><%= button_to_remote 'Edit', :url => {:action => 'edit', :id => location.id}, :method => :get %>
-  <br/><%= button_to_remote 'Refresh', :url => {:action => 'show', :id => location.id}, :method => :get %>
+  <br/><%= button_to 'Edit', :url => {:action => 'edit', :id => location.id}, :method => :get, :remote => true %>
+  <br/><%= button_to 'Refresh', :url => {:action => 'show', :id => location.id}, :method => :get, :remote => true %>
 
 <% unless inner_only %></div><% end %>

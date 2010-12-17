@@ -10,8 +10,8 @@
     <% end -%>
   </td>
   <td class="details">
-    <div class="artist"><%= h album.artist.name -%></div>
-    <div class="album"><%= h album.name -%><%= %! <span dir="ltr" class="year">(#{album.year})</span>! if album.year -%></div>
+    <div class="artist"><%= album.artist.name -%></div>
+    <div class="album"><%= album.name -%><%= %! <span dir="ltr" class="year">(#{album.year})</span>! if album.year -%></div>
     <%= render :partial => 'discs', :object => album.discs %>
   </td>
 </tr>

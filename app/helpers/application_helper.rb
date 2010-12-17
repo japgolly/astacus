@@ -8,6 +8,7 @@ module ApplicationHelper
   # Returns a javascript tag that invokes a remote call after a certain amount of time.
   # Takes the same args as periodically_call_remote.
   def delayed_call_remote(*args)
+    # TODO replace this
     periodically_call_remote(*args).sub(/(function\s*?\(\)\s*?\{)/,'\1this.stop(); ')
   end
 

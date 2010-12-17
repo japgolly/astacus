@@ -1,4 +1,6 @@
 module StatsHelper
+  # TODO Add raw() or html_safe() here
+
   def stats_section(title, colspan=2, &block)
     concat pre_section(colspan)
     content= capture(&block)
