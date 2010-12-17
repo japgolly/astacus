@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class PerformanceTest < ActiveSupport::TestCase
-  self.fixture_path = File.join(File.dirname(__FILE__), "../fixtures/performance" )
+  self.fixture_path = File.join(File.dirname(__FILE__), "../fixtures.performance" )
   MINIMUM_ROWS= 1000
 
   def self.test_find_identical(model, reps, time)
