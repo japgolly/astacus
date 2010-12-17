@@ -4,7 +4,7 @@ require File.expand_path('../boot', __FILE__)
 #require 'rails/all'
 require "active_record/railtie"
 require "action_controller/railtie"
-#require "action_mailer/railtie"
+#require "action_mailer/railtie" # If re-enalbing this, already re-enable settings in dev/test initialisers
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 
@@ -52,7 +52,8 @@ module Astacus
     config.active_record.schema_format = :sql
 
     # Middlewares
-    config.middleware.use "ResponseTimer"
+    # config.middleware.use "ResponseTimer"
+    # TODO
 
   end
 end

@@ -15,16 +15,19 @@ group :test do
   gem 'redgreen'
   gem 'test-unit', '1.2.3'
   gem 'win32console' if (RUBY_PLATFORM rescue PLATFORM) =~ /win32/
+  #gem 'ci_reporter'
+  gem 'ci_reporter', :require => 'ci/reporter/test_unit'
 end
 
+gem 'backgroundrb-rails3', :require => 'backgroundrb'
 gem 'mysql' # requires libmysqlclient-dev
 gem 'apetag'
 gem 'ruby-mp3info', :require => 'mp3info'
 gem 'thoughtbot-shoulda', :require => 'shoulda'
 gem 'packet' # for BackgrounDRb
 gem 'chronic' # for BackgrounDRb
-gem 'mislav-will_paginate', '~> 2.3.8', :require => 'will_paginate'
-gem 'ci_reporter', :require => 'ci/reporter/test_unit'
+#gem 'mislav-will_paginate', '~> 2.3.8', :require => 'will_paginate'
+gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => "rails3"
 
 
 # Use unicorn as the web server

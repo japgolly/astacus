@@ -2,6 +2,21 @@ Astacus::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
+  root :to => "home#index"
+
+  match 'login' => 'home#login', :as => :login
+  match 'logout' => 'home#logout', :as => :logout
+
+  match 'file/image/:id' => 'file#image', :as => :image
+  match 'file/audio/:id' => 'file#audio', :as => :audio_file
+
+  match 'search' => 'search#search', :as => :search
+  match 'stats' => 'stats#index', :as => :stats
+
+  resources :locations
+  match 'locations/:action/:id', :controller => 'locations'
+
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
