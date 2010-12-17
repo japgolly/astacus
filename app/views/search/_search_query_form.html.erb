@@ -1,5 +1,5 @@
 <div id="search_query_form">
-<% form_tag @search_query_form_url || search_url do %>
+<%= form_tag @search_query_form_url || search_url do %>
 
   <% sq_field_group 'Artist' do %>
     <%= sq_text_field :artist, 'Name' %>
@@ -20,7 +20,7 @@
 
   <% sq_field_group 'File' do %>
     <%= sq_int_field :bitrate, 'Bitrate', 3, :hint => generic_int_hint("bitrate",128,160,192,256,"higher","lower") %>
-    <%= sq_text_field :location, 'Location', :hint => "Available locations:\n#{Location.find(:all).map(&:label).sort.join ', '}" %>
+    <%= sq_text_field :location, 'Location', :hint => "Available locations:\n#{Location.all.map(&:label).sort.join ', '}" %>
   <% end %>
 
   <div class="submit">

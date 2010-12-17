@@ -2,9 +2,6 @@ class ApplicationController < ActionController::Base
   helper :all
   # protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  # Scrub sensitive parameters from your log
-  filter_parameter_logging :password
-
   # User login related
   helper_method :cur_user, :cur_user_id, :logged_in?
   USER_ID_SESSION_KEY= :user_id

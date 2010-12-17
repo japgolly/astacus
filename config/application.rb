@@ -52,8 +52,13 @@ module Astacus
     config.active_record.schema_format = :sql
 
     # Middlewares
-    # config.middleware.use "ResponseTimer"
-    # TODO
-
+    require 'lib/response_timer.rb'
+    config.middleware.use "ResponseTimer"
   end
 end
+
+require 'lib/core_ext'
+require 'lib/in_memory_file'
+require 'lib/rails_ext'
+require 'lib/rails_reflection'
+

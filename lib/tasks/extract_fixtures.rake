@@ -1,5 +1,5 @@
 desc 'Create YAML test fixtures from data in an existing database.  
-Defaults to development database.  Set RAILS_ENV to override.'
+Defaults to development database.  Set the rails env to override.'
 
 #require 'Ya2YAML'
 require File.join(File.dirname(__FILE__),"../../vendor/ya2yaml.rb")
@@ -7,7 +7,7 @@ require 'lib/rails_reflection'
 
 class FixtureExtractor
   include RailsReflection
-  OUTPUT_DIR= "#{RAILS_ROOT}/test/fixtures/extracted"
+  OUTPUT_DIR= Rails.root.join "test/fixtures/extracted"
   def ordering(model)
     {
       AudioFile => 'dirname, basename',
