@@ -1,8 +1,4 @@
+.bundle
+db/*.sqlite3
 log/*.log
 tmp/**/*
-.DS_Store
-public/cache/**/*
-nbproject
-db/*.sqlite3
-test/reports/*
-
