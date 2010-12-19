@@ -2,11 +2,11 @@ require 'test_helper'
 
 class ImageTest < ActiveSupport::TestCase
   %w[size data mimetype].each{|attr|
-    should_validate_presence_of attr
-    should_have_readonly_attributes attr
+    should validate_presence_of(attr)
+    should have_readonly_attribute(attr)
   }
-  should_have_many :albums
-  should_have_many :audio_tags
+  should have_many(:albums)
+  should have_many(:audio_tags)
 
   def test_acts_as_unique_without_setting_size
     assert_difference 'Image.count', +1 do

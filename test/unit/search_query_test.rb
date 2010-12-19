@@ -2,8 +2,8 @@ require 'test_helper'
 require 'search_query_filter_results'
 
 class SearchQueryTest < ActiveSupport::TestCase
-  should_validate_presence_of :name
-  should_validate_presence_of :params
+  should validate_presence_of(:name)
+  should validate_presence_of(:params)
 
   include SearchQueryFilterResults
   ALBUM_FILTERS.each{|params,albums|

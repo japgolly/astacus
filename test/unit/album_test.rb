@@ -1,11 +1,11 @@
 require 'test_helper'
 
 class AlbumTest < ActiveSupport::TestCase
-  should_belong_to :albumart
-  should_belong_to :artist
-  should_have_many :discs
+  should belong_to(:albumart)
+  should belong_to(:artist)
+  should have_many(:discs)
   %w[artist name].each{|attr|
-    should_validate_presence_of attr
+    should validate_presence_of(attr)
   }
   %w[year original_year].each{|attr|
     should_ensure_value_in_range attr, 0..(Date.today.year+1)

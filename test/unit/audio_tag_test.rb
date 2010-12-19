@@ -1,11 +1,11 @@
 require 'test_helper'
 
 class AudioTagTest < ActiveSupport::TestCase
-  should_belong_to :audio_file
-  should_belong_to :albumart
-  should_have_and_belong_to_many :tracks
+  should belong_to(:audio_file)
+  should belong_to(:albumart)
+  should have_and_belong_to_many(:tracks)
   %w[audio_file format offset data].each{|attr|
-    should_validate_presence_of attr
+    should validate_presence_of(attr)
   }
   should_validate_positive_numericality_of :offset
 

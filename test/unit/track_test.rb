@@ -1,14 +1,14 @@
 require 'test_helper'
 
 class TrackTest < ActiveSupport::TestCase
-  should_belong_to :disc
-  should_belong_to :audio_file
-  should_belong_to :track_artist
-  should_have_and_belong_to_many :audio_tags
+  should belong_to(:disc)
+  should belong_to(:audio_file)
+  should belong_to(:track_artist)
+  should have_and_belong_to_many(:audio_tags)
   %w[disc audio_file name].each{|attr|
-    should_validate_presence_of attr
+    should validate_presence_of(attr)
   }
-  should_validate_numericality_of :tn
+  should validate_numericality_of(:tn)
 
   test "belongs to disc" do
     assert_equal discs(:'6doit_cd2'), tracks(:about_to_crash).disc

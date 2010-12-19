@@ -1,12 +1,12 @@
 require 'test_helper'
 
 class LocationTest < ActiveSupport::TestCase
-  should_have_many :audio_files
-  should_have_many :scanner_errors
-  should_have_many :scanner_logs
-  should_validate_presence_of :label
-  should_validate_presence_of :dir
-  should_have_readonly_attributes :dir
+  should have_many(:audio_files)
+  should have_many(:scanner_errors)
+  should have_many(:scanner_logs)
+  should validate_presence_of(:label)
+  should validate_presence_of(:dir)
+  should have_readonly_attribute(:dir)
 
   context "Locations" do
     should "have unique dirs" do

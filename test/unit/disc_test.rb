@@ -1,13 +1,13 @@
 require 'test_helper'
 
 class DiscTest < ActiveSupport::TestCase
-  should_have_many :tracks
-  should_belong_to :album
-  should_belong_to :album_type
+  should have_many(:tracks)
+  should belong_to(:album)
+  should belong_to(:album_type)
   %w[album order_id].each{|attr|
-    should_validate_presence_of attr
+    should validate_presence_of(attr)
   }
-  should_validate_numericality_of :order_id
+  should validate_numericality_of(:order_id)
 
   context "A disc" do
     should "have tracks" do
