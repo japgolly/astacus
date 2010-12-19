@@ -9,8 +9,8 @@
 #   * Add tests to search_query_filter_results.rb
 class SearchQuery < ActiveRecord::Base
   serialize :params #, Hash
-  validates_presence_of :name, :params
-  validates_uniqueness_of :name, :allow_blank => false, :allow_nil => true
+  validates :params, :presence => true
+  validates :name, :presence => true, :uniqueness => { :allow_blank => false, :allow_nil => true }
 
   # Returns a new instance that is meant to be used temporarily and not saved.
   def self.tmp(params)

@@ -3,9 +3,10 @@ class Album < ActiveRecord::Base
   belongs_to :artist
   has_many :discs, :order => 'discs.order_id, discs.name'
 
-  validates_presence_of :artist, :name
-  validates_inclusion_of :year, :allow_nil => true, :in => 0..(Date.today.year+1)
-  validates_inclusion_of :original_year, :allow_nil => true, :in => 0..(Date.today.year+1)
+  validates :artist, :presence => true
+  validates :name, :presence => true
+  validates :year, :inclusion => { :allow_nil => true, :in => 0..(Date.today.year+1) }
+  validates :original_year, :inclusion => { :allow_nil => true, :in => 0..(Date.today.year+1) }
 
   acts_as_unique :except => [:albumart_id, :discs_count]
 

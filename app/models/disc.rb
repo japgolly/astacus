@@ -3,8 +3,8 @@ class Disc < ActiveRecord::Base
   belongs_to :album, :counter_cache => true
   belongs_to :album_type
 
-  validates_presence_of :album, :order_id
-  validates_numericality_of :order_id, :only_integer => true, :allow_nil => true
+  validates :album, :presence => true
+  validates :order_id, :presence => true, :numericality => { :only_integer => true, :allow_nil => true }
 
   acts_as_unique :except => :va
 

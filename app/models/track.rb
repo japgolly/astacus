@@ -4,8 +4,10 @@ class Track < ActiveRecord::Base
   belongs_to :track_artist, :class_name => 'Artist'
   has_and_belongs_to_many :audio_tags, :uniq => true
 
-  validates_presence_of :disc, :audio_file, :name
-  validates_numericality_of :tn, :only_integer => true, :allow_nil => true
+  validates :disc, :presence => true
+  validates :audio_file, :presence => true
+  validates :name, :presence => true
+  validates :tn, :numericality => { :only_integer => true, :allow_nil => true }
 
   acts_as_unique
 

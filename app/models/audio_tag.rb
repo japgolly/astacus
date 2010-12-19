@@ -2,8 +2,10 @@ class AudioTag < ActiveRecord::Base
   belongs_to :audio_file
   belongs_to :albumart, :class_name => "Image"
   has_and_belongs_to_many :tracks, :uniq => true
-  validates_presence_of :audio_file, :format, :offset, :data
-  validates_numericality_of :offset, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
+  validates :audio_file, :presence => true
+  validates :format, :presence => true
+  validates :data, :presence => true
+  validates :offset, :presence => true, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true }
 
   before_destroy do |r|
     img= r.albumart

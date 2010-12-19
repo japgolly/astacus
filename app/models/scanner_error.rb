@@ -1,4 +1,6 @@
 class ScannerError < ActiveRecord::Base
   belongs_to :location
-  validates_presence_of :location, :file, :err_msg
+  validates :location, :presence => true
+  validates :file, :presence => true
+  validates :err_msg, :presence => true
 end
