@@ -25,7 +25,7 @@ module Astacus
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
     # TODO
-    require 'lib/acts_as_unique'
+    require 'acts_as_unique'
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
@@ -52,13 +52,13 @@ module Astacus
     config.active_record.schema_format = :sql
 
     # Middlewares
-    require 'lib/response_timer.rb'
+    require 'response_timer.rb'
     config.middleware.use "ResponseTimer"
   end
 end
 
-require 'lib/core_ext'
-require 'lib/in_memory_file'
-require 'lib/rails_ext'
-require 'lib/rails_reflection'
+require 'core_ext'
+require 'in_memory_file'
+require 'rails_ext'
+require 'rails_reflection'
 
