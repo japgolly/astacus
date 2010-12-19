@@ -15,7 +15,7 @@ class SearchControllerTest < ActionController::TestCase
   context "Search when not logged in" do
     setup {get :search}
     should "not provide download links" do
-      assert_select '.discs a[href^=?]', audio_file_url, 0
+      assert_select '.discs a[href^=?]', audio_file_url(123).sub('123',''), 0
     end
     should "include the search css" do
       assert_response_includes 'search.css'
@@ -25,7 +25,7 @@ class SearchControllerTest < ActionController::TestCase
   context "Search when logged in" do
     setup {login; get :search}
     should "provide download links" do
-      assert_select '.discs a[href^=?]', audio_file_url
+      assert_select '.discs a[href^=?]', audio_file_url(123).sub('123','')
     end
   end
 
