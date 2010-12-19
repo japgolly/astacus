@@ -10,7 +10,13 @@ class AudioTag < ActiveRecord::Base
   before_destroy do |r|
     img= r.albumart
     img.destroy if img and img.audio_tags.size == 1
-    r.tracks.each {|t| t.destroy if t.audio_tags.size == 1 }
+    @tracks_backup.each {|t| t.destroy if t.audio_tags(:reload).size == 0 }
+  end
+
+  # Hack required due to https://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/6191-habtm-association-is-being-destroyed-before-the-before_destory-callbacks-are-executed
+  def destroy
+    @tracks_backup= tracks.dup
+    super
   end
 
   def useable?
