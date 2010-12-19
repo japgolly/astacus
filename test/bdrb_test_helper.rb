@@ -1,5 +1,5 @@
 require 'test_helper'
-WORKER_ROOT = RAILS_ROOT + "/lib/workers"
+WORKER_ROOT = Rails.root.join "lib/workers"
 $LOAD_PATH.unshift(WORKER_ROOT)
 
 class Object

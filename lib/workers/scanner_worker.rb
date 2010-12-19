@@ -51,7 +51,7 @@ class ScannerWorker < BackgrounDRb::MetaWorker
           begin
             scan_file! file
           rescue => err
-            full_err_msg= "\nERROR SCANNING: #{file}\n#{err.class}: #{err.message}\n#{err.application_backtrace.map{|m|"  #{m}"}.join "\n"}\n\n"
+            full_err_msg= "\nERROR SCANNING: #{file}\n#{err.class}: #{err.message}\n#{err.backtrace.map{|m|"  #{m}"}.join "\n"}\n\n"
             $stderr.puts(full_err_msg) if log_scanner_errors_to_stderr
             err_msg= err.to_s
             err_msg.gsub! /(x'[0-9a-f]{64})[0-9a-f]+'/, '\1...\''
