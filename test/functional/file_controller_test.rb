@@ -10,7 +10,7 @@ class FileControllerTest < ActionController::TestCase
         @img= images(:in_absentia)
         get :image, :id => @img.id
       end
-      should_respond_with :success
+      should respond_with(:success)
       should "send the pic" do
         assert_equal @img.data, response.body
       end
@@ -28,7 +28,7 @@ class FileControllerTest < ActionController::TestCase
         @img= images(:ponk)
         get :image, :id => @img.id
       end
-      should_respond_with :success
+      should respond_with(:success)
       should "send the pic" do
         assert_equal @img.data, response.body
       end
@@ -45,7 +45,7 @@ class FileControllerTest < ActionController::TestCase
       setup do
         get :image, :id => -1
       end
-      should_respond_with :not_found
+      should respond_with(:not_found)
     end
   end # Context: file/image
 
@@ -57,7 +57,7 @@ class FileControllerTest < ActionController::TestCase
         login false
         get :audio, :id => audio_files(:silsila_ye_chaahat_ka).id
       end
-      should_respond_with :forbidden
+      should respond_with(:forbidden)
     end
 
     context "when sending a valid file" do
@@ -67,7 +67,7 @@ class FileControllerTest < ActionController::TestCase
         @mp3_content= File.read(@af.filename)
         get :audio, :id => @af.id
       end
-      should_respond_with :success
+      should respond_with(:success)
       should "send the file" do
         output= StringIO.new
         output.binmode
@@ -89,7 +89,7 @@ class FileControllerTest < ActionController::TestCase
         assert !@af.exists?
         get :audio, :id => @af
       end
-      should_respond_with 417
+      should respond_with(417)
       should "tell the user the file doesnt exist" do
         assert_template 'audio_file_not_found'
         assert_response_includes @af.filename
@@ -100,7 +100,7 @@ class FileControllerTest < ActionController::TestCase
       setup do
         get :audio, :id => -1
       end
-      should_respond_with :not_found
+      should respond_with(:not_found)
     end
   end # Context: file/image
 end

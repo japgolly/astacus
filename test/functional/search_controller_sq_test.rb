@@ -9,8 +9,8 @@ class SearchControllerSqTest < ActionController::TestCase
     class_eval <<-EOB
       context "Search filtered by #{params.map{|k,v|"#{k} #{v}"}.sort.join ' and '}" do
         setup {get :search, #{params.inspect}}
-        should_respond_with :success
-        should_render_template :search
+        should respond_with(:success)
+        should render_template(:search)
         should "filter its results appropriately" do
           assert_same_named_elements [#{albums.map{|a| "albums('#{a}')"}.join(',')}], assigns(:albums)
         end

@@ -4,11 +4,11 @@ class SearchControllerTest < ActionController::TestCase
 
   def self.should_pass_common_assertions
     class_eval <<-EOB
-      should_respond_with :success
-      should_render_template :search
-      should_assign_to :albums, :class => WillPaginate::Collection
-      should_assign_to :sq, :class => SearchQuery
-      should_assign_to :page, :class => Fixnum
+      should respond_with(:success)
+      should render_template(:search)
+      should assign_to(:albums).with_kind_of(WillPaginate::Collection)
+      should assign_to(:sq).with_kind_of(SearchQuery)
+      should assign_to(:page).with_kind_of(Fixnum)
     EOB
   end
 
@@ -77,9 +77,9 @@ class SearchControllerTest < ActionController::TestCase
 
   context "Search with invalid params" do
     setup {get :search, :discs => 'omg1', :year => 'omg2'}
-    should_respond_with :success
-    should_render_template :search
-    should_assign_to :sq, :class => SearchQuery
+    should respond_with(:success)
+    should render_template(:search)
+    should assign_to(:sq).with_kind_of(SearchQuery)
     should "contain validation error messages" do
       assert_select '#sq_errors' do
         assert_select 'li', 2

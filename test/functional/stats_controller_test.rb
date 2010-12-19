@@ -70,8 +70,8 @@ class StatsControllerTest < ActionController::TestCase
         get :index
         @stats= assigns(:stats)
       end
-      should_respond_with :success
-      should_render_template 'index'
+      should respond_with(:success)
+      should render_template(:index)
       should "include the stats css" do
         assert_response_includes 'stats.css'
       end
@@ -159,8 +159,8 @@ class StatsControllerTest < ActionController::TestCase
         get :index, :va => '0', :discs => '1', :albumart => '1'
         @stats= assigns(:stats)
       end
-      should_respond_with :success
-      should_render_template 'index'
+      should respond_with(:success)
+      should render_template(:index)
       should "calculate the stats correctly" do
         files= tracks= 1+4
         total_filesize= PONK_FILESIZE + IN_ABSENTIA_FILESIZE
@@ -212,8 +212,8 @@ class StatsControllerTest < ActionController::TestCase
 
     context "with no results" do
       setup {get :index, :year => '2030', :va => '1'}
-      should_respond_with :success
-      should_render_template 'index'
+      should respond_with(:success)
+      should render_template(:index)
       should "say no results instead of displaying stats" do
         assert_select '#no_results'
         assert_select '#stats', 0
