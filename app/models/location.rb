@@ -3,11 +3,13 @@ class Location < ActiveRecord::Base
   has_many :scanner_errors, :order => 'file'
   has_many :scanner_logs, :order => 'started'
   attr_readonly :dir
-  validates_presence_of :dir, :label
-  validates_uniqueness_of :dir
+  validates :label, :presence => true
+  validates :dir, :uniqueness => true, :presence => true
   # TODO make sure label cant contain any !,"'\s (including spaces)
 
-  def before_validation
+  before_validation :preprocess_dir
+
+  def preprocess_dir
     unless dir.blank?
       self.dir= `cygpath -au #{dir.inspect}`.chomp if RUBY_PLATFORM =~ /cygwin/i
       self.dir= File.expand_path(dir)

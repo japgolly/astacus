@@ -1,15 +1,16 @@
 require 'test_helper'
 
 class AudioFileTest < ActiveSupport::TestCase
-  should_belong_to :audio_content
-  should_belong_to :location
-  should_have_many :audio_tags
-  should_have_many :tracks
+  should belong_to :audio_content
+  should belong_to :location
+  should have_many :audio_tags
+  should have_many :tracks
   %w[audio_content dirname basename size mtime].each{|attr|
-    should_validate_presence_of attr
+    should validate_presence_of attr
   }
   should_validate_positive_numericality_of :size
-  should_not_allow_values_for :basename, '2006 - パレード/06 - 雪が降らない街.mp3'#, :message => 'must be greater than or equal to 0'
+  should_not allow_value('2006 - パレード/06 - 雪が降らない街.mp3').for(:basename) #, :message => 'must be greater than or equal to 0'
+  #TODO should_not allow_value('2006 - パレード/06 - 雪が降らない街.mp3').for(:basename).with_message('must be greater than or equal to 0')
 
   context "An audio file" do
     should "return its file extention" do

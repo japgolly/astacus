@@ -4,9 +4,11 @@ class AudioFile < ActiveRecord::Base
   has_many :audio_tags, :dependent => :destroy
   has_many :tracks
   acts_as_unique :except => :mtime
-  validates_presence_of :audio_content, :dirname, :basename, :size, :mtime
-  validates_numericality_of :size, :only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true
-  validates_format_of :basename, :with => %r!\A[^/]+\Z!, :allow_nil => true
+  validates :audio_content, :presence => true
+  validates :dirname, :presence => true
+  validates :mtime, :presence => true
+  validates :size, :presence => true, :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :allow_nil => true}
+  validates :basename, :presence => true, :format => {:with => %r!\A[^/]+\Z!, :allow_nil => true}
 
   def filename
     File.expand_path File.join(dirname,basename)

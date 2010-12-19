@@ -60,9 +60,10 @@ class ActiveSupport::TestCase
   }
 
   def self.should_validate_positive_numericality_of(attr)
-    should_validate_numericality_of attr
-    should_not_allow_values_for attr, -1, :message => 'must be greater than or equal to 0'
-    should_allow_values_for attr, 0, 100.megabytes
+    should validate_numericality_of attr
+    should_not allow_value(-1).for(attr)# TODO :message => 'must be greater than or equal to 0'
+    should allow_value(0).for(attr)
+    should allow_value(100.megabytes).for(attr)
   end
 
   def table_counts

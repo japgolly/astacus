@@ -64,8 +64,7 @@ module Acts
 
     module InstanceMethods
       def find_identical
-        before_validation
-        before_validation_on_create
+        run_callbacks(:validate) { false }
         self.class.find_identical self
       end
 
