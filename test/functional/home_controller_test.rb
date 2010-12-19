@@ -24,19 +24,19 @@ class HomeControllerTest < ActionController::TestCase
 
     context "with ajax GET" do
       setup { ajax_get :login, :username => 'pleb', :password => 'awww' }
-      should_redirect_to("root") { root_url }
+      should redirect_to("root") { root_url }
       should("not log the user in") { assert_nil cur_user_id }
     end
 
     context "with normal GET" do
       setup { get :login, :username => 'pleb', :password => 'awww' }
-      should_redirect_to("root") { root_url }
+      should redirect_to("root") { root_url }
       should("not log the user in") { assert_nil cur_user_id }
     end
 
     context "with normal POST" do
       setup { post :login, :username => 'pleb', :password => 'awww' }
-      should_redirect_to("root") { root_url }
+      should redirect_to("root") { root_url }
       should("not log the user in") { assert_nil cur_user_id }
     end
   end # Context: login
@@ -53,7 +53,7 @@ class HomeControllerTest < ActionController::TestCase
 
     context "without ajax" do
       setup { get :logout }
-      should_redirect_to("root") { root_url }
+      should redirect_to("root") { root_url }
       should("log the user out") { assert_nil cur_user_id }
     end
   end # Context: logout
