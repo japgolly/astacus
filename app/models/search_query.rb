@@ -11,6 +11,7 @@ class SearchQuery < ActiveRecord::Base
   serialize :params #, Hash
   validates :params, :presence => true
   validates :name, :presence => true, :uniqueness => { :allow_blank => false, :allow_nil => true }
+  validate :validate_params
 
   # Returns a new instance that is meant to be used temporarily and not saved.
   def self.tmp(params)
@@ -41,7 +42,7 @@ class SearchQuery < ActiveRecord::Base
   end
 
   protected
-  def validate
+  def validate_params
     if params
       if !params.is_a?(Hash)
         errors.add :params, "is not a Hash object. (actual class = #{params.class})"

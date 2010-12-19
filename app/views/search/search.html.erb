@@ -2,7 +2,7 @@
   <table id="sq_errors" class="search_error"><tr><td>
     Your search query has the following errors:
     <ul>
-      <% @sq.errors.each_full do |m| -%><li><%= m -%></li><% end -%>
+      <% @sq.errors.to_a.each do |m| -%><li><%= m -%></li><% end -%>
     </ul>
   </td></tr></table>
 

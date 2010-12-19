@@ -1,6 +1,5 @@
 module SearchHelper
   extend ActiveSupport::Memoizable
-  # TODO Add raw() or html_safe()
 
   # If i is non-zero, returns
   #   <td class="abc">&nbsp;</td>
@@ -8,21 +7,19 @@ module SearchHelper
   # If i is non-zero, returns
   #   nil
   def empty_cell_unless_first(i, cell_class)
-    %!<td class="#{cell_class}">&nbsp;</td>! unless i == 0
+    %!<td class="#{cell_class}">&nbsp;</td>!.html_safe unless i == 0
   end
 
   def sq_field_group(title,&block)
     content= capture(&block)
-    concat %!<table class="fields"><tr><th colspan="2">#{h title}</th></tr>!
-    concat(content)
-    concat "</table>"
+    %!<table class="fields"><tr><th colspan="2">#{h title}</th></tr>#{content}</table>!.html_safe
   end
 
   def sq_generic_field(key, label_text, input_tag, options={})
     label_tag= label_tag(key, label_text)
     l_hint= "#{hint_tag options[:l_hint], :l_hint}" if options[:l_hint]
     r_hint= "#{hint_tag options[:r_hint], :r_hint}" if options[:r_hint]
-    %!<tr><td class="l">#{label_tag}#{l_hint}</td><td class="f">#{input_tag}#{r_hint}</td></tr>!
+    %!<tr><td class="l">#{label_tag}#{l_hint}</td><td class="f">#{input_tag}#{r_hint}</td></tr>!.html_safe
   end
 
   def hint_tag(hint, clazz)

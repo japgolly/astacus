@@ -53,7 +53,7 @@ class SearchControllerTest < ActionController::TestCase
     setup {get :search, :artist => 'a', :page => '100'}
     should "redirect to the same page without the :page param" do
       expected= HashWithIndifferentAccess.new({:controller => 'search', :action => 'search', :artist => 'a'})
-      actual= HashWithIndifferentAccess.new(response.redirected_to)
+      actual= HashWithIndifferentAccess.new(response.redirect_url)
       assert_equal expected, actual
     end
   end
