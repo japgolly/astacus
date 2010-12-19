@@ -5,6 +5,12 @@ class Object
   alias_method :safe_to_f, :safe_to_i
 end
 
+class NilClass
+  def html_safe
+    self
+  end
+end
+
 class String
   def safe_to_i
     self =~ /^\-?\d+$/ ? to_i : self

@@ -2,7 +2,7 @@ module ApplicationHelper
 
   # Takes all validation errors on a model and turns it into a single sentence.
   def model_errors_to_single_string(model)
-    model.errors.map{|a| "#{a[0].capitalize} #{a[1]}."}.join("\n\n")
+    model.errors.full_messages.join("\n\n")
   end
 
   # Returns a javascript tag that invokes a remote call after a certain amount of time.
@@ -26,7 +26,7 @@ module ApplicationHelper
         str
       end
     else raise "Cannot format #{v.class}: #{v.inspect}"
-    end
+    end.html_safe
   end
 
   # Returns human-friendly string representation of a number of bytes.
@@ -50,13 +50,13 @@ module ApplicationHelper
       when :div then %!#{res}<div class="exact_bytes">(#{format v} bytes)</div>!
       else raise "Unsupported value for display_exact_also: #{display_exact_also.inspect}"
       end if display_exact_also and v >= 1.kilobytes
-    res
+    res.html_safe
   end
 
   # Takes a number of seconds and turns it into a mm:ss string.
   # Eg. 24:07
   def format_mmss(length)
-    "%d:%02d" % [length / 60, length % 60]
+    ("%d:%02d" % [length / 60, length % 60]).html_safe
   end
 
   def to_percentage(a, b, decimal_places=0)
@@ -66,7 +66,7 @@ module ApplicationHelper
     else
       p= a.to_f * 100.0 / b
       p= (decimal_places == 0 ? p.round(0).to_i : p.round(decimal_places)).to_s
-    end
+    end.html_safe
     block_given? ? yield(p) : p
   end
 
@@ -86,7 +86,7 @@ module ApplicationHelper
       sprintf '%d:%02d', min, sec
     else
       sprintf '0:%02d', sec
-    end
+    end.html_safe
   end
 
   private
