@@ -6,7 +6,7 @@ module RailsReflection
         model_name= f.gsub(/^.+[\\\/]|\.rb$/,'').camelize
         model_name.constantize rescue require f
       }
-      Object.constants.map{|c| eval c}.select{|c| c.respond_to? :table_name}
+      Object.constants.reject{|c| c =~ /^RAILS_/}.map{|c| eval c}.select{|c| c.respond_to? :table_name}
     )
   end
 end

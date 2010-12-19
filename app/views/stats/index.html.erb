@@ -6,17 +6,17 @@
   <table id="stats"><tr><td>
     <table id="stats_l">
 
-    <% stats_section 'Overall' do %>
+    <%= stats_section 'Overall' do %>
       <%= stats_row 'Files', format(@stats[:files]) %>
       <%= stats_row 'Total Size', format_bytes(@stats[:filesize], :div) %>
       <%= stats_row 'Total Length', format_duration(@stats[:length]) %>
     <% end %>
 
-    <% stats_section 'Artist' do %>
+    <%= stats_section 'Artist' do %>
       <%= stats_row 'Artists', format(@stats[:artists]) %>
     <% end %>
 
-    <% stats_section 'Album / Disc' do %>
+    <%= stats_section 'Album / Disc' do %>
       <%= stats_row 'Albums', format(@stats[:albums]) %>
       <%= stats_row_percentage 'V/A Albums', @stats[:va_albums], @stats[:albums], 1 %>
       <%= stats_row_percentage 'Multi-disc Albums', @stats[:multiple_disc_albums], @stats[:albums], 1 %>
@@ -26,7 +26,7 @@
       <%= stats_row 'Average Albums per Artist', @stats[:avg_albums_p_artist].round(1) %>
     <% end %>
 
-    <% stats_section 'Track' do %>
+    <%= stats_section 'Track' do %>
       <%= stats_row 'Tracks', format(@stats[:tracks]) %>
       <%= stats_row 'Average File Size', format_bytes(@stats[:avg_filesize].to_i, :div) %>
       <%= stats_row 'Average Length', format_mmss(@stats[:avg_length]) %>

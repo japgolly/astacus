@@ -10,6 +10,6 @@ class ScannerLogTest < ActiveSupport::TestCase
   def test_should_validate_presence_of_active_flag
     sl= ScannerLog.new
     assert !sl.valid?
-    assert sl.errors.on(:active)
+    assert_not_equal sl.errors[:active], []
   end
 end

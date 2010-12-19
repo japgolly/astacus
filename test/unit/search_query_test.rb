@@ -102,7 +102,8 @@ class SearchQueryTest < ActiveSupport::TestCase
       options[:with].each {|value|
         sq= SearchQuery.new(:params => {field => value})
         assert !sq.valid?, "SearchQuery shouldn't pass validation."
-        assert sq.errors.on(field), "Validation error expected on #{field.inspect}"
+        assert sq.errors[field][0], "Validation error expected on #{field.inspect}"
+        assert sq.errors[field].size, 1
       }
     }
   end

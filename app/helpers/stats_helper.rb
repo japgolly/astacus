@@ -1,11 +1,8 @@
 module StatsHelper
-  # TODO Add raw() or html_safe() here
 
   def stats_section(title, colspan=2, &block)
-    concat pre_section(colspan)
     content= capture(&block)
-    concat %!<tr class="section"><th colspan="#{colspan}">#{h title}</th></tr>!
-    concat(content)
+    pre_section(colspan) + %!<tr class="section"><th colspan="#{colspan}">#{h title}</th></tr>#{content}!.html_safe
   end
 
   def pre_section(colspan)
@@ -15,14 +12,14 @@ module StatsHelper
       ''
     else
       %!<tr class="sep"><th colspan="#{colspan}">&nbsp;</th></tr>!
-    end
+    end.html_safe
   end
 
   def stats_row(key, value, value2=nil, options={})
     value2= %!<td class="v2">#{value2}</td>! if value2
     tr_class= "alt#{@alt^=1}"
     tr_class+= " #{options[:tr_class]}" if options[:tr_class]
-    %!<tr class="#{tr_class}"><td class="k">#{key}</td><td class="v">#{value}</td>#{value2}</tr>!
+    %!<tr class="#{tr_class}"><td class="k">#{key}</td><td class="v">#{value}</td>#{value2}</tr>!.html_safe
   end
 
   def stats_row_percentage(key, a, b, decimal_places=0)
@@ -56,12 +53,13 @@ module StatsHelper
     x+= %!<table id="#{body_id}" class="graph_body" #{'style="display:none"' if hidden}>!
     x+= stats_graph_body(data, options, &block)
     x+= '</table></div>'
+    x.html_safe
   end
 
   def stats_graph_body(data, options, &block)
     step= data[:step]
     m_lines= options[:m_lines]
-    x= ''
+    x= ''.html_safe
     if data[nil]
       x+= stats_graph_row get_stats_label(block,nil,step,options), data[nil], data[:max_value],
         :div_class => 'nil', :tr_class => 'nil'
@@ -93,9 +91,9 @@ module StatsHelper
     if i.nil?
       'Unknown'
     elsif step == 1
-      i
+      i.to_s
     else
       "#{i} - #{i+step-1}"
-    end
+    end.html_safe
   end
 end
