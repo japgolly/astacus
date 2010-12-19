@@ -14,23 +14,6 @@ module RailsExt
 
     module ClassMethods
       include ClassAndInstanceMethods
-
-      # Takes an options hash that find() does and returns a raw sql select statement.
-      def get_raw_sql(options)
-        # base.rb, find()
-        validate_find_options(options)
-        set_readonly_option!(options)
-        # base.rb, find_every()
-        include_associations = merge_includes(scope(:find, :include), options[:include])
-        if include_associations.any? && references_eager_loaded_tables?(options)
-          # associations.rb, find_with_associations()
-          join_dependency = JoinDependency.new(self, merge_includes(scope(:find, :include), options[:include]), options[:joins])
-          construct_finder_sql_with_included_associations(options, join_dependency)
-        else
-          # base.rb, find_every()
-          construct_finder_sql(options)
-        end
-      end
     end # module ClassMethods
 
     module InstanceMethods

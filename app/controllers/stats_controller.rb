@@ -29,7 +29,7 @@ class StatsController < ApplicationController
       # Use the sq to create a table table of album ids
       conn= Album.connection
       conn.execute "DROP TEMPORARY TABLE IF EXISTS #{TMP_TABLE_NAME};"
-      sql= Album.get_raw_sql @sq.to_find_options.merge(:select => 'albums.id')
+      sql= Album.scoped.apply_finder_options(@sq.to_find_options).select('albums.id').to_sql
       conn.execute "CREATE TEMPORARY TABLE #{TMP_TABLE_NAME}(UNIQUE(id)) ENGINE MEMORY IGNORE AS #{sql}"
 
       # Get stats using temp table
@@ -89,7 +89,7 @@ class StatsController < ApplicationController
 
       # Apply filters
       options[:joins]= if options[:joins]
-        jsql= Album.get_raw_sql(:joins => options[:joins]).sub(/^.+?(?=INNER JOIN)/,'')
+        jsql= Album.scoped.apply_finder_options(:joins => options[:joins]).to_sql.sub(/^.+?(?=INNER JOIN)/,'')
         "#{TMP_TABLE_JOIN_SQL} #{jsql}"
       else
         TMP_TABLE_JOIN_SQL
