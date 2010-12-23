@@ -52,9 +52,7 @@ class SearchControllerTest < ActionController::TestCase
   context "Search with page param is out of range" do
     setup {get :search, :artist => 'a', :page => '100'}
     should "redirect to the same page without the :page param" do
-      expected= HashWithIndifferentAccess.new({:controller => 'search', :action => 'search', :artist => 'a'})
-      actual= HashWithIndifferentAccess.new(response.redirect_url)
-      assert_equal expected, actual
+      assert_redirected_to :controller => 'search', :action => 'search', :artist => 'a'
     end
   end
 
@@ -62,11 +60,14 @@ class SearchControllerTest < ActionController::TestCase
     should "have the current boolean option selected" do
       # No param
       get :search
-      assert_select '#search_query_form select[name=albumart] option[selected]', 1 do
-        assert_select '[value=?]', ''
-      end
+      assert_select '#search_query_form select[name=albumart] option[selected]', 0
+
+      # Empty param
+      get :search, :albumart => ''
+      assert_select '#search_query_form select[name=albumart] option[selected]', 0
+
       # With params
-      ['', '0', '1'].each{|param|
+      ['0', '1'].each{|param|
         get :search, :albumart => param
         assert_select '#search_query_form select[name=albumart] option[selected]', 1 do
           assert_select '[value=?]', param
