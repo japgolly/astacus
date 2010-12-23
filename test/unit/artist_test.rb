@@ -4,7 +4,8 @@ class ArtistTest < ActiveSupport::TestCase
   should have_many(:albums)
   should validate_presence_of(:name)
   should validate_uniqueness_of(:name) # :case_sensitive => true
-  should_not_allow_values_for :name, '', '   ', :message => "can't be blank"
+  should_not allow_value('').for(:name).with_message("can't be blank")
+  should_not allow_value('   ').for(:name).with_message("can't be blank")
 
   context "Artists" do
     should "have albums" do

@@ -6,8 +6,8 @@ class AudioContentTest < ActiveSupport::TestCase
     should validate_presence_of(attr)
     should have_readonly_attribute(attr)
   }
-  should_ensure_length_is :md5, 16
-  should_ensure_length_is :sha2, 64
+  should ensure_length_of(:md5).is_equal_to(16)
+  should ensure_length_of(:sha2).is_equal_to(64)
   should_validate_positive_numericality_of :bitrate
   should_validate_positive_numericality_of :length
   should_validate_positive_numericality_of :samplerate

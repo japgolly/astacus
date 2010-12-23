@@ -8,7 +8,7 @@ class AlbumTest < ActiveSupport::TestCase
     should validate_presence_of(attr)
   }
   %w[year original_year].each{|attr|
-    should_ensure_value_in_range attr, 0..(Date.today.year+1)
+    should ensure_inclusion_of(attr).in_range 0..(Date.today.year+1)
   }
 
   test "has discs" do
